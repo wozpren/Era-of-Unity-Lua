@@ -1,0 +1,49 @@
+{
+    "name": "清水铃",
+    "sex": "女",
+    "old": 13,
+    "Mouth": 5,
+    "Day": 25,
+    "Level": 5,
+    "race": "人类",
+    "nation": "阿美利亚",
+    "height": "矮",
+    "bodyType": "苗条",
+    "bust": "贫乳",
+    "hipline": "小尻",
+    "JJ": "普通",
+    "IsChu": true,
+    "hairType": "齐肩发",
+    "hairColor": "白色",
+    "Koujiu" : "清水铃",
+    "Weapon" : "拳头",
+    "IsAssistant" : true,
+    "growth" :
+    {
+        "HP": 4.0,
+        "MP": 5.0,
+        "Str": 0.8,
+        "Mag": 1,
+        "Def": 0.4,
+        "Mde": 0.7,
+        "Agi": 1,
+        "Luk": 0.7,
+        "IQ": 1
+    },
+    "job" : "女仆",
+    "Feel" : "正常",
+    "Talents" : ["冷漠,temper", "害羞,temper", "贞操重视,temper", "小恶魔,temper", "料理擅长,temper", "聪慧,buff"],
+    "Ability" : null,
+    "Orbs" : null,
+    "equips" :
+    [
+        ["蕾丝发带"],
+        [],
+        [],
+        [],
+        ["丝质手套"],
+        ["纯白胖次"],
+        ["纯白内衣","白色连裤袜"],
+        ["女仆服","小皮靴"]
+    ]
+}

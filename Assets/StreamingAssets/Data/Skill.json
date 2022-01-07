@@ -1,0 +1,12 @@
+[
+    {
+        "Name" : "EX咖喱棒",
+        "Description" : "通过魔法棒内部核动力能源最大化输出，对敌人造成500点伤害",
+        "type" : 0,
+        "Mana" : 200,
+        "Atk" : 500,
+        "Count" : 1,
+        "Physical" : false,
+        "buff" : null
+    }
+]

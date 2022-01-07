@@ -1,0 +1,11 @@
+[
+    {
+        "Name" : "V敏感度增加",
+        "Description" : "增加V的敏感度,使少女更容易高潮",
+        "Func" : "Lab.VsensitiveUP",
+        "Switch" : null,
+        "Money" : "5000",
+        "Tech" : "500",
+        "OrbNeed" : [{ "name" : "快V之珠", "count" : 500}]
+    }
+]

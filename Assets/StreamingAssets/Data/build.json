@@ -1,0 +1,678 @@
+[
+    {
+        "Name": "发电站",
+        "Description": "普通的发电站,增加200点电量",
+        "CanMultiple": true,
+        "Area": 1,
+        "price": 5000,
+        "stuffs": [{"name": "建筑材料", "count": 10},{"name": "发电装置", "count": 1},{"name": "电缆", "count": 20}],
+        "WorkFunction": [true, true, false, false],
+        "Switchs": ["封锁"],
+        "Config": null
+    },
+    {
+        "Name": "火力发电站",
+        "Description": "利用能源矿石发电,根据不同矿石产电量不同",
+        "CanMultiple": true,
+        "Area": 2,
+        "price": 15000,
+        "stuffs": [{"name": "建筑材料", "count": 20},{"name": "耐火材料", "count": 10},{"name": "发电装置","count": 1},{"name": "电缆", "count": 20}],
+        "WorkFunction": [
+            true,
+            true,
+            false,
+            true
+        ],
+        "Switchs": [
+            "机械原理",
+            "化学入门",
+            "封锁"
+        ],
+        "Config": null
+    },
+    {
+        "Name": "魔导发电站",
+        "Description": "利用魔力发电,每天消耗50魔导增加1000点电量",
+        "CanMultiple": true,
+        "Area": 4,
+        "price": 100000,
+        "stuffs": [{"name": "建筑材料", "count": 20},{"name": "耐火材料", "count": 10},
+                   {"name": "发电装置", "count": 1},{"name": "电缆", "count": 20}],
+        "WorkFunction": [
+            true,
+            true,
+            false,
+            false
+        ],
+        "Switchs": ["封锁"],
+        "Config": [
+            0
+        ]
+    },
+    {
+        "Name": "核裂变电站",
+        "Description": "利用核裂变发电,每天增加100000点电量,材料缺乏可能会导致核爆",
+        "CanMultiple": true,
+        "Area": 10,
+        "price": 520000,
+        "stuffs": [{"name": "建筑材料", "count": 20}, {"name": "耐火材料", "count": 10}, 
+                   {"name": "发电装置", "count": 1}, {"name": "电缆", "count": 20}],
+        "WorkFunction": [
+            true,
+            true,
+            false,
+            false
+        ],
+        "Switchs": ["核物理"],
+        "Config": [
+            0
+        ]
+    },
+    {
+        "Name": "核聚变电站",
+        "Description": "利用核聚变发电,每天增加1000000点电量,材料缺乏可能会导致核爆",
+        "CanMultiple": true,
+        "Area": 10,
+        "price": 1200000,
+        "stuffs": [
+            {
+                "name": "托卡马克装置",
+                "count": 1
+            }
+        ],
+        "WorkFunction": [
+            true,
+            true,
+            false,
+            false
+        ],
+        "Switchs": ["核聚变","封锁"],
+        "Config": [
+            0
+        ]
+    },
+    {
+        "Name": "普通调教室",
+        "Description": "把空房改造简单装修而成的调教室",
+        "PowerConsumption": 50,
+        "CanMultiple": false,
+        "price": 10000,
+        "Area": 1,
+        "stuffs": [
+            {
+                "name": "建筑材料",
+                "count": 5
+            }
+        ],
+        "WorkFunction": [
+            true,
+            true,
+            false,
+            false
+        ],
+        "Switchs": null,
+        "Config": [
+            0
+        ]
+    },
+    {
+        "Name": "豪华调教室",
+        "Description": "房间替换成豪华装饰,并附带浴室的调教室",
+        "PowerConsumption": 100,
+        "CanMultiple": false,
+        "price": 12000,
+        "Area": 2,
+        "stuffs": [
+            {
+                "name": "建筑材料",
+                "count": 5
+            }
+        ],
+        "WorkFunction": [
+            true,
+            true,
+            false,
+            false
+        ],
+        "Switchs": [
+            "生物学入门",
+            "机械制造"
+        ],
+        "Config": [
+            0
+        ]
+    },
+    {
+        "Name": "专业调教室",
+        "Description": "搭载各种高科技设施的调教室,即使是圣女也无法避免变成RBQ",
+        "PowerConsumption": 250,
+        "CanMultiple": false,
+        "price": 12000,
+        "Area": 2,
+        "stuffs": [
+            {
+                "name": "建筑材料",
+                "count": 5
+            }
+        ],
+        "WorkFunction": [
+            true,
+            true,
+            false,
+            false
+        ],
+        "Switchs": [
+            "工业机器人",
+            "生物学高级"
+        ],
+        "Config": [
+            0
+        ]
+    },
+    {
+        "Name": "初级生产线",
+        "Description": "可以生产常规物品，空闲时能生产零件",
+        "PowerConsumption": 50,
+        "CanMultiple": false,
+        "price": 10000,
+        "Area": 1,
+        "stuffs": [
+            {
+                "name": "建筑材料",
+                "count": 5
+            }
+        ],
+        "WorkFunction": [true,true,true,false],
+        "Switchs": null,
+        "Config": [
+            0
+        ],
+        "MakeType":["材料","建筑"],
+        "Level" : 1
+    },
+    {
+        "Name": "中级生产线",
+        "Description": "可以生产具有科技含量的物品",
+        "PowerConsumption": 100,
+        "CanMultiple": false,
+        "price": 50000,
+        "Area": 2,
+        "stuffs": [{"name": "建筑材料", "count": 5}
+        ],
+        "WorkFunction": [true, true, false, false ],
+        "Switchss": [
+            "机械制造"
+        ],
+        "Config": [
+            0
+        ],
+        "MakeType":["矿石"],
+        "Level" : 2
+    },
+    {
+        "Name": "高级生产线",
+        "Description": "可以生产高科技科技的物品",
+        "PowerConsumption": 200,
+        "CanMultiple": false,
+        "price": 120000,
+        "Area": 3,
+        "stuffs": [{"name": "建筑材料", "count": 5}],
+        "WorkFunction": [
+            true,
+            true,
+            false,
+            false
+        ],
+        "Switchss": [
+            "工业机器人"
+        ],
+        "Config": [
+            0
+        ],
+        "MakeType":["矿石"],
+        "Level" : 3
+    },
+    {
+        "Name": "全自动调教流水线",
+        "Description": "生物学的研究和长期调教总结的经验设计出的调教系统,只需一天就能把普通人调教成RBQ",
+        "PowerConsumption": 200,
+        "CanMultiple": true,
+        "price": 120000,
+        "Area": 1,
+        "stuffs": [
+            {
+                "name": "建筑材料",
+                "count": 50
+            }
+        ],
+        "WorkFunction": [
+            false,
+            false,
+            true,
+            false
+        ],
+        "Switchss": [
+            "工业机器人",
+            "生物学高级"
+        ],
+        "Config": [
+            0
+        ]
+    },
+    {
+        "Name": "计算机生产线",
+        "Description": "可以生产有关计算机的物品",
+        "PowerConsumption": 500,
+        "CanMultiple": true,
+        "price": 5000000,
+        "Area": 2,
+        "stuffs": [
+            {
+                "name": "建筑材料",
+                "count": 50
+            }
+        ],
+        "WorkFunction": [
+            true,
+            true,
+            false,
+            false
+        ],
+        "Switchs": [
+            "光刻技术",
+            "高等数学进阶",
+            "魔导机械"
+        ],
+        "Config": [
+            0
+        ],
+        "MakeType":["计算机"],
+        "Level" : 3
+    },
+    {
+        "Name": "载具组装厂",
+        "Description": "解锁载具开发",
+        "PowerConsumption": 5000,
+        "CanMultiple": true,
+        "price": 5000000,
+        "Area": 5,
+        "stuffs": [
+            {
+                "name": "建筑材料",
+                "count": 50
+            }
+        ],
+        "WorkFunction": [
+            true,
+            true,
+            false,
+            false
+        ],
+        "Switchs": [
+            "工业机器人",
+            "魔导机械",
+            "电路基础"
+        ],
+        "Config": [
+            0
+        ],
+        "MakeType":["载具"],
+        "Level" : 3
+    },
+    {
+        "Name": "机器人制作中心",
+        "Description": "可以生产与真人无异的机器人",
+        "PowerConsumption": 50,
+        "CanMultiple": true,
+        "price": 5000000,
+        "Area": 3,
+        "stuffs": [
+            {
+                "name": "建筑材料",
+                "count": 50
+            }
+        ],
+        "WorkFunction": [
+            true,
+            true,
+            false,
+            false
+        ],
+        "Switchs": ["语言分析","脑科学","类人机器人","光刻技术","人工魔导"],
+        "Config": [
+            0
+        ],
+        "MakeType":["机器人"],
+        "Level" : 3
+    },{
+        "Name": "简易实验室",
+        "Description": "最基础的实验室，其他科技都从这里诞生",
+        "PowerConsumption": 100,
+        "CanMultiple": true,
+        "price": 10000,
+        "Area": 1,
+        "stuffs": [{"name": "建筑材料","count": 10}, {"name": "防火材料","count": 10}, 
+            {"name": "化学试剂","count": 10},{"name": "基础实验道具","count": 10}],
+        "WorkFunction": [true,true,false,false],
+        "Switchs": null,
+        "Config": null
+    },{
+        "Name": "普通实验室",
+        "Description": "最基础的实验室，其他科技都从这里诞生",
+        "PowerConsumption": 100,
+        "CanMultiple": true,
+        "price": 10000,
+        "Area": 3,
+        "stuffs": [{"name": "建筑材料","count": 10}, {"name": "建筑材料","count": 10}],
+        "WorkFunction": [true,true,false,false],
+        "Switchs": null,
+        "Config": null
+    },{
+        "Name": "高级实验室",
+        "Description": "最基础的实验室，其他科技都从这里诞生",
+        "PowerConsumption": 100,
+        "CanMultiple": true,
+        "price": 10000,
+        "Area": 3,
+        "stuffs": [{"name": "建筑材料","count": 10}, {"name": "建筑材料","count": 10}],
+        "WorkFunction": [true,true,false,false],
+        "Switchs": null,
+        "Config": null
+    },{
+        "Name": "专业实验室",
+        "Description": "最基础的实验室，其他科技都从这里诞生",
+        "PowerConsumption": 100,
+        "CanMultiple": true,
+        "price": 10000,
+        "Area": 3,
+        "stuffs": [{"name": "建筑材料","count": 10}, {"name": "建筑材料","count": 10}],
+        "WorkFunction": [true,true,false,false],
+        "Switchs": null,
+        "Config": null
+    },{
+        "Name": "超算中心",
+        "Description": "提高科研速度,解锁更进阶的研究",
+        "PowerConsumption": 1000,
+        "CanMultiple": false,
+        "price": 50000,
+        "Area": 4,
+        "stuffs": [
+            {
+                "name": "建筑材料",
+                "count": 5
+            }
+        ],
+        "WorkFunction": [
+            true,
+            true,
+            false,
+            false
+        ],
+        "Switchs": [
+            "实验室",
+            "先进工业"
+        ],
+        "Config": null
+    },{
+        "Name": "矿洞",
+        "Description": "随便找的废弃矿洞，产出矿石",
+        "PowerConsumption": 100,
+        "CanMultiple": false,
+        "price": 1000,
+        "stuffs": null,
+        "Area": 0,
+        "WorkFunction": [
+            true,
+            true,
+            true,
+            false
+        ],
+        "Switchs": null,
+        "Config": null,
+        "Type": "矿物生产"
+    },{
+        "Name": "农田",
+        "Description": "工厂旁边开垦的田地，能产出食物",
+        "PowerConsumption": 100,
+        "CanMultiple": false,
+        "price": 2000,
+        "stuffs": null,
+        "Area": 0,
+        "WorkFunction": [
+            true,
+            true,
+            true,
+            false
+        ],
+        "Switchs": null,
+        "Config": null,
+        "Type": "食物生产"
+    },{
+        "Name": "林场",
+        "Description": "附近的林场，产出木材",
+        "PowerConsumption": 50,
+        "CanMultiple": false,
+        "price": 2000,
+        "stuffs": null,
+        "Area": 0,
+        "WorkFunction": [
+            true,
+            true,
+            true,
+            false
+        ],
+        "Switchs": null,
+        "Config": null,
+        "Type": "木材生产"
+    },{
+        "Name": "工业高炉",
+        "Description": "用魔力将矿石冶炼成高级合金",
+        "PowerConsumption": 500,
+        "CanMultiple": false,
+        "price": 10000,
+        "Area": 1,
+        "stuffs": [{"name": "建筑材料","count": 5},{"name": "铁板","count": 10},{"name": "耐火材料","count": 10}],
+        "WorkFunction": [true,true,false,false],
+        "Switchs": [
+            "魔导入门"
+        ],
+        "Config": null,
+        "MakeType":["矿石"],
+        "Level" : 1
+    },{
+        "Name": "魔导窑炉",
+        "Description": "用魔力将矿石冶炼成高级合金",
+        "PowerConsumption": 500,
+        "CanMultiple": false,
+        "price": 10000,
+        "Area": 1,
+        "stuffs": null,
+        "WorkFunction": [
+            true,
+            true,
+            false,
+            false
+        ],
+        "Switchs": [
+            "魔导入门"
+        ],
+        "Config": null,
+        "MakeType":["矿石"],
+        "Level" : 1
+    },
+    {
+        "Name": "炼狱熔炉",
+        "Description": "用炼狱之火熔炼矿石",
+        "PowerConsumption": 2000,
+        "CanMultiple": false,
+        "price": 10000,
+        "Area": 1,
+        "stuffs": null,
+        "WorkFunction": [
+            false,
+            false,
+            true,
+            false
+        ],
+        "Switchs": [
+            "魔导机械",
+            "先进制造技术"
+        ],
+        "Config": null
+    },
+    {
+        "Name": "生物魔力炉",
+        "Description": "直接提取生物体内的魔力",
+        "PowerConsumption": 200,
+        "CanMultiple": true,
+        "price": 10000,
+        "Area": 2,
+        "stuffs": [
+            {"name": "建筑材料", "count": 15}
+        ],
+        "WorkFunction": [
+            false,
+            false,
+            true,
+            false
+        ],
+        "Switchs": [
+            "魔导入门"
+        ],
+        "Config": null
+    },
+    {
+        "Name": "空气魔力炉",
+        "Description": "提取空气中的魔力,产量无法保证",
+        "PowerConsumption": 400,
+        "CanMultiple": true,
+        "price": 10000,
+        "Area": 2,
+        "stuffs": [
+            {
+                "name": "建筑材料",
+                "count": 15
+            }
+        ],
+        "WorkFunction": [
+            false,
+            false,
+            true,
+            false
+        ],
+        "Switchs": [
+            "魔导入门"
+        ],
+        "Config": null
+    },{
+        "Name": "矿物魔力炉",
+        "Description": "熔炉蕴含魔力的矿物产生魔力",
+        "PowerConsumption": 200,
+        "CanMultiple": true,
+        "price": 10000,
+        "Area": 2,
+        "stuffs": [
+            {
+                "name": "建筑材料",
+                "count": 15
+            }
+        ],
+        "WorkFunction": [
+            false,
+            false,
+            false,
+            false
+        ],
+        "Switchs": [
+            "魔导入门"
+        ],
+        "Config": null
+    },
+    {
+        "Name": "高能魔导炉",
+        "Description": "利用魔力在第一法则的原理下使矿石产生更多魔力",
+        "PowerConsumption": 200,
+        "CanMultiple": true,
+        "price": 10000,
+        "Area": 2,
+        "stuffs": [
+            {
+                "name": "建筑材料",
+                "count": 15
+            }
+        ],
+        "WorkFunction": [
+            false,
+            false,
+            false,
+            false
+        ],
+        "Switchs": [
+            "魔导机械"
+        ],
+        "Config": null
+    },
+    {
+        "Name": "地核魔导吸取器",
+        "Description": "吸收地底蕴含的魔导",
+        "PowerConsumption": 200000,
+        "CanMultiple": true,
+        "price": 10000,
+        "Area": 4,
+        "stuffs": [{"name": "建筑材料","count": 15}],
+        "WorkFunction": [
+            false,
+            false,
+            false,
+            false
+        ],
+        "Switchs": [
+            "魔导机械",
+            "次元传输"
+        ],
+        "Config": null
+    },
+    {
+        "Name": "休息室",
+        "Description": "为员工提供休息场所",
+        "PowerConsumption": 50,
+        "CanMultiple": false,
+        "price": 10000,
+        "Area": 1,
+        "stuffs": [
+            {
+                "name": "建筑材料",
+                "count": 15
+            }
+        ],
+        "WorkFunction": [
+            false,
+            false,
+            true,
+            false
+        ],
+        "Switchs": null,
+        "Config": null
+    },
+    {
+        "Name": "食堂",
+        "Description": "为员工提供就餐的场所，根据伙食质量恢复不同体力",
+        "CanMultiple": false,
+        "price": 5000,
+        "Area": 1,
+        "stuffs": [
+            {
+                "name": "建筑材料",
+                "count": 15
+            }
+        ],
+        "WorkFunction": [
+            true,
+            true,
+            false,
+            true
+        ],
+        "Switchs": null,
+        "Config": null
+    }
+]

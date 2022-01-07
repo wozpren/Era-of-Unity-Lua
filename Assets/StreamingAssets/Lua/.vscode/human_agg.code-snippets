@@ -1,0 +1,27 @@
+{
+	"Print to conaole":{
+		"prefix": "human_agg",    //在新建立的页面中输入C++就会有智能提示，Tab就自动生成好了
+		"body": [
+			"dofile(\"NPC\")",
+			"NPC.name = \"NAME\"",
+			"function NPC.Talk(type)",
+			"   if type == \"opening\" then",
+			"",
+			"   elseif type == \"Chat\" then",
+			"",
+			"   end",
+			"",
+			"   Message : StartPop()",
+			"end",
+			"",
+			"function NPC.Func()",
+			"   local text = SB.new()",
+			"   SB.append(text, AddButton(\"对话\", \"NPC.Talk,Chat\"))",
+			"   SB.append(text, \"    \")",
+			"   SB.append(text, AddButton(\"返回\", \"Map.Update\"))",
+			"   return SB.tostr(text)",
+			"end"
+		],
+		"description": "生成NPC冒险用模板."   //用户输入后智能提示的内容（你可以用中文写“生成C++模板”）
+	}
+}

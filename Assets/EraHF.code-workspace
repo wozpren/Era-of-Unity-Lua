@@ -1,0 +1,31 @@
+{
+	"folders": [
+		{
+			"path": "StreamingAssets\\Lua"
+		},
+		{
+			"path": "StreamingAssets\\Data"
+		},
+		{
+			"path": "..\\..\\ero\\ERA合集\\ERAsqc0.52春节包"
+		},
+		{
+			"path": "..\\..\\ero\\era\\eraAkumaMaid0.123-CH-200814-测试版\\ERB"
+		}
+	],
+	"settings": {
+		"editor.snippetSuggestions": "bottom"
+	},
+	"launch": {
+		"version": "0.2.0",
+		"configurations": [
+		
+			{
+				"type": "emmylua_attach",
+				"request": "attach",
+				"name": "通过进程ID附加",
+				"pid": 0
+			}
+		]
+	}
+}

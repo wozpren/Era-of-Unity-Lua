@@ -1,0 +1,86 @@
+[
+    {
+        "name": "机械犬",
+        "sex": "男",
+        "job" : "警察",
+        "race": "机械",
+        "Level": 3,
+        "GetItem" : [
+            {"name" :"电子零件", "count" : 3}
+        ],
+        "DropRate" : [60],
+        "growth" : {
+            "HP": 3.0,
+            "MP": 0.0,
+            "Str": 0.6,
+            "Mag": 0,
+            "Def": 0.3,
+            "Mde": 0,
+            "Agi": 1.2,
+            "Luk": 0,
+            "IQ": 0
+        }
+    },{
+        "name": "巡警",
+        "sex": "男",
+        "job" : "警察",
+        "race": "人类",
+        "Level": 6,
+        "GetItem" : [
+            {"name" :"阿美利亚警用手册", "count" : 1}
+        ],
+        "DropRate" : [60]
+    },{
+        "name": "武装警察",
+        "sex": "男",
+        "job" : "警察",
+        "race": "人类",
+        "Level": 20,
+        "GetItem" : [
+            {"name" :"阿美利亚警用手册", "count" : 1},
+            {"name" :"RE突击步枪", "count" : 1}
+        ],
+        "DropRate" : [60,30]
+    },{
+        "name": "镇暴警察",
+        "sex": "男",
+        "job" : "警察",
+        "race": "人类",
+        "Level": 40,
+        "GetItem" : [
+            {"name" :"阿美利亚警用手册", "count" : 1},
+            {"name" :"RE突击步枪", "count" : 1}
+        ],
+        "DropRate" : [70,50]
+    },{
+        "name": "机动士兵",
+        "sex": "男",
+        "job" : "军人",
+        "race": "人类",
+        "Level": 60,
+        "GetItem" : [
+            {"name" :"阿美利亚警用手册", "count" : 1}
+        ],
+        "DropRate" : [60]
+    },{
+        "name": "装甲士兵",
+        "sex": "男",
+        "job" : "军人",
+        "race": "人类",
+        "Level": 80,
+        "GetItem" : [
+            {"name" :"阿美利亚警用手册", "count" : 1}
+        ],
+        "DropRate" : [60]
+    },{
+        "name": "机械化特种兵",
+        "sex": "男",
+        "job" : "军人",
+        "race": "人类",
+        "Level": 100,
+        "GetItem" : [
+            {"name" :"阿美利亚警用手册", "count" : 1}
+        ],
+        "DropRate" : [60]
+    }
+]
