@@ -9,7 +9,7 @@ local list = {}
 list.__index = list
 
 function list:new()
-	local t = {length = 0, _prev = 0, _next = 0}
+	local t = {length = 0}
 	t._prev = t
 	t._next = t
 	return setmetatable(t, list)
@@ -46,9 +46,11 @@ function list:pushnode(node)
 end
 
 function list:pop()
-	local _prev = self._prev
-	self:remove(_prev)
-	return _prev.value
+	if self.length > 0 then
+		local _prev = self._prev
+		self:remove(_prev)
+		return _prev.value
+	end
 end
 
 function list:unshift(v)

@@ -290,12 +290,26 @@ public class LuaClient : MonoBehaviour
             luaFunc = null;
         }
     }
+
+
+
+
     public virtual void CallFuncNull(string func)
     {
         LuaFunction luaFunc = luaState.GetFunction(func);
         if(luaFunc != null)
         {
             luaFunc.Call();
+            luaFunc.Dispose();
+        }
+    }
+
+    public virtual void CallFunc(string func, string[] args)
+    {
+        LuaFunction luaFunc = luaState.GetFunction(func);
+        if (luaFunc != null)
+        {
+            luaFunc.Call(args);
             luaFunc.Dispose();
         }
     }

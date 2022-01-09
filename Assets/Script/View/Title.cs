@@ -10,7 +10,6 @@ public class Title : MonoBehaviour
     void Start()
     {
         tmp = GetComponent<TextMeshProUGUI>();
-        tmp.text = string.Format("Era of Unity{0}", Application.version);
     }
 
     public string GetTitle()

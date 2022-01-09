@@ -129,6 +129,17 @@ namespace LuaInterface
             EndPCall();
         }
 
+        public void Call(params string[] args)
+        {
+            BeginPCall();
+            for (int i = 1; i < args.Length; i++)
+            {
+                PushGeneric(args[i]);
+            }
+            PCall();
+            EndPCall();
+        }
+
         public void Call<T1, T2>(T1 arg1, T2 arg2)
         {
             BeginPCall();

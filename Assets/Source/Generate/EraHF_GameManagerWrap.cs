@@ -15,8 +15,13 @@ public class EraHF_GameManagerWrap
 		L.RegFunction("__tostring", ToLua.op_ToString);
 		L.RegVar("Instance", get_Instance, set_Instance);
 		L.RegVar("luaDir", get_luaDir, set_luaDir);
+		L.RegVar("Title", get_Title, set_Title);
+		L.RegVar("TrainPage", get_TrainPage, set_TrainPage);
+		L.RegVar("GeneralPage", get_GeneralPage, set_GeneralPage);
 		L.RegVar("MessageStack", get_MessageStack, set_MessageStack);
+		L.RegVar("FullPage", get_FullPage, set_FullPage);
 		L.RegVar("Input", get_Input, set_Input);
+		L.RegVar("DebugTool", get_DebugTool, set_DebugTool);
 		L.EndClass();
 	}
 
@@ -151,6 +156,63 @@ public class EraHF_GameManagerWrap
 	}
 
 	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int get_Title(IntPtr L)
+	{
+		object o = null;
+
+		try
+		{
+			o = ToLua.ToObject(L, 1);
+			EraHF.GameManager obj = (EraHF.GameManager)o;
+			Title ret = obj.Title;
+			ToLua.Push(L, ret);
+			return 1;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e, o, "attempt to index Title on a nil value");
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int get_TrainPage(IntPtr L)
+	{
+		object o = null;
+
+		try
+		{
+			o = ToLua.ToObject(L, 1);
+			EraHF.GameManager obj = (EraHF.GameManager)o;
+			TrainPage ret = obj.TrainPage;
+			ToLua.Push(L, ret);
+			return 1;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e, o, "attempt to index TrainPage on a nil value");
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int get_GeneralPage(IntPtr L)
+	{
+		object o = null;
+
+		try
+		{
+			o = ToLua.ToObject(L, 1);
+			EraHF.GameManager obj = (EraHF.GameManager)o;
+			GeneralPage ret = obj.GeneralPage;
+			ToLua.Push(L, ret);
+			return 1;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e, o, "attempt to index GeneralPage on a nil value");
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	static int get_MessageStack(IntPtr L)
 	{
 		object o = null;
@@ -170,6 +232,25 @@ public class EraHF_GameManagerWrap
 	}
 
 	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int get_FullPage(IntPtr L)
+	{
+		object o = null;
+
+		try
+		{
+			o = ToLua.ToObject(L, 1);
+			EraHF.GameManager obj = (EraHF.GameManager)o;
+			TMPro.TextMeshProUGUI ret = obj.FullPage;
+			ToLua.Push(L, ret);
+			return 1;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e, o, "attempt to index FullPage on a nil value");
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	static int get_Input(IntPtr L)
 	{
 		object o = null;
@@ -185,6 +266,25 @@ public class EraHF_GameManagerWrap
 		catch(Exception e)
 		{
 			return LuaDLL.toluaL_exception(L, e, o, "attempt to index Input on a nil value");
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int get_DebugTool(IntPtr L)
+	{
+		object o = null;
+
+		try
+		{
+			o = ToLua.ToObject(L, 1);
+			EraHF.GameManager obj = (EraHF.GameManager)o;
+			UnityEngine.GameObject ret = obj.DebugTool;
+			ToLua.PushSealed(L, ret);
+			return 1;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e, o, "attempt to index DebugTool on a nil value");
 		}
 	}
 
@@ -219,6 +319,63 @@ public class EraHF_GameManagerWrap
 	}
 
 	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int set_Title(IntPtr L)
+	{
+		object o = null;
+
+		try
+		{
+			o = ToLua.ToObject(L, 1);
+			EraHF.GameManager obj = (EraHF.GameManager)o;
+			Title arg0 = (Title)ToLua.CheckObject<Title>(L, 2);
+			obj.Title = arg0;
+			return 0;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e, o, "attempt to index Title on a nil value");
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int set_TrainPage(IntPtr L)
+	{
+		object o = null;
+
+		try
+		{
+			o = ToLua.ToObject(L, 1);
+			EraHF.GameManager obj = (EraHF.GameManager)o;
+			TrainPage arg0 = (TrainPage)ToLua.CheckObject<TrainPage>(L, 2);
+			obj.TrainPage = arg0;
+			return 0;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e, o, "attempt to index TrainPage on a nil value");
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int set_GeneralPage(IntPtr L)
+	{
+		object o = null;
+
+		try
+		{
+			o = ToLua.ToObject(L, 1);
+			EraHF.GameManager obj = (EraHF.GameManager)o;
+			GeneralPage arg0 = (GeneralPage)ToLua.CheckObject<GeneralPage>(L, 2);
+			obj.GeneralPage = arg0;
+			return 0;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e, o, "attempt to index GeneralPage on a nil value");
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	static int set_MessageStack(IntPtr L)
 	{
 		object o = null;
@@ -238,6 +395,25 @@ public class EraHF_GameManagerWrap
 	}
 
 	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int set_FullPage(IntPtr L)
+	{
+		object o = null;
+
+		try
+		{
+			o = ToLua.ToObject(L, 1);
+			EraHF.GameManager obj = (EraHF.GameManager)o;
+			TMPro.TextMeshProUGUI arg0 = (TMPro.TextMeshProUGUI)ToLua.CheckObject<TMPro.TextMeshProUGUI>(L, 2);
+			obj.FullPage = arg0;
+			return 0;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e, o, "attempt to index FullPage on a nil value");
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	static int set_Input(IntPtr L)
 	{
 		object o = null;
@@ -253,6 +429,25 @@ public class EraHF_GameManagerWrap
 		catch(Exception e)
 		{
 			return LuaDLL.toluaL_exception(L, e, o, "attempt to index Input on a nil value");
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int set_DebugTool(IntPtr L)
+	{
+		object o = null;
+
+		try
+		{
+			o = ToLua.ToObject(L, 1);
+			EraHF.GameManager obj = (EraHF.GameManager)o;
+			UnityEngine.GameObject arg0 = (UnityEngine.GameObject)ToLua.CheckObject(L, 2, typeof(UnityEngine.GameObject));
+			obj.DebugTool = arg0;
+			return 0;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e, o, "attempt to index DebugTool on a nil value");
 		}
 	}
 }

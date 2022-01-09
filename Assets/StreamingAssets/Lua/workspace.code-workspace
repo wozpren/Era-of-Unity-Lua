@@ -1,0 +1,17 @@
+{
+	"folders": [
+		{
+			"path": "..\\Data"
+		},
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"Lua.diagnostics.globals": [
+			"UnityEngine",
+			"EraHF"
+		],
+		"Lua.runtime.unicodeName": true
+	}
+}

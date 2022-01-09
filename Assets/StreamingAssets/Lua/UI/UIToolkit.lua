@@ -21,6 +21,7 @@ function NaviButton(String, method, bool)
 	end
 end
 
+-- String[string] method[string]
 function AddButton(String, method)
 	return string.format("<link=\"%s\"><color=yellow>%s</color></link>", method, String)
 end

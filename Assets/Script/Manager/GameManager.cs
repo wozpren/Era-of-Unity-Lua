@@ -24,6 +24,7 @@ namespace EraHF
         public TrainPage TrainPage;
         public GeneralPage GeneralPage;
         public MessageStack MessageStack;
+        public TextMeshProUGUI FullPage;
         public InputView Input;
         public GameObject DebugTool;
 
@@ -37,10 +38,12 @@ namespace EraHF
             luaDir = Application.platform == RuntimePlatform.Android ? Application.persistentDataPath + "/Lua" : Application.streamingAssetsPath + "/Lua";
 
 
+            Title = GameObject.Find("Canvas/Title").GetComponent<Title>();
             MessageStack = GameObject.Find("Canvas/MessageStack").GetComponent<MessageStack>();
             Input = GameObject.Find("Canvas/Input").GetComponent<InputView>();
             TrainPage = GameObject.Find("Canvas/TrainPage").GetComponent<TrainPage>();
             GeneralPage = GameObject.Find("Canvas/GeneralPage").GetComponent<GeneralPage>();
+            FullPage = GameObject.Find("Canvas/FullPage").GetComponent<TextMeshProUGUI>();
             DebugTool = GameObject.Find("Canvas/DebugTool");
         }
 
@@ -87,6 +90,11 @@ namespace EraHF
                     LuaManager.Instance.LuaClient.CallFunc("EventInvoke", args[1], args[2]);
                 else if (args.Length == 4)
                     LuaManager.Instance.LuaClient.CallFunc("EventInvoke", args[1], args[2], args[3]);
+            }
+            else if (args[0] == "UI")
+            {
+                if (args.Length >= 2)
+                    LuaManager.Instance.LuaClient.CallFunc("UIManager.Call", args);
             }
             else if (args.Length == 2)
             {

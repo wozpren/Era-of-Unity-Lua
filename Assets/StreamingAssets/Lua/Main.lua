@@ -1,18 +1,25 @@
+local dbg = require('emmy_core')
+dbg.tcpConnect('localhost', 9966)
+
 --主入口函数。从这里开始lua逻辑
 function Main()
 	GameObject = UnityEngine.GameObject
-	math.randomseed(tostring(os.time()):reverse():sub(1, 7)) 
+	math.randomseed(tostring(os.time()):reverse():sub(1, 7))
 	print("logic start")
 end
 
 function Init()
 	GM = EraHF.GameManager.Instance
-	
 
 --读取文件
 	dofile("UI/UIToolkit")
+	dofile("Data/SystemData")
+	dofile("System/EventSystem")
+	dofile("System/Util")
+	dofile("UI/UIManager")
 --
 
+	UIManager:GetUI("MianTitle"):Open()
 end
 
 --场景切换通知
@@ -20,7 +27,6 @@ function OnLevelWasLoaded(level)
 	collectgarbage("collect")
 	Time.timeSinceLevelLoad = 0
 end
-
 
 function OnApplicationQuit()
 end
@@ -42,7 +48,7 @@ end
 
 
 
-function Exist(list, par)
+function table.Exist(list, par)
 	if not list then
 	  return false 
 	end 
@@ -56,9 +62,9 @@ function Exist(list, par)
 	return false
 end 
 
-function table.Exist(list, par)
+function table.Find(list, par)
 	if not list then
-	  return 0 
+	  return nil
 	end 
 	if type(list) == "table" then
 		for key, value in pairs(list) do
@@ -79,42 +85,7 @@ end
 
 
 
-SB = {}
-SB.append = 
-function(t, str)
-	if t and str then
-	table.insert(t, str)
-	end
-end
-SB.random = 
-function(t, ...)
-	if t then
-		local index = math.random(1, select('#',...))
-		local s = {...}
-		table.insert(t, s[index])
-	end
-end
 
-SB.appendLine = 
-function(t, str)
-	if t and str then
-	table.insert(t, str)
-	table.insert(t, "\n")
-end
-end
-SB.Remove = 
-function(t)
-	if t then
-	table.remove(t)
-end
-end
-SB.tostr = function(t)
-if t then
-return table.concat(t)
-end
-end
-SB.new = function() return {} 
-end
 
 function CoroutineResume(...)
 	if Coroutine == nil then
@@ -214,12 +185,6 @@ ActiveData.Source = function()
 	setmetatable(t,Tmetatable)
 
 	return t
-end
-
-function MultData(data, num)
-	for key, value in pairs(myTable) do
-		data[key] = value * num
-	end
 end
 
 function UpPalamLv(value)
