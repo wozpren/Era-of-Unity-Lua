@@ -10,7 +10,8 @@
 	"settings": {
 		"Lua.diagnostics.globals": [
 			"UnityEngine",
-			"EraHF"
+			"EraHF",
+			"Application"
 		],
 		"Lua.runtime.unicodeName": true
 	}

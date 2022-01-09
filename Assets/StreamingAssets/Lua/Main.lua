@@ -1,5 +1,5 @@
-local dbg = require('emmy_core')
-dbg.tcpConnect('localhost', 9966)
+--local dbg = require('emmy_core')
+--dbg.tcpConnect('localhost', 9966)
 
 --主入口函数。从这里开始lua逻辑
 function Main()
@@ -13,11 +13,14 @@ function Init()
 
 --读取文件
 	dofile("UI/UIToolkit")
-	dofile("Data/SystemData")
-	dofile("System/EventSystem")
-	dofile("System/Util")
-	dofile("UI/UIManager")
---
+	dofile("Manager/DataManager")
+	dofile("Manager/EventSystem")
+	dofile("Manager/UIManager")
+	dofile("Manager/Util")
+
+--读取数据
+	DataManager.LoadSystemData()
+
 
 	UIManager:GetUI("MianTitle"):Open()
 end

@@ -133,6 +133,14 @@ local function file_save(filename, data)
     end
 end
 
+local function deserialize(text)
+    if type(text)== "string" then
+        local obj = json.decode(text)
+        return obj
+    end
+end
+
+
 local function compare_values(val1, val2)
     local type1 = type(val1)
     local type2 = type(val2)
@@ -258,6 +266,7 @@ end
 
 -- Export functions
 return {
+    deserialize = deserialize,
     serialise_value = serialise_value,
     file_load = file_load,
     file_save = file_save,

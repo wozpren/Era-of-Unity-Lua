@@ -34,7 +34,7 @@ function Train.Init()
 
 
     Train.Update()
-    EventSystem.SetListener("Update", Train.Update)
+    EventManager.SetListener("Update", Train.Update)
 end
 
 function Train.UpdateProperty()
@@ -770,12 +770,12 @@ function Train.EndTrain()
     TrainPage : EndTrain()
     
     Female : AblUpdate()
-    EventSystem.SetListener("Update", Train.GoMainPage)
+    EventManager.SetListener("Update", Train.GoMainPage)
     Message : StartPop()
 end
 
 function Train.GoMainPage()
-    EventSystem.Clear("Update")
+    EventManager.Clear("Update")
     GM : ClearPage()
     FactoryUpdate()
     FactoryView.NextTime()

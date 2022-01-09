@@ -9,7 +9,7 @@ function AddBack()
 end
 
 function AddConfirm(method)
-	EventSystem.SetListener("Confirm", method)
+	EventManager.SetListener("Confirm", method)
 	return AddButton("确认", "Confirm")
 end
 
