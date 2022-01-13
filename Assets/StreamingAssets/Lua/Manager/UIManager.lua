@@ -13,13 +13,14 @@ function UIManager:Navigation(name, ...)
     local ui = require("UI/" .. name)
     if ui ~= true and ui.Type == "UI" then
         self.uistack:push(self.CurrnetUI)
-        ui:Open(...)
+        return ui:Open(...)
     end
+    return false
 end
 
 function UIManager:Back()
     if self.CurrnetUI.Close ~= nil then
-        self.CurrnetUI.Close()
+        self.CurrnetUI:Close()
     end
     if self.uistack.length > 0 then
         self.CurrnetUI = self.uistack:pop()
@@ -37,6 +38,12 @@ end
 function UIManager:UIOnOpen(ui)
     self:PageSort(ui.Page)
     self.CurrnetUI = ui
+end
+
+function UIManager:UIOnClose(ui)
+    if self.CurrnetUI == ui then
+        self.CurrnetUI = nil
+    end
 end
 
 

@@ -21,7 +21,10 @@ function ui:StartTrain()
     local t = DataManager.PlayerData.CharaList[1]
     local tee = DataManager.PlayerData.CharaList[2]
 
-    UIManager:GetUI("TrainView"):Init(t , tee)
+   
+    if UIManager:GetUI("TrainView"):Init(t , tee) then
+        UIManager:Navigation("TrainView")
+    end
 end
 
 

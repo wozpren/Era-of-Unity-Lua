@@ -31,8 +31,8 @@ end
 function DataManager:GenratePlayerData()
     self.PlayerData = require("Data/PlayerData"):New()
 
-    self.PlayerData:AddChara(dofile("Chara/TestDoll/TestDoll.lua"))
-    self.PlayerData:AddChara(dofile("Chara/TestDoll/TestDoll.lua"))
+    self.PlayerData:AddChara(CharaManager:LoadChara("TestDoll"))
+    self.PlayerData:AddChara(CharaManager:LoadChara("TestDoll"))
 end
 
 function DataManager:LoadPlayerData(index)
@@ -48,9 +48,21 @@ end
 
 function DataManager:SavePlayerData(index)
     local data = setmetatable(self.PlayerData, nil)
+
+    for i, value in ipairs(self.PlayerData.CharaList) do
+        setmetatable(value, nil)
+    end
+
+
     local text = json.encode(data)
     self.PlayerIndex = index
     io.file_save(self.DataPath..index..".data", text)
+
+    require("Data/PlayerData"):SetMeta(self.PlayerData)
+    
+    for i, value in ipairs(self.PlayerData.CharaList) do
+        CharaManager:SetMetatable(value)
+    end
 end
 
 --生产玩家数据

@@ -15,4 +15,6 @@ local chara =
     刻印 = {},
 }
 
+--设置元数据
+CharaManager:SetMetatable(chara)
 return chara

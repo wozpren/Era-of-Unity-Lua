@@ -17,7 +17,8 @@ function ui:Init(...)
     self.正在调教 = true
     if TrainManager:StartTrain(...) then
         self.selectCharaShow = 2
-        self:Open()
+        ui:Update()
+        return true
     end
     return false
 end
@@ -29,8 +30,19 @@ function ui:Open()
     self:Update()
 end
 
+function ui:Close()
+    self.正在调教 = false
+    UIManager:UIOnClose(self)
+end
+
 --必须的 页面更新所使用的方法
 function ui:Update()
+    if not self.正在调教 then
+        UIManager.page[self.Page].Property.text = ""
+        UIManager.page[self.Page].Options.text = ""
+        UIManager.page[self.Page].Koujiu.text = ""
+        return
+    end
     local prop = SB:New()
     for int, value in ipairs(tm.参与人员) do
         ---@type Character
@@ -55,9 +67,15 @@ function ui:Update()
 
     UIManager.page[self.Page].Property.text = prop:ToStr()
 
-    
-    UIManager.page[self.Page].Options.text = TrainManager:GetOptions()
+
+    local o = TrainManager:GetOptions()
+    local p = TrainManager:GetMenu()
+
+    UIManager.page[self.Page].Options.text = o:ToStr().."\n"..p:ToStr()
 end
+
+
+
 
 function ui:Append(text)
     UIManager.page[self.Page].Koujiu.text = UIManager.page[self.Page].Koujiu.text + text
@@ -67,6 +85,7 @@ end
 function ui:SelectCharaShow(id)
     ui.selectCharaShow = id
 end
+
 
 
 

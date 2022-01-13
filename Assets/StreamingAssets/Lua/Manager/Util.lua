@@ -13,13 +13,14 @@ function SB:Append(str)
         end
 end
 
+
 function SB:AppendLine(str)
     if self and str then
         table.insert(self, str.."\n")
     end
 end
 
-function SB:Remove(...)
+function SB:Remove()
     table.remove(self)
 end
 
@@ -29,6 +30,6 @@ function SB:Random(...)
     table.insert(self, s[index])
 end
 
-function SB:ToStr(...)
+function SB:ToStr()
     return table.concat(self)
 end

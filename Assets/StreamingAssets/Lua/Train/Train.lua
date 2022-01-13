@@ -294,24 +294,7 @@ function Train.ChangePos()
     Coroutine = coroutine.start(t)
 end
 
-function Train.Button(arg1, arg2, arg3)
-    local s
-    if arg2 == nil then
-        s = string.format("<link=\"Train,%s,%s\"><color=yellow>%s</color></link>",  arg1, arg1, arg1)
-    elseif arg3 == nil then
-        s = string.format("<link=\"Train,%s,%s\"><color=yellow>%s</color></link>",  arg1, arg2, arg1..arg2)
-    else
-        s = string.format("<link=\"Train,%s,%s\"><color=yellow>%s</color></link>",  arg1, arg2, arg3)
-    end
-    Train.Line = Train.Line + 33
-    if Train.Line > 90 then
-        Train.Line = 0
-        s = s.."\n"
-    else
-        s = s.." "
-    end
-    return s
-end
+
 
 function Train.StartTrain(Active, Select)
     Coroutine = coroutine.start(Train.Start, Active, Select)
