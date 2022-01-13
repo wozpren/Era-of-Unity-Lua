@@ -1,5 +1,6 @@
---local dbg = require('emmy_core')
---dbg.tcpConnect('localhost', 9966)
+local dbg = require('emmy_core')
+dbg.tcpConnect('localhost', 9966)
+
 
 --主入口函数。从这里开始lua逻辑
 function Main()
@@ -10,20 +11,28 @@ end
 
 function Init()
 	GM = EraHF.GameManager.Instance
+    Message = GM.MessageStack
 
 --读取文件
 	dofile("UI/UIToolkit")
-	dofile("Manager/DataManager")
-	dofile("Manager/EventSystem")
-	dofile("Manager/UIManager")
 	dofile("Manager/Util")
+	dofile("Manager/DataManager")
+	dofile("Manager/CharaManager")
+	dofile("Manager/EventManager")
+	dofile("Manager/TrainManager")
+	dofile("Manager/UIManager")
 
 --读取数据
-	DataManager.LoadSystemData()
-
+	DataManager:LoadSystemData()
 
 	UIManager:GetUI("MianTitle"):Open()
+
+	
 end
+
+
+
+
 
 --场景切换通知
 function OnLevelWasLoaded(level)
@@ -48,7 +57,6 @@ function EnumtoNumber(enum)
 		return 4
 	end
 end
-
 
 
 function table.Exist(list, par)

@@ -1,26 +1,29 @@
 UIManager = {}
 
 UIManager.uistack = require("list"):new()
-UIManager.page = {
+UIManager.page = 
+{
     Title = GM.Title,
     TrainPage = GM.TrainPage,
     GeneralPage = GM.GeneralPage,
-    MessageStack = GM.MessageStack,
     FullPage = GM.FullPage
 }
 
 function UIManager:Navigation(name, ...)
     local ui = require("UI/" .. name)
     if ui ~= true and ui.Type == "UI" then
-        self.uistack:push(ui)
-        ui.Open(...)
+        self.uistack:push(self.CurrnetUI)
+        ui:Open(...)
     end
 end
 
 function UIManager:Back()
-    self.uistack:pop()
+    if self.CurrnetUI.Close ~= nil then
+        self.CurrnetUI.Close()
+    end
     if self.uistack.length > 0 then
-        self.uistack:head().Open()
+        self.CurrnetUI = self.uistack:pop()
+        self.CurrnetUI:Open()
     end
 end
 
@@ -30,6 +33,12 @@ function UIManager:GetUI(name)
         return ui
     end
 end
+
+function UIManager:UIOnOpen(ui)
+    self:PageSort(ui.Page)
+    self.CurrnetUI = ui
+end
+
 
 function UIManager:PageSort(page)
     if page == "FullPage" then

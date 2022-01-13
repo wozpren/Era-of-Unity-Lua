@@ -1,4 +1,5 @@
-function SexActive(Active, Select)
+local t ={}
+function t:SexActive(Active, Select)
     Message : AddMessage("爱抚"..Select)
     local base = ActiveData.new()
     local yuwan = Train.GetAbility("欲望")
@@ -166,7 +167,7 @@ function SexActive(Active, Select)
     return base
 end
 
-function TrainMessage()
+function t:TrainMessage()
     local text = SB.new()
     SB.append(text, "[player]用手")
     if trainData.Select == "头部" then
@@ -210,14 +211,12 @@ function TrainMessage()
     elseif trainData.Select == "阴部" then
         SB.append(text,"爱抚着[taget]的阴部")
     end
-    TrainPage : Write(SB.tostr(text))
+     SB.tostr(text)
 
     ImplementKoujiu("爱抚")
 end
 
-
-
-function SexType(type)
+function t:SexType(type)
     if type == "爱抚" then
         return true
     end
@@ -225,7 +224,7 @@ function SexType(type)
 end
 
 
-function Check()
+function t:Check()
     local text = SB.new()
     SB.append(text, "要爱抚哪里\n")
     SB.append(text, AddButtonL("头部","CoroutineResume,头部"))
@@ -239,3 +238,5 @@ function Check()
 
     return true
 end
+
+return t

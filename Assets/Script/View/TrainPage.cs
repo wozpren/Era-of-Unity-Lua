@@ -12,7 +12,7 @@ public class TrainPage : MonoBehaviour
     public void Awake()
     {
         Property = transform.Find("Property").GetComponent<TextMeshProUGUI>();
-        Property = transform.Find("Koujiu/Viewport/Content").GetComponent<TextMeshProUGUI>();
+        Koujiu = transform.Find("Koujiu/Viewport/Content").GetComponent<TextMeshProUGUI>();
         Options = transform.Find("Options/Viewport/Content").GetComponent<TextMeshProUGUI>();
     }
 }

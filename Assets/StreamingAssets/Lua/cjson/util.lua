@@ -74,7 +74,7 @@ local function serialise_table(value, indent, depth)
     return table.concat(fragment)
 end
 
-function serialise_value(value, indent, depth)
+local function serialise_value(value, indent, depth)
     if indent == nil then indent = "" end
     if depth == nil then depth = 0 end
 
@@ -89,6 +89,16 @@ function serialise_value(value, indent, depth)
         return serialise_table(value, indent, depth)
     else
         return "\"<" .. type(value) .. ">\""
+    end
+end
+
+local function file_exist(filename)
+    local file = io.open(filename, "r")
+    if file ~= nil then
+        io.close(file)
+        return true
+    else
+        return false
     end
 end
 
@@ -270,6 +280,7 @@ return {
     serialise_value = serialise_value,
     file_load = file_load,
     file_save = file_save,
+    file_exist = file_exist,
     compare_values = compare_values,
     run_test_summary = run_test_summary,
     run_test = run_test,

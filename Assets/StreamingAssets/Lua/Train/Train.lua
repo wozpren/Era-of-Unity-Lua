@@ -8,10 +8,6 @@ end
 function Train.Init()
     require("Train/TrainFunction")
     require("Train/插入")
-    SetSexValue(Factory.Trainer)
-    SetSexValue(Factory.TrainChara)
-    SetSexValue(Factory.AssistantChara)
-    TrainPage : Init()
 
     Train.HPDown = 0
     Train.fav = 0
