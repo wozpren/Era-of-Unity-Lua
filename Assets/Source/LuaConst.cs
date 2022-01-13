@@ -7,7 +7,7 @@ public static class LuaConst
 #else
     public static string luaDir = Application.streamingAssetsPath + "/Lua";
 #endif
-    public static string toluaDir = Application.dataPath + "/ToLua/Lua";        //tolua lua文件目录
+    public static string toluaDir = Application.streamingAssetsPath + "/ToLua";        //tolua lua文件目录
 
 #if UNITY_STANDALONE
     public static string osDir = "Win";
