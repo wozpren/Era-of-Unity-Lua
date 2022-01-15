@@ -1,4 +1,8 @@
 local t ={}
+---@type Character
+local Female = TrainManager.调教者
+
+
 function t:SexActive(Active, Select)
     Message : AddMessage("爱抚"..Select)
     local base = ActiveData.new()
@@ -168,48 +172,48 @@ function t:SexActive(Active, Select)
 end
 
 function t:TrainMessage()
-    local text = SB.new()
-    SB.append(text, "[player]用手")
+    local text = SB:New()
+    text:Append("[player]用手")
     if trainData.Select == "头部" then
-        SB.random(text,"轻轻","温柔","细致")
-        SB.append(text,"地反复")
-        SB.random(text,"抚摸","爱抚")
-        SB.append(text,"着[target]的头部")
+        text:Random("轻轻","温柔","细致")
+        text:Append("地反复")
+        text:Random("抚摸","爱抚")
+        text:Append("着[target]的头部")
     elseif trainData.Select == "胸部" then
-        local equip = Female : GetOutsideEquip(5)
-        local size = Female.Stature.b
-        SB.append(text,"将")    
+        local equip Female:获取外层装备("身体")
+        local size = Female.胸.大小
+        text:Append("将")
         if equip ~= nil and equip.Type == "护甲" then
-            SB.append(text,"隔着坚固的护甲，感受来自胸部的温暖")
+            text:Append("隔着坚固的护甲，感受来自胸部的温暖")
         else
             if equip ~= nil then
                 if equip.Type == "内衣" then
-                    SB.append(text,"胸罩掀起，")       
+                    text:Append("胸罩掀起，")       
                 else
-                    SB.append(text,"拉开胸前的衣物，")
+                    text:Append("拉开胸前的衣物，")
                 end
-                SB.append(text,"对着暴露在空气中的")
+                text:Append("对着暴露在空气中的")
             end
             if size > 5 then
-                SB.append(text,"如同棉花糖般柔软的巨房")
+                text:Append("如同棉花糖般柔软的巨房")
                 if Train.GetAbility("B感觉") >= 3 then
 
                 else
-                    SB.random(text,"用手揉捏成各种形状","随着手的变成各种样子","握在手中，乳肉从指间溢出")
+                    text:Random("用手揉捏成各种形状","随着手的变成各种样子","握在手中，乳肉从指间溢出")
                 end
             elseif size > 2 then
-                SB.append(text,"大小适中的乳房")
-                SB.random(text,"用手揉不断揉捻着","用手享受着柔软的触感")
+                text:Append("大小适中的乳房")
+                text:Random("用手揉不断揉捻着","用手享受着柔软的触感")
             elseif size > 1 then
-                SB.append(text,"微微发育的乳房")
-                SB.random(text,"用手按摩着","手指围着可爱的乳头画圈")
+                text:Append("微微发育的乳房")
+                text:Random("用手按摩着","手指围着可爱的乳头画圈")
             else
-                SB.append(text,"飞机场般的乳房")
-                SB.random(text,"手指围着可爱的乳头画圈","双手覆盖上去，手掌感受中间的突起")
+                text:Append("飞机场般的乳房")
+                text:Random("手指围着可爱的乳头画圈","双手覆盖上去，手掌感受中间的突起")
             end
         end
     elseif trainData.Select == "阴部" then
-        SB.append(text,"爱抚着[taget]的阴部")
+        text:Append("爱抚着[taget]的阴部")
     end
      SB.tostr(text)
 
@@ -226,11 +230,11 @@ end
 
 function t:Check()
     local text = SB.new()
-    SB.append(text, "要爱抚哪里\n")
-    SB.append(text, AddButtonL("头部","CoroutineResume,头部"))
-    SB.append(text, AddButtonL("胸部","CoroutineResume,胸部"))
-    SB.append(text, AddButtonL("阴部","CoroutineResume,阴部"))
-    SB.append(text, AddButtonL("臀部","CoroutineResume,臀部"))
+    text:Append( "要爱抚哪里\n")
+    text:Append( AddButtonL("头部","CoroutineResume,头部"))
+    text:Append( AddButtonL("胸部","CoroutineResume,胸部"))
+    text:Append( AddButtonL("阴部","CoroutineResume,阴部"))
+    text:Append( AddButtonL("臀部","CoroutineResume,臀部"))
     Message : AddMessage(SB.tostr(text))
     Message : StartPop()
     trainData.Select = coroutine.yield()

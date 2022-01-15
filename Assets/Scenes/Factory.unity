@@ -2993,6 +2993,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1499435024}
   - component: {fileID: 1499435027}
+  - component: {fileID: 1499435028}
   - component: {fileID: 1499435026}
   - component: {fileID: 1499435025}
   m_Layer: 5
@@ -3056,7 +3057,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u5408\u540C\n\u5408\u540C\n\u5408\u540C"
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 6d5313149da449b42b94e981b40ca4e8, type: 2}
   m_sharedMaterial: {fileID: -937374083308367559, guid: 6d5313149da449b42b94e981b40ca4e8,
@@ -3091,7 +3092,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 1
+  m_HorizontalAlignment: 16
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -3101,7 +3102,7 @@ MonoBehaviour:
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
   m_enableWordWrapping: 1
-  m_wordWrappingRatios: 0.4
+  m_wordWrappingRatios: 0
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
@@ -3134,6 +3135,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1499435023}
   m_CullTransparentMesh: 0
+--- !u!114 &1499435028
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1499435023}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23307a759c852f14487858de791dbd83, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  IsDebug: 0
+  IsOnce: 0
 --- !u!1 &1500389144
 GameObject:
   m_ObjectHideFlags: 0
@@ -4098,7 +4113,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.945}
   m_AnchorMax: {x: 0.667, y: 0.95}
-  m_AnchoredPosition: {x: 213.09317, y: -53.70925}
+  m_AnchoredPosition: {x: 213.09317, y: -53.709248}
   m_SizeDelta: {x: 426.5865, y: 5.11512}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1940607257

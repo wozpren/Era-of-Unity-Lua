@@ -24,7 +24,7 @@ function Init()
 
 --读取数据
 	DataManager:LoadSystemData()
-
+--启动游戏
 	UIManager:GetUI("MianTitle"):Open()
 
 	
