@@ -1,79 +1,86 @@
 local t ={}
 ---@type Character
-local Female = TrainManager.调教者
 
 
-function t:SexActive(Active, Select)
+
+function t:SexActive(active, Active, Select)
     Message : AddMessage("爱抚"..Select)
-    local base = ActiveData.new()
-    local yuwan = Train.GetAbility("欲望")
-    local abl = Train.GetAbility("顺从")
-    local tec = Trainer : GetAbility("技巧")
+    local Female = active.被调教者
+    local 调教者 = active.调教者
+    local base = require("Data/ActionPack"):New()
+    local yuwan = Female:获取能力("欲望")
+    local abl = Female:获取能力("顺从")
+    local tec = 调教者.手.技巧
 
-    local CFeel = Train.GetAbility("C感觉")
-    local VFeel = Train.GetAbility("V感觉")
-    local BFeel = Train.GetAbility("B感觉")
-    local AFeel = Train.GetAbility("A感觉")
+    local CFeel = Female:获取能力("C感觉")
+    local VFeel = Female:获取能力("V感觉")
+    local BFeel = Female:获取能力("B感觉")
+    local AFeel = Female:获取能力("A感觉")
 
     base.情爱 = 100
-    base.逸脱 = 50
-
-
+    base.逃脱 = 50
 
     if Select == "头部" then
         if abl <= 5 then
             base.情爱 = base.情爱 + 150 * abl
-            base.屈服 = base.屈服 + 150 * (abl + 1)
+            base.屈从 = base.屈从 + 150 * (abl + 1)
         elseif abl <= 10 then
             base.情爱 = base.情爱 + 125 * (abl - 5) + 750
-            base.屈服 = base.屈服 + 125 * (abl - 5) + 900
+            base.屈从 = base.屈从 + 125 * (abl - 5) + 900
         elseif abl <= 15 then
             base.情爱 = base.情爱 + 100 * (abl - 10) + 1375
-            base.屈服 = base.屈服 + 100 * (abl - 10) + 1525
+            base.屈从 = base.屈从 + 100 * (abl - 10) + 1525
         elseif abl > 15 then
             base.情爱 = base.情爱 + 50 * (abl - 15) + 1875
-            base.屈服 = base.屈服 + 50 * (abl - 15) + 2025
+            base.屈从 = base.屈从 + 50 * (abl - 15) + 2025
         end
 
 
     elseif Select == "胸部" then
+        base.胸部快感 = Female:计算刺激度("胸", 1)
+        base.胸部快感 = TrainManager:EXABL(tec, base.胸部快感)
 
-        base.B快乐 = trainData : CalcfStimulate("B刺激", 1)
-        base.B快乐 = EXABL(tec, base.B快乐)
-        if Train.HaveTalent("B性向") then
-            Train.LovePlay(base, base.B快乐)
+
+        if Female:检查特性("胸性向") then
+            TrainManager:性癖增益(base, base.胸部快感)
             BFeel = BFeel + 1
         end
 
         base.露出 = 200
         base.情爱 = base.情爱 + BFeel * 100
         if BFeel == 0 then
-            base.逸脱 = base.逸脱 * 2
+            base.逃脱 = base.逃脱 * 2
         elseif BFeel == 1 then
-            base.逸脱 = base.逸脱 * 1.5
+            base.逃脱 = base.逃脱 * 1.5
         elseif BFeel == 2 then
-            base.逸脱 = base.逸脱 * 1.2
+            base.逃脱 = base.逃脱 * 1.2
         elseif BFeel == 3 then
-            base.逸脱 = base.逸脱 * 0.9
+            base.逃脱 = base.逃脱 * 0.9
         elseif BFeel == 4 then
-            base.逸脱 = base.逸脱 * 0.5
+            base.逃脱 = base.逃脱 * 0.5
         elseif BFeel == 5 then
-            base.逸脱 = base.逸脱 * 0.2
+            base.逃脱 = base.逃脱 * 0.2
         end
-        AddSexexp("B经验", 1)
-        AddSexexp("手淫经验", 1, Trainer)
-    elseif Select == "阴部" then
-        base.C快乐 = trainData : CalcfStimulate("C刺激", 1)
-        base.C快乐 = EXABL(tec, base.C快乐)
-        base.V快乐 = trainData : CalcfStimulate("V刺激", 1)
-        base.V快乐 = EXABL(tec, base.V快乐)
-        if Female.IsChu then
-            if Train.HaveTalent("贞操重视") then
-                base.逸脱 = base.逸脱 + 1000
-            elseif Train.HaveTalent("不在乎贞操") then
-                base.逸脱 = base.逸脱 + 300
+        TrainManager:获得经验("胸经验", 1)
+        TrainManager:获得经验("手淫经验", 1, 调教者)
+        local b = Female:获取装备厚度("身体")
+        if b > 0 then
+            local l = math.max(5 - b, 0)
+            base.胸部快感 = base.胸部快感 * l * 0.2
+            base.露出 = base.露出 * l * 0.2
+        end
+    elseif Select == "小穴" then
+        base.阴蒂快感 = Female:计算刺激度("阴蒂", 1)
+        base.阴蒂快感 = TrainManager:EXABL(tec, base.阴蒂快感)
+        base.小穴快感 = Female:计算刺激度("小穴", 1)
+        base.小穴快感 = TrainManager:EXABL(tec, base.小穴快感)
+        if Female:检查特性("处女") then
+            if Female:检查特性("贞操重视") then
+                base.逃脱 = base.逃脱 + 1000
+            elseif Female:检查特性("不在乎贞操") then
+                base.逃脱 = base.逃脱 + 300
             else
-                base.逸脱 = base.逸脱 + 500
+                base.逃脱 = base.逃脱 + 500
             end
         end
 
@@ -81,93 +88,90 @@ function t:SexActive(Active, Select)
         base.液体追加 = 20
         base.不洁 = 20
         base.露出 = 300
-        if Train.HaveTalent("V性向") then
-            Train.LovePlay(base, base.V快乐)
+        if Female:检查特性("阴道性向") then
+            TrainManager:性癖增益(base, base.小穴快感)
         end
         if VFeel == 0 then
-            base.逸脱 = base.逸脱 * 2
+            base.逃脱 = base.逃脱 * 2
         elseif VFeel == 1 then
-            base.逸脱 = base.逸脱 * 1.5
+            base.逃脱 = base.逃脱 * 1.5
         elseif VFeel == 2 then
-            base.逸脱 = base.逸脱 * 1.2
+            base.逃脱 = base.逃脱 * 1.2
         elseif VFeel == 3 then
-            base.逸脱 = base.逸脱 * 0.9
+            base.逃脱 = base.逃脱 * 0.9
         elseif VFeel == 4 then
-            base.逸脱 = base.逸脱 * 0.5
+            base.逃脱 = base.逃脱 * 0.5
         elseif VFeel == 5 then
-            base.逸脱 = base.逸脱 * 0.2
+            base.逃脱 = base.逃脱 * 0.2
         end
-        AddSexexp("手淫经验", 1, Trainer)
-        AddSexexp("V经验", 1)
-
-
-
-    elseif Select == "臀部" then
-        base.A快乐 = trainData : CalcfStimulate("A刺激", 1)
-        base.A快乐 = EXABL(tec, base.A快乐)
+        TrainManager:获得经验("手淫经验", 1, 调教者)
+        TrainManager:获得经验("小穴经验", 1)
+        local b = Female:获取装备厚度("身体")
+        if b > 0 then
+            local l = math.max(5 - b, 0)
+            base.阴蒂快感 = base.阴蒂快感 * l * 0.2
+            base.小穴快感 = base.小穴快感 * l * 0.2
+            base.露出 = base.露出 * l * 0.2
+        end
+    elseif Select == "菊穴" then
+        base.菊穴快感 = Female:计算刺激度("菊穴", 1)
+        base.菊穴快感 = TrainManager:EXABL(tec, base.菊穴快感)
         base.情爱 = base.情爱 + AFeel * 100
-        base.逸脱 = base.逸脱 + 900
+        base.逃脱 = base.逃脱 + 900
         base.不洁 = 20
         base.露出 = 300
-        local Aexp = Female : GetSexexp("A经验")
+        local Aexp = Female : 获取经验("菊穴经验")
         if Aexp >= 300 then
-            base.A快乐 = base.A快乐 * 1.6
-            base.逸脱 = base.逸脱 * 0.2
+            base.菊穴快感 = base.菊穴快感 * 1.6
+            base.逃脱 = base.逃脱 * 0.2
             base.恐惧 = base.恐惧 * 0.2
         elseif Aexp >= 150 then
-            base.A快乐 = base.A快乐 * 1.4
+            base.菊穴快感 = base.菊穴快感 * 1.4
             base.恐惧 = base.恐惧 * 0.7
-            base.逸脱 = base.逸脱 * 0.6
+            base.逃脱 = base.逃脱 * 0.6
         elseif Aexp >= 50 then
-            base.A快乐 = base.A快乐 * 1.2
+            base.菊穴快感 = base.菊穴快感 * 1.2
             base.恐惧 = base.恐惧 * 0.7
         elseif Aexp >= 20 then
-            base.逸脱 = base.逸脱 * 1.2
+            base.逃脱 = base.逃脱 * 1.2
         elseif Aexp >= 5 then
-            base.A快乐 = base.A快乐 * 0.5
-            base.逸脱 = base.逸脱 * 1.5
+            base.菊穴快感 = base.菊穴快感 * 0.5
+            base.逃脱 = base.逃脱 * 1.5
             base.恐惧 = base.恐惧 * 1.5
         else   
-            base.A快乐 = base.A快乐 * 0.1
-            base.逸脱 = base.逸脱 * 2
+            base.菊穴快感 = base.菊穴快感 * 0.1
+            base.逃脱 = base.逃脱 * 2
             base.恐惧 = base.恐惧 * 2
         end
 
         if yuwan <= 100 then
-            base.屈服 = base.屈服 * 0.3 
+            base.屈从 = base.屈从 * 0.3
         elseif yuwan <= 500 then
-            base.屈服 = base.屈服 * 0.5
+            base.屈从 = base.屈从 * 0.5
         elseif yuwan <= 3000 then
-            base.屈服 = base.屈服 * 0.8
+            base.屈从 = base.屈从 * 0.8
         elseif yuwan <= 10000 then
-            base.屈服 = base.屈服 * 1
+            base.屈从 = base.屈从 * 1
         else
-            base.屈服 = base.屈服 * 1.2
+            base.屈从 = base.屈从 * 1.2
         end
 
-        if Train.HaveTalent("A性向") then
-            Train.LovePlay(base, base.A快乐)
+        if Female:检查特性("肛性向") then
+            TrainManager:性癖增益(base, base.菊穴快感)
         end
-        AddSexexp("手淫经验", 1, Trainer)
-        AddSexexp("调教A经验", 1, Trainer)
-        AddSexexp("A经验", 1)
-        
+        TrainManager:获得经验("手淫经验", 1, 调教者)
+        TrainManager:获得经验("调教菊穴经验", 1, 调教者)
+        TrainManager:获得经验("菊穴经验", 1)
+        local b = Female:获取装备厚度("身体")
+        if b > 0 then
+            local l = math.max(5 - b, 0)
+            base.菊穴快感 = base.菊穴快感 * l * 0.2
+            base.露出 = base.露出 * l * 0.2
+        end
     elseif Select == "振动棒" then
     elseif Select == "肛门振动棒" then
     end
-    local b = Female : GetOutsideEquip(5)
-    if b ~= nil then
-        if b.Type == "内衣" and Select == "胸部"  then
-            base.B快乐 = base.B快乐 * 0.6
-            base.露出 = base.露出 * 0.5
-        elseif b.Type == "护甲" and Select == "胸部" then
-            base.B快乐 = base.B快乐 * 0.1
-            base.露出 = base.露出 * 0.1
-        else
-            base.B快乐 = base.B快乐 * 0.3
-            base.露出 = base.露出 * 0.2
-        end
-    end
+
     return base
 end
 
@@ -196,7 +200,7 @@ function t:TrainMessage()
             end
             if size > 5 then
                 text:Append("如同棉花糖般柔软的巨房")
-                if Train.GetAbility("B感觉") >= 3 then
+                if Female.胸.感觉 >= 3 then
 
                 else
                     text:Random("用手揉捏成各种形状","随着手的变成各种样子","握在手中，乳肉从指间溢出")
@@ -212,10 +216,10 @@ function t:TrainMessage()
                 text:Random("手指围着可爱的乳头画圈","双手覆盖上去，手掌感受中间的突起")
             end
         end
-    elseif trainData.Select == "阴部" then
-        text:Append("爱抚着[taget]的阴部")
+    elseif trainData.Select == "小穴" then
+        text:Append("爱抚着[taget]的小穴")
     end
-     SB.tostr(text)
+     text:ToStr()
 
     ImplementKoujiu("爱抚")
 end
@@ -229,18 +233,34 @@ end
 
 
 function t:Check()
-    local text = SB.new()
+    local text = SB:New()
     text:Append( "要爱抚哪里\n")
-    text:Append( AddButtonL("头部","CoroutineResume,头部"))
-    text:Append( AddButtonL("胸部","CoroutineResume,胸部"))
-    text:Append( AddButtonL("阴部","CoroutineResume,阴部"))
-    text:Append( AddButtonL("臀部","CoroutineResume,臀部"))
-    Message : AddMessage(SB.tostr(text))
+    text:Append( AddButtonL("头部","CoroutineResume,头"))
+    text:Append( AddButtonL("胸部","CoroutineResume,胸"))
+    if TrainManager.被调教者.小穴 ~= nil then
+        text:Append( AddButtonL("小穴","CoroutineResume,小穴"))
+    end
+    text:Append( AddButtonL("臀部","CoroutineResume,菊穴"))
+    Message : AddMessage(text:ToStr())
     Message : StartPop()
-    trainData.Select = coroutine.yield()
+    ---@type string
+    local Select = coroutine.yield()
     Message : Continue()
 
-    return true
+    ---@class ActiveMsg
+    local o = 
+    {
+        调教者 = TrainManager.调教者,
+        被调教者 = TrainManager.被调教者,
+        执行 = TrainManager.调教者.手,
+        目标 = TrainManager.被调教者[Select],
+        sex = self,
+        体力减少 = 10,
+        行为 = "爱抚",
+        选择 = Select,
+        次数 = 1,
+    }
+    return o
 end
 
 return t

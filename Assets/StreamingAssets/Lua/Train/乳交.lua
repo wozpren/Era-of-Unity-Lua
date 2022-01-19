@@ -1,24 +1,24 @@
-function SexActive(Active, Select)
+function t:SexActive(Active, Select)
 local base = ServicePlay()
 
 base.不洁 = base.不洁 + 100
 base.欲情追加 = base.欲情追加 + Train.AddLust()
-base.屈服 = base.屈服 + 1800
-base.逸脱 = base.逸脱 + 300
+base.屈从 = base.屈从 + 1800
+base.逃脱 = base.逃脱 + 300
 
-if Train.HaveTalent("巨乳") then
-    base.逸脱 = base.逸脱 - 200
-elseif Train.HaveTalent("贫乳") then
-    base.逸脱 = base.逸脱 + 400
+if Female:检查特性("巨乳") then
+    base.逃脱 = base.逃脱 - 200
+elseif Female:检查特性("贫乳") then
+    base.逃脱 = base.逃脱 + 400
 end
 
-base.B快乐 = trainData : CalcfStimulate("B刺激")
+base.胸部快感 = Female:计算刺激度("B刺激")
 
-if Train.HaveTalent("B性向") then
-    Train.LovePlay(base, base.B快乐)
+if Female:检查特性("胸性向") then
+    TrainManager:性癖增益(base, base.胸部快感)
 end
 
-AddSexexp("乳交经验", 1)
+TrainManager:获得经验("乳交经验", 1)
 base.Samen = base.Samen + 500 + base.ABLTech * 6
 base.Samen = base.Samen + Train.GetAbility("精液中毒") * 100
 
@@ -38,12 +38,12 @@ return base
 end
 
 
-function TrainMessage()
+function t:TrainMessage()
     ImplementKoujiu("乳交")
 end
 
 
-function SexType(type)
+function t:SexType(type)
     if type == "侍奉" then
         return true
     elseif type == "侍奉快乐" then
@@ -54,7 +54,7 @@ end
 
 
 
-function Check()
+function t:Check()
     local value, text = Train.AllowAction()
 
     local temp = Train.GetAbility("侍奉技术")
@@ -80,9 +80,9 @@ function Check()
         value = value - 1
         SB.append(text,"否定快感: -1")
     end
-    if(Female: HaveTalent("B性向")) then
+    if(Female: HaveTalent("胸性向")) then
         value = value + 10
-        SB.append(text,"B性向: 10")
+        SB.append(text,"胸性向: 10")
     end
     
     

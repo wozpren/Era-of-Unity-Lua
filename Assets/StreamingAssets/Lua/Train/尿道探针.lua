@@ -1,18 +1,18 @@
 local radius = 0
 
-function SexActive(Active, Select)
+function t:SexActive(Active, Select)
     local base = InsertAcitve("探针", radius)
     return base
 end
 
-function SexType(type)
+function t:SexType(type)
     if type == "SM" or type == "重度SM" or type == "被虐快乐" or type == "异常" then
         return true
     end
     return false
 end
 
-function TrainMessage()
+function t:TrainMessage()
     ImplementKoujiu("尿道探针")
 end
 
@@ -20,7 +20,7 @@ end
 
 
 
-function Check()
+function t:Check()
     local value, text = Train.AllowAction()
     local n = Train.GetAbility("露出癖")
     value = OrderRequire(value, text, "abl", "露出癖", n * 2)

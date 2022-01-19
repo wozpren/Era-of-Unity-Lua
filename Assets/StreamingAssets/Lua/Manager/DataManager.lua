@@ -65,6 +65,10 @@ function DataManager:SavePlayerData(index)
     end
 end
 
+function DataManager:HaveSexItem(name)
+    return true
+end
+
 --生产玩家数据
 
 

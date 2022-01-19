@@ -1,4 +1,4 @@
-function SexActive(Active, Select)
+function t:SexActive(Active, Select)
 local base = dofile("Train/插入")
 
 Train.PosOccupy("尿道", "肉棒")
@@ -45,8 +45,8 @@ elseif Active == "站立位" then
 end
 
 if Train.GetAbility("尿道扩张") > Trainer.Stature.JJSize then
-    base.C快乐 = trainData : CalcfStimulate("C刺激", 2, 30)
-    base.C快乐 = EXABL(Trainer: GetAbility("性交中毒"), base.C快乐)
+    base.阴蒂快感 = Female:计算刺激度("C刺激", 2, 30)
+    base.阴蒂快感 = TrainManager:EXABL(Trainer: GetAbility("性交中毒"), base.阴蒂快感)
 end
 
 local YQ = trainData.Source : get_Item("欲情")
@@ -62,19 +62,19 @@ elseif YQ >= 10000 then
     base.情爱 = base.情爱 * 1.8
 end
 
-AddSexexp("尿道经验",1)
-AddSexexp("尿道调教经验", 2, Trainer)
-AddSexexp("尿道性交经验", 1)
-AddSexexp("尿道插入经验", 1, Trainer)
+TrainManager:获得经验("尿道经验",1)
+TrainManager:获得经验("尿道调教经验", 2, Trainer)
+TrainManager:获得经验("尿道性交经验", 1)
+TrainManager:获得经验("尿道插入经验", 1, Trainer)
 Improve.尿道扩张(Female, Trainer.Stature.JJDiam)
 return base
 end
 
-function TrainMessage()
+function t:TrainMessage()
     ImplementKoujiu("插入尿道")
 end
 
-function SexType(type)
+function t:SexType(type)
     if type == "尿道性交" or type == "异常"  then
         return true
     elseif type == "性交" then
@@ -83,6 +83,6 @@ function SexType(type)
     return false
 end
 
-function Check()
+function t:Check()
     return true
 end

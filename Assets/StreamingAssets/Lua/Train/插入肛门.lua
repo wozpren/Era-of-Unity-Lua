@@ -1,4 +1,5 @@
-function SexActive(Active, Select)
+local t = {}
+function t:SexActive(Active, Select)
 dofile("Train/插入")
 Train.PosOccupy("肛门", "肉棒")
 local base = InsertAcitve(Active, Select)
@@ -61,11 +62,11 @@ end
 return base
 end
 
-function TrainMessage()
+function t:TrainMessage()
     ImplementKoujiu("插入肛门")
 end
 
-function SexType(type)
+function t:SexType(type)
     if type == "肛门性交" then
         return true
     elseif type == "性交" then
@@ -77,6 +78,6 @@ function SexType(type)
 end
 
 
-function Check()
+function t:Check()
     return true
 end

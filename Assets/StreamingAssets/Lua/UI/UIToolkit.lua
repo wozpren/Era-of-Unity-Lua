@@ -44,7 +44,7 @@ function AddColor(string, color)
 end
 
 function AddGroup(select, func, ...)
-	local text = SB.new()
+	local text = SB.New()
 	for i, v in ipairs{...} do
 		local t = ""
 		if select == v then
@@ -52,54 +52,54 @@ function AddGroup(select, func, ...)
 		else
 			t = AddButtonColor(v, "grey", func..","..v)
 		end
-		SB.append(text, t.."  ")
+		text:Append(t.."  ")
 	end  
 
 
-	return SB.tostr(text)
+	return text:ToStr()
 end
 
 function AddNumberFloat(value, func, min, max)
-	local text = SB.new()
+	local text = SB.New()
 	if min == nil or value > min then
-		SB.append(text, AddButton("--", func..","..(value - 1)).." ")
+		text:Append(AddButton("--", func..","..(value - 1)).." ")
 	else
-		SB.append(text, AddColor("--", "grey").." ")
+		text:Append(AddColor("--", "grey").." ")
 	end
 	if min == nil or value > min then
-		SB.append(text, AddButton("-", func..","..(value - 0.1)))
+		text:Append(AddButton("-", func..","..(value - 0.1)))
 	else
-		SB.append(text, AddColor("-", "grey"))
+		text:Append(AddColor("-", "grey"))
 	end
-	SB.append(text, string.format(" %0.1f ", value))
+	text:Append(string.format(" %0.1f ", value))
 	if min == nil or value < max then
-		SB.append(text, AddButton("+", func..","..(value + 0.1)))
+		text:Append(AddButton("+", func..","..(value + 0.1)))
 	else
-		SB.append(text, AddColor("+", "grey"))
+		text:Append(AddColor("+", "grey"))
 	end
 	if min == nil or value > min then
-		SB.append(text, " "..AddButton("++", func..","..(value + 1)))
+		text:Append(" "..AddButton("++", func..","..(value + 1)))
 	else
-		SB.append(text, " "..AddColor("++", "grey"))
+		text:Append(" "..AddColor("++", "grey"))
 	end
-	return SB.tostr(text)
+	return text:ToStr()
 end
 
 
 function AddNumber(value, func, min, max)
-	local text = SB.new()
+	local text = SB.New()
 	if min == nil or value > min then
-		SB.append(text, AddButton("-", func..","..(value - 1)))
+		text:Append(AddButton("-", func..","..(value - 1)))
 	else
-		SB.append(text, AddColor("-", "grey"))
+		text:Append(AddColor("-", "grey"))
 	end
-	SB.append(text, " "..value.." ")
+	text:Append(" "..value.." ")
 	if min == nil or value < max then
-		SB.append(text, AddButton("+", func..","..(value + 1)))
+		text:Append(AddButton("+", func..","..(value + 1)))
 	else
-		SB.append(text, AddColor("+", "grey"))
+		text:Append(AddColor("+", "grey"))
 	end
-	return SB.tostr(text)
+	return text:ToStr()
 end
 
 print("UI工具读取完成")

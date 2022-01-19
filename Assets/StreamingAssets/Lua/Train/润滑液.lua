@@ -1,4 +1,4 @@
-function SexActive(Active, Select)
+function t:SexActive(Active, Select)
     dofile("爱抚")
     local base = SexActive("爱抚","小穴")
     MultData(base, 0.8)
@@ -7,17 +7,17 @@ function SexActive(Active, Select)
     return base
 end
 
-function SexType(type)
+function t:SexType(type)
     if type == "道具" then
         return true
     end
     return false
 end
 
-function TrainMessage()
+function t:TrainMessage()
 end
 
 
-function Check()
+function t:Check()
     return true
 end

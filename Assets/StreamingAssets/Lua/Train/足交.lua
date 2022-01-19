@@ -1,13 +1,13 @@
-function SexActive(Active, Select)
+function t:SexActive(Active, Select)
     local base = ServicePlay()
     base.欲情追加 = base.欲情追加 + Train.AddLust()
-    base.屈服 = base.屈服 + 400
-    base.逸脱 = base.逸脱 + 400
+    base.屈从 = base.屈从 + 400
+    base.逃脱 = base.逃脱 + 400
     base.不洁 = base.不洁 + 500
 
 
     
-    AddSexexp("足交经验", 1)
+    TrainManager:获得经验("足交经验", 1)
 
     base.Samen = base.Samen + 500 + base.ABLTech * 6
     base.Samen = base.Samen + Train.GetAbility("施虐属性") * 100
@@ -15,11 +15,11 @@ function SexActive(Active, Select)
     return base
 end
 
-function TrainMessage()
+function t:TrainMessage()
     ImplementKoujiu("足交")
 end
 
-function SexType(type)
+function t:SexType(type)
     if type == "侍奉快乐" or type == "嗜虐快乐" then
         return true
     elseif type == "侍奉" then
@@ -30,7 +30,7 @@ end
 
 
 
-function Check()
+function t:Check()
     local value, text = Train.AllowAction()
 
     local n = Train.GetAbility("施虐属性")

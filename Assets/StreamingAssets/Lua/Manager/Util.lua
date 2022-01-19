@@ -13,7 +13,6 @@ function SB:Append(str)
         end
 end
 
-
 function SB:AppendLine(str)
     if self and str then
         table.insert(self, str.."\n")
@@ -33,3 +32,5 @@ end
 function SB:ToStr()
     return table.concat(self)
 end
+
+

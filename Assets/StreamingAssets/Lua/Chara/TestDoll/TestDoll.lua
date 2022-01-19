@@ -1,9 +1,14 @@
 local b = require("Data/身体")
 
 ---@class Character
----@field 检查占用 any
----@field 获取外层装备 Equip
----@field 获取装备厚度 Equip
+---@field 检查占用 function
+---@field 检查能力 function
+---@field 检查特性 function
+---@field 获取经验 function
+---@field 获取能力 function
+---@field 计算刺激度 function
+---@field 获取外层装备 function
+---@field 获取装备厚度 function
 local chara =
 {
     Type = "Character",--表类型，无需修改
@@ -16,7 +21,7 @@ local chara =
     精力 = 100,
 
 
-    天赋 = {},
+    特性 = {},
     特殊经验 = {},
     经验 = {},
     能力 = {},
@@ -33,8 +38,9 @@ local chara =
     小穴 = b.小穴(),
     子宫 = b.子宫(),
     阴蒂 = b.阴蒂(),
-    阴茎 = {},
-    直肠 = b.直肠(),
+    阴茎 = b.阴茎(),
+    尿道 = b.尿道(),
+    菊穴 = b.菊穴(),
     腿 = b.腿(),
     脚 = b.脚(),
 }

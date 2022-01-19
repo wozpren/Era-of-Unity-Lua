@@ -12,7 +12,7 @@ end
 function Init()
 	GM = EraHF.GameManager.Instance
     Message = GM.MessageStack
-
+	Mathf = UnityEngine.Mahtf
 --读取文件
 	dofile("UI/UIToolkit")
 	dofile("Manager/Util")
@@ -21,6 +21,11 @@ function Init()
 	dofile("Manager/EventManager")
 	dofile("Manager/TrainManager")
 	dofile("Manager/UIManager")
+	dofile("System/coroutine")
+--声明全局变量
+
+
+
 
 --读取数据
 	DataManager:LoadSystemData()
@@ -99,14 +104,17 @@ end
 
 
 function CoroutineResume(...)
-	if Coroutine == nil then
+	if 协程 == nil then
 		print("线程不存在，无法运行")
 	end
-	if coroutine.status(Coroutine) ~= "suspended" then
-		print(coroutine.status(Coroutine))
+	if coroutine.status(协程) ~= "suspended" then
+		print(coroutine.status(协程))
 		print("线程不在挂起状态，无法运行")
 	end
-	local flag, msg = coroutine.resume(Coroutine, ...)
+	local flag, msg = coroutine.resume(协程, ...)
+	if not flag then
+		error(msg)
+	end
 end
 
 
@@ -115,20 +123,20 @@ ActiveData.new = function()
 	local t = {}
 	t.情爱 = 0
 	t.性行动 = 0
-	t.达成感 = 0
+	t.成就感 = 0
 	t.疼痛 = 0
 	t.充足 = 0
 	t.不洁 = 0
 	t.露出 = 0
-	t.屈服 = 0
-	t.逸脱 = 0
+	t.屈从 = 0
+	t.逃脱 = 0
 	t.恐惧 = 0
-	t.V快乐 = 0
-	t.A快乐 = 0
-	t.C快乐 = 0
-	t.B快乐 = 0
-	t.M快乐 = 0
-	t.尿快乐 = 0
+	t.小穴快感 = 0
+	t.菊穴快感 = 0
+	t.阴蒂快感 = 0
+	t.胸部快感 = 0
+	t.嘴部快感 = 0
+	t.尿道快感 = 0
 	t.液体追加 = 0
 	t.恭顺追加 = 0
 	t.欲情追加 = 0
@@ -165,16 +173,16 @@ ActiveData.new = function()
 end
 ActiveData.Source = function()
 	local t = {}
-	t.快Ｃ = 0
-	t.快Ｖ = 0
-	t.快Ａ = 0
-	t.快Ｂ = 0
-	t.快Ｍ = 0
+	t.阴蒂快感 = 0
+	t.小穴快感 = 0
+	t.菊穴快感 = 0
+	t.胸部快感 = 0
+	t.嘴部快感 = 0
 	t.快尿 = 0
 	t.润滑 = 0
 	t.恭顺 = 0
 	t.欲情 = 0
-	t.屈服 = 0
+	t.屈从 = 0
 	t.习得 = 0
 	t.羞耻 = 0
 	t.痛苦 = 0
@@ -198,20 +206,25 @@ ActiveData.Source = function()
 	return t
 end
 
-function UpPalamLv(value)
+function UpPalamLv(value, up)
+	up = up or 1
+
 	local palamlv = GetPalamLV(value)
 	local dif = PalamLV(palamlv + 1) - PalamLV(palamlv)
 	local dif1 = value - PalamLV(palamlv)
 	local per = dif1 / dif
-	local v = PalamLV(palamlv + 1) + (PalamLV(palamlv + 2) - PalamLV(palamlv + 1)) * per
+	local v = PalamLV(palamlv + up) + (PalamLV(palamlv + 1 + up) - PalamLV(palamlv + up)) * per
 	return math.floor(v)
 end
-function DownPalamLv(value)
+
+function DownPalamLv(value, down)
+	down = down or 1
+
 	local palamlv = GetPalamLV(value)
 	local dif = PalamLV(palamlv + 1) - PalamLV(palamlv)
 	local dif1 = value - PalamLV(palamlv)
 	local per = dif1 / dif
-	local v = PalamLV(palamlv - 1) + (PalamLV(palamlv) - PalamLV(palamlv - 1)) * per
+	local v = PalamLV(palamlv - down) + (PalamLV(palamlv + 1 - down) - PalamLV(palamlv - down)) * per
 	return math.floor(v)
 end
 

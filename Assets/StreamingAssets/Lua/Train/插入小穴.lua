@@ -1,4 +1,4 @@
-function SexActive(Active, Select)
+function t:SexActive(Active, Select)
     base.Samen = base.Samen + VFeel * 100
     local n = Trainer.Stature.JJSize - Train.GetAbility("V扩张")
     if n >= 3 then
@@ -20,8 +20,8 @@ function SexActive(Active, Select)
 
         
             if Train.GetAbility("V扩张") > Trainer.Stature.JJSize then
-                base.C快乐 = base.C快乐 + trainData : CalcfStimulate("C刺激", 2, 300)
-                base.C快乐 = EXABL(Trainer : GetAbility("性交中毒"), base.C快乐)
+                base.阴蒂快感 = base.阴蒂快感 + Female:计算刺激度("C刺激", 2, 300)
+                base.阴蒂快感 = TrainManager:EXABL(Trainer : GetAbility("性交中毒"), base.阴蒂快感)
             end
             base.Samen = base.Samen + Train.GetAbility("顺从") * 100
 
@@ -68,10 +68,10 @@ function SexActive(Active, Select)
             base.情爱 = base.情爱 + 300
         end
     end
-    local VFeel = Train.GetAbility("V感觉")
+    local VFeel = Female.小穴.感觉
     if Select == "子宫" then
-        local temp = VFeel + GetExpLV(Female : GetSexexp("子宫口经验"))
-        if Train.HaveTalent("子宮性感") then
+        local temp = VFeel + GetExpLV(Female : 获取经验("子宫口经验"))
+        if Female:检查特性("子宮性感") then
             temp = temp + 1
         end
         if temp <= 4 then
@@ -79,58 +79,58 @@ function SexActive(Active, Select)
         elseif temp == 5 then
             base.疼痛 = base.疼痛 + 2000
         elseif temp == 6 then
-            base.屈服 = base.屈服 + 100
+            base.屈从 = base.屈从 + 100
             base.疼痛 = base.疼痛 + 1000
         elseif temp == 7 then
-            base.屈服 = base.屈服 + 200
+            base.屈从 = base.屈从 + 200
             base.疼痛 = base.疼痛 + 500
         elseif temp == 8 then
-            base.屈服 = base.屈服 + 500
+            base.屈从 = base.屈从 + 500
             base.疼痛 = base.疼痛 + 200
         elseif temp >= 9 then
-            temp = temp - GetExpLV(Female : GetSexexp("子宫口经验"))
-            base.屈服 = base.屈服 + 100 * temp
+            temp = temp - GetExpLV(Female : 获取经验("子宫口经验"))
+            base.屈从 = base.屈从 + 100 * temp
         end
-        AddSexexp("子宫口经验", 2)
-        AddSexexp("子宫奸经验", 1)
+        TrainManager:获得经验("子宫口经验", 2)
+        TrainManager:获得经验("子宫奸经验", 1)
     elseif Select == "G点" then
         base.露出 = base.露出 + 400
-        base.屈服 = base.屈服 + VFeel * 400
+        base.屈从 = base.屈从 + VFeel * 400
     elseif Select == "子宫口" then
         local t = VFeel
-        if Train.HaveTalent("子宮性感") then
+        if Female:检查特性("子宮性感") then
             t = t + 3
         end
         if t <= 2 then
-            base.屈服 = base.屈服 + 100
+            base.屈从 = base.屈从 + 100
             base.疼痛 = base.疼痛 + 1000
         elseif t <= 4 then
-            base.屈服 = base.屈服 + 200
+            base.屈从 = base.屈从 + 200
             base.疼痛 = base.疼痛 + 500
         elseif t <= 6 then
-            base.屈服 = base.屈服 + 500
+            base.屈从 = base.屈从 + 500
             base.疼痛 = base.疼痛 + 200
         else
-            base.屈服 = base.屈服 + 100 * t
+            base.屈从 = base.屈从 + 100 * t
         end
         if Train.GetAbility("V扩张") > Size then
-            base.C快乐 = trainData : CalcfStimulate("C刺激", 2, 30)
-            base.C快乐 = EXABL(Trainer: GetAbility("性交中毒"), base.C快乐)
+            base.阴蒂快感 = Female:计算刺激度("C刺激", 2, 30)
+            base.阴蒂快感 = TrainManager:EXABL(Trainer: GetAbility("性交中毒"), base.阴蒂快感)
         end
-        AddSexexp("V经验", 1)
-        AddSexexp("子宫口经验", 1)
+        TrainManager:获得经验("小穴经验", 1)
+        TrainManager:获得经验("子宫口经验", 1)
         if Trainer.IsJJ then
-            AddSexexp("V插入经验", vc, Trainer)
+            TrainManager:获得经验("V插入经验", vc, Trainer)
         end
     end
 
     local temp1 = Train.GetAbility("欲望")
     if temp1 <= 5 then
-        base.屈服 = base.屈服 * (temp1 * 0.1 + 0.05)
+        base.屈从 = base.屈从 * (temp1 * 0.1 + 0.05)
     elseif temp <= 10 then
-        base.屈服 = base.屈服 * ((temp1 - 5) * 0.05 + 0.55)
+        base.屈从 = base.屈从 * ((temp1 - 5) * 0.05 + 0.55)
     else
-        base.屈服 = base.屈服 * ((temp1 - 10) * 0.02 + 0.8)
+        base.屈从 = base.屈从 * ((temp1 - 10) * 0.02 + 0.8)
     end
 
     local YQ = trainData.Source : get_Item("欲情")
@@ -156,19 +156,19 @@ function SexActive(Active, Select)
         end
 
         if Trainer.Stature.JJSize >= math.max(Train.GetAbility("V扩张") + 1, 2) then
-            AddSexexp("子宫口经验", 1)
+            TrainManager:获得经验("子宫口经验", 1)
             v = v + Trainer.Stature.JJSize - Train.GetAbility("V扩张")
             Expand("v", Trainer.Stature.JJSize, Trainer.Stature.JJHard)
         end
     end
-    AddSexexp("V经验", v)
-    AddSexexp("V性交经验", 1)
-    AddSexexp("V插入经验", vc, Trainer)
+    TrainManager:获得经验("小穴经验", v)
+    TrainManager:获得经验("V性交经验", 1)
+    TrainManager:获得经验("V插入经验", vc, Trainer)
 
     return base
 end
 
-function SexType(type)
+function t:SexType(type)
     if type == "小穴性交" then
         return true
     elseif type == "性交" then
@@ -179,11 +179,11 @@ function SexType(type)
     return false
 end
 
-function TrainMessage()
+function t:TrainMessage()
     ImplementKoujiu("插入小穴")
 end
 
-function Check()
+function t:Check()
 
 if trainData.Posture == "乘骑位" then
     local value, text = Train.AllowAction()
@@ -197,14 +197,14 @@ if trainData.Posture == "乘骑位" then
     value = OrderRequire(value, text, "talent", "害羞", -10)
     value = OrderRequire(value, text, "talent", "献身", 6)
     value = OrderRequire(value, text, "talent", "否定快感", -1)
-    value = OrderRequire(value, text, "talent", "V性向", 10)
+    value = OrderRequire(value, text, "talent", "阴道性向", 10)
     
     if Female.IsChu then
         value = value - 20
-        SB.append(text, "处女: -20 ")
-    elseif GetExpLV(Female : GetSexexp("V经验")) < 2 then
+        text:Append("处女: -20 ")
+    elseif GetExpLV(Female : 获取经验("小穴经验")) < 2 then
         value = value - 5
-        SB.append(text, "V经验不足: -5 ")
+        text:Append("小穴经验不足: -5 ")
     end
     value = OrderRequire(value, text, "equip", "媚药", 6)
 

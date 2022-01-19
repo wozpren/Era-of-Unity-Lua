@@ -1,4 +1,4 @@
-function SexActive(Active, Select)
+function t:SexActive(Active, Select)
 local base = ActiveData.new()
 
 local pl1, pl2 = PlayPlace()
@@ -8,45 +8,45 @@ base.性行动 = 100 + JQ * 100
 local lcp = Train.GetAbility("露出癖")
 if lcp <= 5 then
     base.露出 = 2000 + lcp * 200
-    base.屈服 = 500 + lcp * 300
-    base.逸脱 = 800 - lcp * 100
+    base.屈从 = 500 + lcp * 300
+    base.逃脱 = 800 - lcp * 100
 elseif lcp <= 10 then
     base.露出 = 3000 + (lcp - 5) * 100
-    base.屈服 = 2000 + (lcp - 5) * 200
-    base.逸脱 = 300 - (lcp - 5) * 50
+    base.屈从 = 2000 + (lcp - 5) * 200
+    base.逃脱 = 300 - (lcp - 5) * 50
 else
     base.露出 = 3500 + (lcp - 10) * 50
-    base.屈服 = 3000 + (lcp - 10) * 100
-    base.逸脱 = 0
+    base.屈从 = 3000 + (lcp - 10) * 100
+    base.逃脱 = 0
 end
 
 if Select == "小穴" then
-    base.V快乐 = trainData : CalcfStimulate("V刺激", 1)
-    base.V快乐 = EXABL(JQ, base.V快乐)
+    base.小穴快感 = Female:计算刺激度("V刺激", 1)
+    base.小穴快感 = TrainManager:EXABL(JQ, base.小穴快感)
 elseif Select == "肛门" then
-    base.A快乐 = trainData : CalcfStimulate("A刺激", 1)
-    base.A快乐 = EXABL(JQ, base.A快乐)
+    base.菊穴快感 = Female:计算刺激度("菊穴", 1)
+    base.菊穴快感 = TrainManager:EXABL(JQ, base.菊穴快感)
 elseif Select == "胸部" then
-    base.B快乐 = trainData : CalcfStimulate("B刺激", 1)
-    base.B快乐 = EXABL(JQ, base.B快乐)
+    base.胸部快感 = Female:计算刺激度("B刺激", 1)
+    base.胸部快感 = TrainManager:EXABL(JQ, base.胸部快感)
 elseif Select == "阴核" then
-    base.C快乐 = trainData : CalcfStimulate("C刺激", 1)
-    base.C快乐 = EXABL(JQ, base.C快乐)
+    base.阴蒂快感 = Female:计算刺激度("C刺激", 1)
+    base.阴蒂快感 = TrainManager:EXABL(JQ, base.阴蒂快感)
 elseif Select == "尿道" then
-    base.尿快乐 = trainData : CalcfStimulate("尿道刺激", 1)
-    base.尿快乐 = EXABL(JQ, base.尿快乐)
+    base.尿道快感 = Female:计算刺激度("尿道刺激", 1)
+    base.尿道快感 = TrainManager:EXABL(JQ, base.尿道快感)
 end
 
 local temp = Train.GetAbility("自慰中毒") * 300 + Train.GetAbility("露出癖") * 200
 temp = temp + JQ * 10
 base.充足 = Train.GetAbility("自慰中毒") * 300 + Train.GetAbility("露出癖")
-local exp = Female : GetSexexp("自慰经验")
+local exp = Female : 获取经验("自慰经验")
 if exp < 5 then
     temp = temp - 20
 elseif exp < 20 then
     temp = temp - 10
 else
-    temp = temp + Female : GetSexexp("自慰经验") / 5
+    temp = temp + Female : 获取经验("自慰经验") / 5
 end
 
 temp = Mathf.Clamp(temp, -90, 400)
@@ -63,22 +63,22 @@ if trainData.equipItem : Contains("媚药") then
     n = n + 1
 end
 
-AddSexexp("自慰经验", 1)
+TrainManager:获得经验("自慰经验", 1)
 if pl1 == pl2 and pl1 ~= "B" then
-    AddSexexp(pl1.."经验", 2)
+    TrainManager:获得经验(pl1.."经验", 2)
 else
     if pl1 ~= "B" then
-        AddSexexp(pl1.."经验", 1)
+        TrainManager:获得经验(pl1.."经验", 1)
     end
     if pl2 ~= "B" then
-        AddSexexp(pl2.."经验", 1)
+        TrainManager:获得经验(pl2.."经验", 1)
     end
 end
 
 return base
 end
 
-function SexType(type)
+function t:SexType(type)
     if type == "自慰" or type == "露出" then
         return true
     elseif type == "羞耻快乐" then
@@ -91,14 +91,14 @@ function SexType(type)
 end
 
 
-function TrainMessage()
+function t:TrainMessage()
     ImplementKoujiu("自慰")
 end
 
 local function PlayPlace()
     local p = {C = 0, V = 0, A = 0, 尿 = 0, B = 0}
 
-    p.c = Train.GetAbility("C感觉")
+    p.c = Female.阴蒂.感觉
     if trainData.equipItem : Contains("阴蒂夹") then
         if Train.欲望 >= 3 and p.c >= 3 then
             p.c = p.c + 3
@@ -106,10 +106,10 @@ local function PlayPlace()
             p.c = p.c - 3
         end
     end
-    if Train.HaveTalent("C性向") then
+    if Female:检查特性("阴蒂性向") then
         p.c = p.c + 3
     end
-    if Train.HaveTalent("淫核") then
+    if Female:检查特性("淫核") then
         p.c = p.c + 5
     end
     if Female.IsJJ then
@@ -117,7 +117,7 @@ local function PlayPlace()
     end
 
 
-    p.V = Train.GetAbility("V感觉")
+    p.V = Female.小穴.感觉
     if Train.Pos["小穴"] == "振动棒" then
         if Train.欲望 >= 3 and p.V >= 3 then
             p.V = p.V + 3
@@ -125,15 +125,15 @@ local function PlayPlace()
             p.V = p.V - 3
         end
     end
-    if Train.HaveTalent("V性向") then
+    if Female:检查特性("阴道性向") then
         p.V = p.V + 3
     end
-    if Train.HaveTalent("淫壶") then
+    if Female:检查特性("淫壶") then
         p.V = p.V + 5
     end
 
 
-    p.B = Train.GetAbility("B感觉")
+    p.B = Female.胸.感觉
     if trainData.equipItem : Contains("乳头夹") then
         if Train.欲望 >= 3 and p.B >= 3 then
             p.B = p.B + 3
@@ -141,15 +141,15 @@ local function PlayPlace()
             p.B = p.B - 3
         end
     end
-    if Train.HaveTalent("B性向") then
+    if Female:检查特性("胸性向") then
         p.B = p.B + 3
     end
-    if Train.HaveTalent("淫乳") then
+    if Female:检查特性("淫乳") then
         p.B = p.B + 5
     end
 
 
-    p.A = Train.GetAbility("A感觉")
+    p.A = Female.菊穴.感觉
     if Train.Pos["肛门"] == "肛门振动棒" then
         if Train.欲望 >= 3 and p.A >= 3 then
             p.A = p.A + 3
@@ -157,10 +157,10 @@ local function PlayPlace()
             p.A = p.A - 3
         end
     end
-    if Train.HaveTalent("A性向") then
+    if Female:检查特性("肛性向") then
         p.A = p.A + 3
     end
-    if Train.HaveTalent("淫尻") then
+    if Female:检查特性("淫尻") then
         p.A = p.A + 5
     end
 
@@ -173,10 +173,10 @@ local function PlayPlace()
             p.尿 = p.尿 - 3
         end
     end
-    if Train.HaveTalent("尿性向") then
+    if Female:检查特性("尿性向") then
         p.尿 = p.尿 + 3
     end
-    if Train.HaveTalent("尿道狂") then
+    if Female:检查特性("尿道狂") then
         p.尿 = p.尿 + 5
     end
 
@@ -203,9 +203,9 @@ local function PlayPlace()
     return first, second
 end
 
-function Check()
+function t:Check()
     local value, text = Train.AllowAction()
-    print(SB.tostr(text))
+    print(text:ToStr())
     local n = Train.GetAbility("露出癖")
     value = OrderRequire(value, text, "abl", "露出癖", n * 2)
     
@@ -223,6 +223,6 @@ function Check()
     value = OrderRequire(value, text, "equip", "肛门振动棒", -10)
     value = OrderRequire(value, text, "equip", "摄像机", -20)
     value = OrderRequire(value, text, "place", "野外PLAY", -10)
-    print(SB.tostr(text))
+    print(text:ToStr())
     return Train.ShowOrder(value, text, 33)
 end

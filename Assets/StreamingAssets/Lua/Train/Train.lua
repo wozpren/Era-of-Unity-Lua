@@ -12,7 +12,7 @@ function Train.Init()
     Train.HPDown = 0
     Train.fav = 0
     Train.堕落 = 0
-    Train.屈服 = 0
+    Train.屈从 = 0
     Train.EXP = {}
     Train.Pos = {眼 = "空", 嘴 = "空", 乳头 = "空", 小穴 = "空", 
                 尿道 = "空", 肛门 = "空", 活动 = "可以"}
@@ -34,231 +34,231 @@ function Train.Init()
 end
 
 function Train.UpdateProperty()
-    local text = SB.new()
-    SB.append(text, "调教者:"..Trainer.Name.."   ")
+    local text = SB.New()
+    text:Append("调教者:"..Trainer.Name.."   ")
     if(Trainer.IsJJ) then
-         SB.append(text, "精液:"..GeneralPage : ShowBar(trainData.TrainerSamen.x,trainData.TrainerSamen.y,"white"))
+         text:Append("精液:"..GeneralPage : ShowBar(trainData.TrainerSamen.x,trainData.TrainerSamen.y,"white"))
     end
     if(Trainer: HaveTalent("泌乳")) then 
-        SB.append(text, "母乳:"..GeneralPage : ShowBar(trainData.TrainerMilk.x,trainData.TrainerMilk.y,"white"))
+        text:Append("母乳:"..GeneralPage : ShowBar(trainData.TrainerMilk.x,trainData.TrainerMilk.y,"white"))
     end
     if(Assistant ~= nil) then
-        SB.append(text, "助手:"..Assistant.Name)
+        text:Append("助手:"..Assistant.Name)
         if(Assistant.IsJJ) then
-            SB.append(text, "精液:"..GeneralPage : ShowBar(trainData.AssiSemen.x,trainData.AssiSemen.y,"white"))
+            text:Append("精液:"..GeneralPage : ShowBar(trainData.AssiSemen.x,trainData.AssiSemen.y,"white"))
         end
         if(Assistant: HaveTalent("泌乳")) then 
-            SB.append(text, "母乳:"..GeneralPage : ShowBar(trainData.AssiMilk.x,trainData.AssiMilk.y,"white"))
+            text:Append("母乳:"..GeneralPage : ShowBar(trainData.AssiMilk.x,trainData.AssiMilk.y,"white"))
         end
     end
-    SB.append(text, string.format("<pos=79%%>眼:%s 活动:%s</pos>", Train.Pos.眼, Train.Pos.活动))
-    SB.append(text, "\n调教对象:"..Female.Name)
-    SB.append(text, string.format("   体力:%s", GeneralPage : ShowBar(Female.CurrentHP,Female.BattleInfo.Final.HP, "red")))
+    text:Append(string.format("<pos=79%%>眼:%s 活动:%s</pos>", Train.Pos.眼, Train.Pos.活动))
+    text:Append("\n调教对象:"..Female.Name)
+    text:Append(string.format("   体力:%s", GeneralPage : ShowBar(Female.CurrentHP,Female.BattleInfo.Final.HP, "red")))
     if(Female.IsJJ) then
-        SB.append(text, "精液:"..GeneralPage : ShowBar(trainData.FemaleSamen.x,trainData.FemaleSamen.y,"white"))
+        text:Append("精液:"..GeneralPage : ShowBar(trainData.FemaleSamen.x,trainData.FemaleSamen.y,"white"))
     end
     if(Female: HaveTalent("泌乳")) then 
-        SB.append(text, "母乳:"..GeneralPage : ShowBar(trainData.FemaleMilk.x,trainData.FemaleMilk.y,"white"))
+        text:Append("母乳:"..GeneralPage : ShowBar(trainData.FemaleMilk.x,trainData.FemaleMilk.y,"white"))
     end
-    SB.append(text, string.format("<pos=79%%>嘴:%s 乳头:%s</pos>", Train.Pos.嘴, Train.Pos.乳头))
-    SB.append(text, "\n")
-    SB.append(text, Female : GetOutsideEquip())
-    SB.append(text, string.format("<pos=68%%>小穴:%s 肛门:%s 尿道:%s</pos>", Train.Pos.小穴, Train.Pos.肛门, Train.Pos.尿道))
-    SB.append(text, "\n")
+    text:Append(string.format("<pos=79%%>嘴:%s 乳头:%s</pos>", Train.Pos.嘴, Train.Pos.乳头))
+    text:Append("\n")
+    text:Append(Female : GetOutsideEquip())
+    text:Append(string.format("<pos=68%%>小穴:%s 肛门:%s 尿道:%s</pos>", Train.Pos.小穴, Train.Pos.肛门, Train.Pos.尿道))
+    text:Append("\n")
 
     local temp = 0;
     local itor = TrainPage.train.Source : GetEnumerator()
     while itor : MoveNext() do
-        SB.append(text, string.format("<pos=%d%%>%s: %d",temp * 20 ,itor.Current.Key, itor.Current.Value))
+        text:Append(string.format("<pos=%d%%>%s: %d",temp * 20 ,itor.Current.Key, itor.Current.Value))
         temp = temp + 1
         if(temp == 5) then
             temp = 0 
-            SB.append(text, "\n")
+            text:Append("\n")
         end
     end
-    SB.append(text, "姿势:"..trainData.Posture)
+    text:Append("姿势:"..trainData.Posture)
     if trainData.IsFace then
-        SB.append(text, "   正面")
+        text:Append("   正面")
     else
-        SB.append(text, "   背面")
+        text:Append("   背面")
     end
     
-    TrainPage.Property.text = SB.tostr(text)
+    TrainPage.Property.text = text:ToStr()
 end
 
 function Train.UpdateMenu()
     local text = Train.TrainMenu()
-    SB.append(text, "\n")
-    SB.append(text, AddButtonSpe("更换姿势", "Train.ChangePos"))
-    SB.append(text, AddButtonSpe("对象能力", "Train.Inspect,Female"))
-    SB.append(text, AddButtonSpe("自己能力", "Train.Inspect,Trainer"))
-    SB.append(text, AddButtonSpe("助手能力", "Train.Inspect,Assistant").."\n")
-    SB.append(text, AddButtonSpe("和助手交换", "Train.ChangeAssistant"))
-    SB.append(text, AddButtonSpe("避孕套设定", "Train.CondomSetting"))
-    SB.append(text, AddButtonSpe("衣服管理", "Train.ClothSetting").."\n")
-    SB.append(text, AddButtonSpe("调教终了", "Train.EndTrain"))
-    TrainPage.Options.text = SB.tostr(text)
+    text:Append("\n")
+    text:Append(AddButtonSpe("更换姿势", "Train.ChangePos"))
+    text:Append(AddButtonSpe("对象能力", "Train.Inspect,Female"))
+    text:Append(AddButtonSpe("自己能力", "Train.Inspect,Trainer"))
+    text:Append(AddButtonSpe("助手能力", "Train.Inspect,Assistant").."\n")
+    text:Append(AddButtonSpe("和助手交换", "Train.ChangeAssistant"))
+    text:Append(AddButtonSpe("避孕套设定", "Train.CondomSetting"))
+    text:Append(AddButtonSpe("衣服管理", "Train.ClothSetting").."\n")
+    text:Append(AddButtonSpe("调教终了", "Train.EndTrain"))
+    TrainPage.Options.text = text:ToStr()
 end
 
 function Train.TrainMenu()
     local fsf = Trainer : GetAbility("侍奉技术")
     local fsn = Trainer : GetAbility("施虐属性")
-    local text = SB.new()
+    local text = SB.New()
     Train.Line = 0
     --爱抚
-    SB.append(text, Train.Button("爱抚"))
+    text:Append(Train.Button("爱抚"))
     ---舔舐
-    SB.append(text, Train.Button("舔舐"))
+    text:Append(Train.Button("舔舐"))
 
     if Train.Pos.嘴 == "空" then
-        SB.append(text, Train.Button("接吻"))
+        text:Append(Train.Button("接吻"))
         if fsf >= 2 then
-            SB.append(text, Train.Button("身体侍奉", "肛门", "舔肛侍奉"))
+            text:Append(Train.Button("身体侍奉", "肛门", "舔肛侍奉"))
             if tostring(Trainer.sex) ~= "男" then
-                SB.append(text, Train.Button("身体侍奉", "小穴", "舔阴侍奉"))
+                text:Append(Train.Button("身体侍奉", "小穴", "舔阴侍奉"))
             end
-            SB.append(text, Train.Button("身体侍奉", "足", "舔足侍奉"))
+            text:Append(Train.Button("身体侍奉", "足", "舔足侍奉"))
         end
     end
     if Train.Pos.活动 == "可以" then
-        SB.append(text, Train.Button("自慰"))
+        text:Append(Train.Button("自慰"))
         if Train.Pos.小穴 == "空" then
-            SB.append(text, Train.Button("张开", "小穴"))
+            text:Append(Train.Button("张开", "小穴"))
         end
         if Train.Pos.肛门 == "空" then
-            SB.append(text, Train.Button("张开", "肛门"))
+            text:Append(Train.Button("张开", "肛门"))
         end
     end
     if Expose("v") then
         if trainData.LastActive == "指插入" then
-            SB.append(text, Train.Button("指插入", "G点", "刺激G点"))
+            text:Append(Train.Button("指插入", "G点", "刺激G点"))
         elseif Train.Pos.小穴 == "空" then
-            SB.append(text, Train.Button("指插入","小穴"))
-            SB.append(text, Train.Button("插入小穴", "小穴", "插入小穴"))
+            text:Append(Train.Button("指插入","小穴"))
+            text:Append(Train.Button("插入小穴", "小穴", "插入小穴"))
             if Factory:HaveStuff("振动棒") then
-                SB.append(text, Train.Button("振动棒"))
+                text:Append(Train.Button("振动棒"))
             end
         elseif Train.Pos.小穴 == "JJ" then
-            SB.append(text, Train.Button("插入小穴", "小穴", "拔出肉棒"))
+            text:Append(Train.Button("插入小穴", "小穴", "拔出肉棒"))
             if Trainer : GetAbility("技巧") >= 2 then
-                SB.append(text, Train.Button("插入小穴", "G点", "刺激G点"))
+                text:Append(Train.Button("插入小穴", "G点", "刺激G点"))
                 if Trainer : GetAbility("技巧") >= 3 then
-                    SB.append(text, Train.Button("插入小穴", "G点", "刺激子宫口"))
-                    if Female : GetSexexp("子宫口经验") > 20 then
-                        SB.append(text, Train.Button("插入小穴", "子宫", "插入子宫"))
+                    text:Append(Train.Button("插入小穴", "G点", "刺激子宫口"))
+                    if Female : 获取经验("子宫口经验") > 20 then
+                        text:Append(Train.Button("插入小穴", "子宫", "插入子宫"))
                     end
                 end
             end
         elseif Train.Pos.小穴 == "振动棒" then
-            SB.append(text, Train.Button("振动棒"))
+            text:Append(Train.Button("振动棒"))
         end
         if Train.Pos.肛门 == "空" then
-            SB.append(text, Train.Button("指插入","肛门"))
-            SB.append(text, Train.Button("插入肛门", "肛门", "插入肛门"))
+            text:Append(Train.Button("指插入","肛门"))
+            text:Append(Train.Button("插入肛门", "肛门", "插入肛门"))
             if Factory:HaveStuff("振动棒") then
-                SB.append(text, Train.Button("肛门振动棒"))
+                text:Append(Train.Button("肛门振动棒"))
             end
         elseif Train.Pos.肛门 == "JJ" then
-            SB.append(text, Train.Button("插入肛门", "肛门", "拔出肉棒"))
+            text:Append(Train.Button("插入肛门", "肛门", "拔出肉棒"))
             if Trainer : GetAbility("技巧") >= 3 then
-                SB.append(text, Train.Button("插入肛门", "乙状结肠", "刺激乙状结肠"))
+                text:Append(Train.Button("插入肛门", "乙状结肠", "刺激乙状结肠"))
             end
         elseif Train.Pos.肛门 == "振动棒" then
-            SB.append(text, Train.Button("振动棒"))
+            text:Append(Train.Button("振动棒"))
         end
         if Train.GetAbility("尿道扩张") >= 1 then
             if Train.Pos.尿道 == "空" then
-                SB.append(text, Train.Button("指插入","尿道"))
+                text:Append(Train.Button("指插入","尿道"))
                 if Train.GetAbility("尿道扩张") > 2 then
-                    SB.append(text, Train.Button("插入尿道", "尿道", "插入尿道"))
+                    text:Append(Train.Button("插入尿道", "尿道", "插入尿道"))
                     if Factory:HaveStuff("尿道振动棒") then
-                        SB.append(text, Train.Button("尿道振动棒"))
+                        text:Append(Train.Button("尿道振动棒"))
                     end
                 end
             elseif Train.Pos.尿道 == "JJ" then
-                SB.append(text, Train.Button("插入尿道", "肛门", "拔出肉棒"))
+                text:Append(Train.Button("插入尿道", "肛门", "拔出肉棒"))
                 if Trainer : GetAbility("技巧") >= 3 then
-                    SB.append(text, Train.Button("插入尿道", "膀胱", "刺激膀胱"))
+                    text:Append(Train.Button("插入尿道", "膀胱", "刺激膀胱"))
                 end
             elseif Train.Pos.尿道 == "振动棒" then
-                SB.append(text, Train.Button("尿道振动棒"))
+                text:Append(Train.Button("尿道振动棒"))
             end
         end
 
     end
 
-    SB.append(text, Train.Button("手淫"))
-    SB.append(text, Train.Button("口交"))
+    text:Append(Train.Button("手淫"))
+    text:Append(Train.Button("口交"))
     if trainData.LastActive == "口交" then
-        SB.append(text, Train.Button("口交","深喉","深喉"))
+        text:Append(Train.Button("口交","深喉","深喉"))
     end
     if trainData.LastActive == "手淫" or trainData.LastActive == "口交" then
-        SB.append(text, Train.Button("手淫","手交口交","手交口交"))
+        text:Append(Train.Button("手淫","手交口交","手交口交"))
     end
     if fsf >= 1 and (trainData.LastActive == "口交" or trainData.LastActive == "自慰") then
-        SB.append(text, Train.Button("口交","口交自慰","口交自慰"))
+        text:Append(Train.Button("口交","口交自慰","口交自慰"))
     end
 
     if Expose("v") then
-        SB.append(text, Train.Button("素股"))
+        text:Append(Train.Button("素股"))
     end
 
     if Expose("b") and fsf >= 1 then
-        SB.append(text, Train.Button("乳交"))
+        text:Append(Train.Button("乳交"))
         if trainData.LastActive == "乳交" or trainData.LastActive == "口交" then
-            SB.append(text, Train.Button("乳交","乳夹口交","乳夹口交"))
+            text:Append(Train.Button("乳交","乳夹口交","乳夹口交"))
         end
     end
 
     if fsn >= 1 then
-        SB.append(text, Train.Button("足交"))
+        text:Append(Train.Button("足交"))
     end
 
-    SB.append(text, Train.Button("什么也不做"))
+    text:Append(Train.Button("什么也不做"))
 
-    SB.append(text, Train.Button("打屁股"))
+    text:Append(Train.Button("打屁股"))
     if Factory:HaveStuff("眼罩") then
-        SB.append(text, Train.Button("眼罩"))
+        text:Append(Train.Button("眼罩"))
     end
     if Factory:HaveStuff("口枷") then
-        SB.append(text, Train.Button("口枷"))
+        text:Append(Train.Button("口枷"))
     end
     if Factory:HaveStuff("绳子") then
-        SB.append(text, Train.Button("拘束"))
+        text:Append(Train.Button("拘束"))
     end
     local sn = Trainer : GetAbility("施虐属性")
     if sn >= 1 then
         if Factory:HaveStuff("鞭子") then
-            SB.append(text, Train.Button("鞭打"))
+            text:Append(Train.Button("鞭打"))
         end
         if sn >= 2 then
-            SB.append(text, Train.Button("强制口交"))
-            SB.append(text, Train.Button("尿道探针"))
+            text:Append(Train.Button("强制口交"))
+            text:Append(Train.Button("尿道探针"))
             if sn >= 3 then
                 if Train.GetAbility("V扩张") > 2 then
-                    SB.append(text, Train.Button("拳交","小穴","小穴拳交"))
+                    text:Append(Train.Button("拳交","小穴","小穴拳交"))
                 end
                 if Train.GetAbility("A扩张") > 2 then
-                    SB.append(text, Train.Button("拳交","肛门","肛门拳交"))
+                    text:Append(Train.Button("拳交","肛门","肛门拳交"))
                 end
                 if Train.GetAbility("V扩张") > 2 and Train.GetAbility("A扩张") > 2 then
-                    SB.append(text, Train.Button("拳交","双穴","双穴拳交"))
+                    text:Append(Train.Button("拳交","双穴","双穴拳交"))
                 end
             end
         end
     end
     if Factory:HaveStuff("剃须刀") and Female.Stature > 3 then
-        SB.append(text, Train.Button("剃毛"))
+        text:Append(Train.Button("剃毛"))
     end
     if fsf >= 2 and Factory : GetSwitch("浴室") then
-        SB.append(text, Train.Button("浴室PLAY"))
+        text:Append(Train.Button("浴室PLAY"))
     end
     if Factory:HaveStuff("围裙") and Train.GetAbility("顺从") >= 3 then
-        SB.append(text, Train.Button("新婚PLAY"))
+        text:Append(Train.Button("新婚PLAY"))
     end
 
     if Expose("v") and Factory:HaveStuff("润滑液") then
-        SB.append(text, Train.Button("润滑液"))
+        text:Append(Train.Button("润滑液"))
     end
 
 
@@ -277,13 +277,13 @@ end
 
 
 local function t()
-    local text = SB.new()
-    SB.append(text, AddButtonL("正常位", "CoroutineResume,正常位"))
-    SB.append(text, AddButtonL("乘骑位", "CoroutineResume,乘骑位"))
-    SB.append(text, AddButtonL("抱座位", "CoroutineResume,抱座位"))
-    SB.append(text, AddButtonL("站立位", "CoroutineResume,站立位"))
-    SB.append(text, AddButtonL("改变朝向", "CoroutineResume,改变朝向"))
-    Message : AddMessage(SB.tostr(text))
+    local text = SB.New()
+    text:Append(AddButtonL("正常位", "CoroutineResume,正常位"))
+    text:Append(AddButtonL("乘骑位", "CoroutineResume,乘骑位"))
+    text:Append(AddButtonL("抱座位", "CoroutineResume,抱座位"))
+    text:Append(AddButtonL("站立位", "CoroutineResume,站立位"))
+    text:Append(AddButtonL("改变朝向", "CoroutineResume,改变朝向"))
+    Message : AddMessage(text:ToStr())
     Message : StartPop()
     local select = coroutine.yield()
     Message : Continue()
@@ -339,21 +339,21 @@ function Train.MainTrain()
     Train.SePlace = nil
     Train.fav = 0
     Train.堕落 = 0
-    Train.屈服 = 0
+    Train.屈从 = 0
     Train.HPDown = 0
 
     trainData.LastActive = trainData.Active
     trainData.LastSelect = trainData.Select
     ---------------------输出---------------------
     SettlementEXP()
-    local text = SB.new()
-    local text1 = SB.new()
+    local text = SB.New()
+    local text1 = SB.New()
     for key, value in pairs(CtrainPack) do
         if value ~= 0 and key ~= "ABLTech" and key ~= "multi" and key ~= "Samen" then
-        SB.append(text, string.format("(%s:%d)", key, value))
+        text:Append(string.format("(%s:%d)", key, value))
         end
     end
-    Message : AddMessage(SB.tostr(text))
+    Message : AddMessage(text:ToStr())
     for key, value in pairs(CSourcePack) do
         if(value ~= 0) then
             local before = trainData.Source:get_Item(key)
@@ -374,13 +374,13 @@ function Train.MainTrain()
 end
 --射精检查
 function Train.EjaculateCheck()
-    local text = SB.new()
-    SB.appendLine(text, "选择射在哪里")
-    SB.append(text, AddButton("直接发射   ","CoroutineResume,直接发射"))
-    SB.append(text, AddButton("射在外面   ","CoroutineResume,射在外面"))
-    SB.append(text, AddButton("脸部   ","CoroutineResume,射在外面"))
-    SB.append(text, AddButton("身上   ","CoroutineResume,射在外面"))
-    Message : AddTopMessage(SB.tostr(text))
+    local text = SB.New()
+    text:AppendLine("选择射在哪里")
+    text:Append(AddButton("直接发射   ","CoroutineResume,直接发射"))
+    text:Append(AddButton("射在外面   ","CoroutineResume,射在外面"))
+    text:Append(AddButton("脸部   ","CoroutineResume,射在外面"))
+    text:Append(AddButton("身上   ","CoroutineResume,射在外面"))
+    Message : AddTopMessage(text:ToStr())
     local select = coroutine.yield()
     Message : Continue()
     if select == "射在外面" then
@@ -554,82 +554,82 @@ end
 
 function Train.ObedienceCheck()
     if Train.HaveTalent("软弱") then
-        Train.屈服 = Train.屈服 + 1
+        Train.屈从 = Train.屈从 + 1
     end
     if Train.HaveTalent("容易迷恋") then
-        Train.屈服 = Train.屈服 + 2
+        Train.屈从 = Train.屈从 + 2
     end
     if Train.HaveTalent("献身") then
-        Train.屈服 = Train.屈服 + 2
+        Train.屈从 = Train.屈从 + 2
     end
 
     if Train.HaveTalent("高贵") then
-        Train.屈服 = Train.屈服 - 1
+        Train.屈从 = Train.屈从 - 1
     end
     if Train.HaveTalent("强硬") then
-        Train.屈服 = Train.屈服 - 1
+        Train.屈从 = Train.屈从 - 1
     end
     if Train.HaveTalent("坚强") then
-        Train.屈服 = Train.屈服 - 2
+        Train.屈从 = Train.屈从 - 2
     end
 
     
-    if Train.屈服 > 0 then
+    if Train.屈从 > 0 then
         local hg = Female.Depraved
         if hg >= 100000000 then
-            Train.屈服 = Train.屈服 / 64
+            Train.屈从 = Train.屈从 / 64
         elseif hg >= 10000000 then
-            Train.屈服 = Train.屈服 / 32
+            Train.屈从 = Train.屈从 / 32
         elseif hg >= 1000000 then
-            Train.屈服 = Train.屈服 / 16
+            Train.屈从 = Train.屈从 / 16
         elseif hg >= 100000 then
-            Train.屈服 = Train.屈服 / 8
+            Train.屈从 = Train.屈从 / 8
         elseif hg >= 10000 then
-            Train.屈服 = Train.屈服 / 4
+            Train.屈从 = Train.屈从 / 4
         elseif hg >= 5000 then
-            Train.屈服 = Train.屈服 / 2
+            Train.屈从 = Train.屈从 / 2
         end
-        Train.屈服 = math.ceil(Train.屈服)
+        Train.屈从 = math.ceil(Train.屈从)
     end
-    if Train.屈服 >= 200 then
-        Train.屈服 = 60 + (Train.屈服 - 200) / 16
-    elseif Train.屈服 >= 100 then
-        Train.屈服 = 48 + (Train.屈服 - 100) / 8
-    elseif Train.屈服 >= 50 then
-        Train.屈服 = 35 + (Train.屈服 - 50) / 4
-    elseif Train.屈服 >= 20 then
-        Train.屈服 = 20 + (Train.屈服 - 20) / 2
+    if Train.屈从 >= 200 then
+        Train.屈从 = 60 + (Train.屈从 - 200) / 16
+    elseif Train.屈从 >= 100 then
+        Train.屈从 = 48 + (Train.屈从 - 100) / 8
+    elseif Train.屈从 >= 50 then
+        Train.屈从 = 35 + (Train.屈从 - 50) / 4
+    elseif Train.屈从 >= 20 then
+        Train.屈从 = 20 + (Train.屈从 - 20) / 2
     end
 
-    Train.屈服 = math.ceil(Train.屈服)
-    Female.Obedience = Female.Obedience + Train.屈服
-    if Train.屈服 > 0 then
-        Message : AddMessage("服从度↑"..Train.屈服)
-    elseif Train.屈服 < 0 then
-        Message : AddMessage("服从度↓"..-Train.屈服)
+    Train.屈从 = math.ceil(Train.屈从)
+    Female.Obedience = Female.Obedience + Train.屈从
+    if Train.屈从 > 0 then
+        Message : AddMessage("服从度↑"..Train.屈从)
+    elseif Train.屈从 < 0 then
+        Message : AddMessage("服从度↓"..-Train.屈从)
     end
 end
 
 function Train.ChangePosture(pose)
-    local text = SB.new() 
+    local text = SB.New() 
         if(pose ~= "改变朝向") then
             trainData.Posture = pose
-            SB.append(text, "将姿势调整为"..pose.."\n")
+            text:Append("将姿势调整为"..pose.."\n")
         else
             trainData.IsFace = not trainData.IsFace
             if trainData.IsFace then
-                SB.append(text, "面对姿势\n")
+                text:Append("面对姿势\n")
             else
-                SB.append(text, "背对姿势")
+                text:Append("背对姿势")
             end
         end
-        Message : AddMessage(SB.tostr(text))
+        Message : AddMessage(text:ToStr())
         Message : StartPop()
 end
 
 function Train.ClothSetting()
-    local text = SB.new()
-    SB.append(text, Female.Name.."的穿着".."\n")
+    local text = SB.New()
+    text:Append(Female.Name.."的穿着".."\n")
     local equips = Female : GetOutsideEquips()
 
     for i = 0, 7 do
@@ -652,21 +652,21 @@ function Train.ClothSetting()
             a = "脚"
         end
         if(equips[i] == nil) then
-            SB.append(text, a.."[----]\n")
+            text:Append(a.."[----]\n")
         else
-            SB.append(text, a.."["..equips[i].Name.."]\n")
+            text:Append(a.."["..equips[i].Name.."]\n")
         end
     end
 
-    Message : AddMessage(SB.tostr(text))
+    Message : AddMessage(text:ToStr())
     Message : AddMessage(AddButton("全部穿上 ", "Train.ClothSelect,全部穿上")..AddButton("只剩内衣裤 ", "Train.ClothSelect,只剩内衣裤")..AddButton("裸体 ", "Train.ClothSelect,裸体"))
     Message : StartPop()
 end
 
 function Train.ClothSelect(type)
     trainData : ClothSetting(type)
-    local text = SB.new()
-    SB.append(text, Female.Name.."的穿着".."\n")
+    local text = SB.New()
+    text:Append(Female.Name.."的穿着".."\n")
     local equips = Female : GetOutsideEquips()
     for i = 0, 7 do
         local a = ""
@@ -688,13 +688,13 @@ function Train.ClothSelect(type)
             a = "脚"
         end
         if(equips[i] == nil) then
-            SB.append(text, a.."[----]\n")
+            text:Append(a.."[----]\n")
         else
-            SB.append(text, a.."["..equips[i].Name.."]\n")
+            text:Append(a.."["..equips[i].Name.."]\n")
         end
     end
 
-    Message : AddMessage(SB.tostr(text))
+    Message : AddMessage(text:ToStr())
     Message : Continue()
 end
 
@@ -817,62 +817,62 @@ function Train.Adjustment()
 
     Train.SixFeelAdd(data, multi)
     if m1 > 0 or (m1 < 0 and not Train.HaveTalent("淫核")) then
-        data.C快乐 = data.C快乐 + m1
+        data.阴蒂快感 = data.阴蒂快感 + m1
     end
-    if m2 > 0 or (m2 < 0 and not Train.HaveTalent("C性向") and Train.GetAbility("C感觉") < 5) then
-        data.C快乐 = data.C快乐 + m2
+    if m2 > 0 or (m2 < 0 and not Train.HaveTalent("阴蒂性向") and Female.阴蒂.感觉 < 5) then
+        data.阴蒂快感 = data.阴蒂快感 + m2
     end
     if Train.HaveTalent("淫核") then
-        data.C快乐 = data.C快乐 + 20
+        data.阴蒂快感 = data.阴蒂快感 + 20
     end
     if m1 > 0 or (m1 < 0 and not Train.HaveTalent("淫壶")) then
-        data.V快乐 = data.V快乐 + m1
+        data.小穴快感 = data.小穴快感 + m1
     end
-    if m2 > 0 or (m2 < 0 and not Train.HaveTalent("V性向") and Train.GetAbility("V感觉") < 5) then
-        data.V快乐 = data.V快乐 + m2
+    if m2 > 0 or (m2 < 0 and not Train.HaveTalent("阴道性向") and Female.小穴.感觉 < 5) then
+        data.小穴快感 = data.小穴快感 + m2
     end
     if Train.HaveTalent("淫尻") then
-        data.A快乐 = data.A快乐 + 20
+        data.菊穴快感 = data.菊穴快感 + 20
     end
     if m1 > 0 or (m1 < 0 and not Train.HaveTalent("淫尻")) then
-        data.A快乐 = data.A快乐 + m1
+        data.菊穴快感 = data.菊穴快感 + m1
     end
-    if m2 > 0 or (m2 < 0 and not Train.HaveTalent("A性向") and Train.GetAbility("A感觉") < 5) then
-        data.A快乐 = data.A快乐 + m2
+    if m2 > 0 or (m2 < 0 and not Train.HaveTalent("肛性向") and Female.菊穴.感觉 < 5) then
+        data.菊穴快感 = data.菊穴快感 + m2
     end
     if Train.HaveTalent("淫壶") then
-        data.V快乐 = data.V快乐 + 20
+        data.小穴快感 = data.小穴快感 + 20
     end
     if m1 > 0 or (m1 < 0 and not Train.HaveTalent("淫乳")) then
-        data.B快乐 = data.B快乐 + m1
+        data.胸部快感 = data.胸部快感 + m1
     end
-    if m2 > 0 or (m2 < 0 and not Train.HaveTalent("B性向") and Train.GetAbility("B感觉") < 5) then
-        data.B快乐 = data.B快乐 + m2
+    if m2 > 0 or (m2 < 0 and not Train.HaveTalent("胸性向") and Female.胸.感觉 < 5) then
+        data.胸部快感 = data.胸部快感 + m2
     end
     if Train.HaveTalent("荡唇") then
-        data.M快乐 = data.M快乐 + 20
+        data.嘴部快感 = data.嘴部快感 + 20
     end
     if m1 > 0 or (m1 < 0 and not Train.HaveTalent("荡唇")) then
-        data.M快乐 = data.M快乐 + m1
+        data.嘴部快感 = data.嘴部快感 + m1
     end
-    if m2 > 0 or (m2 < 0 and not Train.HaveTalent("M性向") and Train.GetAbility("M感觉") < 5) then
-        data.M快乐 = data.M快乐 + m2
+    if m2 > 0 or (m2 < 0 and not Train.HaveTalent("唇性向") and Female.嘴.感觉 < 5) then
+        data.嘴部快感 = data.嘴部快感 + m2
     end
     if Train.HaveTalent("淫乳") then
-        data.B快乐 = data.B快乐 + 20
+        data.胸部快感 = data.胸部快感 + 20
     end
     if m1 > 0 or (m1 < 0 and not Train.HaveTalent("尿道狂")) then
-        data.尿快乐 = data.尿快乐 + m1
+        data.尿道快感 = data.尿道快感 + m1
     end
-    if m2 > 0 or (m2 < 0 and not Train.HaveTalent("U性向") and Train.GetAbility("U感觉") < 5) then
-        data.尿快乐 = data.尿快乐 + m2
+    if m2 > 0 or (m2 < 0 and not Train.HaveTalent("尿性向") and Train.GetAbility("U感觉") < 5) then
+        data.尿道快感 = data.尿道快感 + m2
     end
     if Train.HaveTalent("尿道狂") then
-        data.尿快乐 = data.尿快乐 + 20
+        data.尿道快感 = data.尿道快感 + 20
     end
 
     if Train.HaveTalent("母乳体质") then
-        data.B快乐 = data.B快乐 + 50
+        data.胸部快感 = data.胸部快感 + 50
     end
 	if Female: HaveTalent("害羞") then
         data.露出 = data.露出 + 100
@@ -883,16 +883,16 @@ function Train.Adjustment()
         data.露出 = data.露出+ 50
     end
 	if Female: HaveTalent("好奇") then
-        data.逸脱 = data.逸脱 - 30
+        data.逃脱 = data.逃脱 - 30
     elseif Female: HaveTalent("保守") then
-        data.逸脱 = data.逸脱 + 100
+        data.逃脱 = data.逃脱 + 100
     end
 
     if Train.HaveTalent("好色") then
-        data.逸脱 = data.逸脱 - 20
+        data.逃脱 = data.逃脱 - 20
     end
     if Train.HaveTalent("淫乱") then
-        data.逸脱 = data.逸脱 - 40
+        data.逃脱 = data.逃脱 - 40
     end
     data.情爱 = enumtonumber(Female.Feel) * 10
 
@@ -902,26 +902,26 @@ function Train.Adjustment()
 
     if trainData : CurrPlay("处女丧失") ~= 0 and enumtonumber(Female.Feel) >= 2 then
         data.情爱 = data.情爱 + 100
-        data.达成感 = data.达成感 + 50
+        data.成就感 = data.成就感 + 50
         data.疼痛 = data.疼痛 - 50
-        data.逸脱 = data.逸脱 - 300
+        data.逃脱 = data.逃脱 - 300
         data.反感追加 = data.反感追加 - 300
     elseif trainData : CurrPlay("处女丧失") ~= 0 then
         if Train.HaveTalent("贞操重视") then
-            data.逸脱 = data.逸脱 + 200
+            data.逃脱 = data.逃脱 + 200
             data.反感追加 = data.反感追加 + 200
         elseif Train.HaveTalent("不在乎贞操") then
-            data.逸脱 = data.逸脱 + 25
+            data.逃脱 = data.逃脱 + 25
             data.反感追加 = data.反感追加 + 25
         else
-            data.逸脱 = data.逸脱 + 100
+            data.逃脱 = data.逃脱 + 100
             data.反感追加 = data.反感追加 + 100
         end
     end
     if trainData : CurrPlay("同时绝顶") ~= 0 and enumtonumber(Female.Feel) > 0 then
         local n = trainData : CurrPlay("绝顶")
         data.情爱 = data.情爱 + n * 10
-        data.达成感 = data.达成感 + n * 10
+        data.成就感 = data.成就感 + n * 10
         data.恐惧 = data.恐惧 - n * 20
         data.反感追加 = data.反感追加 - n * 20
     end
@@ -930,43 +930,43 @@ function Train.Adjustment()
         data.情爱 = data.情爱 - 50
         data.不洁 = data.不洁 - 50
         data.充足 = data.充足 - 50
-        data.达成感 = data.达成感 - 50
+        data.成就感 = data.成就感 - 50
         data.性行动 = data.性行动 - 50
         data.欲情追加 = data.欲情追加 - 50
     end
-    data.逸脱 = data.逸脱 - math.floor(trainData : GetValue("媚药") / 5)
+    data.逃脱 = data.逃脱 - math.floor(trainData : GetValue("媚药") / 5)
     if trainData.equipItem : Contains("摄像机") or trainData.equipItem : Contains("野外PLAY") or trainData.equipItem : Contains("室内PLAY") then
         data.露出 = data.露出 + 20
     end
 
 
-    data.逸脱 = data.逸脱 - math.max(math.min(Train.GetAbility("施虐属性"), 5), math.min(Train.GetAbility("受虐属性"), 5)) * 5
+    data.逃脱 = data.逃脱 - math.max(math.min(Train.GetAbility("施虐属性"), 5), math.min(Train.GetAbility("受虐属性"), 5)) * 5
     if SexType("侍奉") then
         local n = Train.GetAbility("侍奉技术")
         if n == 1 then
-            data.逸脱 = data.逸脱 - 5
+            data.逃脱 = data.逃脱 - 5
         elseif n < 6 then
-            data.逸脱 = data.逸脱 - 10
+            data.逃脱 = data.逃脱 - 10
         elseif n < 10 then
-            data.逸脱 = data.逸脱 - 20
+            data.逃脱 = data.逃脱 - 20
         else
-            data.逸脱 = data.逸脱 - 30
+            data.逃脱 = data.逃脱 - 30
         end
     end
     if SexType("露出") then
         local n = Train.GetAbility("露出癖")
-            data.逸脱 = data.逸脱 - 5
+            data.逃脱 = data.逃脱 - 5
         if n < 6 then
-            data.逸脱 = data.逸脱 - 10 * n
+            data.逃脱 = data.逃脱 - 10 * n
         elseif n < 10 then
-            data.逸脱 = data.逸脱 - 5 * (n - 5) + 50
+            data.逃脱 = data.逃脱 - 5 * (n - 5) + 50
         else
-            data.逸脱 = data.逸脱 - 75
+            data.逃脱 = data.逃脱 - 75
         end
     end
 
     for key, value in pairs(data) do
-        if key == "不洁" or key == "恐惧" or key == "逸脱" or key == "反感追加" then
+        if key == "不洁" or key == "恐惧" or key == "逃脱" or key == "反感追加" then
             data[key] = math.max(value, -99);
         else    
             data[key] = math.max(value, -80);
@@ -982,20 +982,20 @@ function Train.AdjustTrainPack()
         trainPack[key] = 1
     end
 
-    trainPack.快Ｃ = trainPack.快Ｃ * (Train.Estrus("C") * 0.5 + 1)
-    trainPack.快Ｂ = trainPack.快Ｂ * (Train.Estrus("B") * 0.5 + 1)
+    trainPack.阴蒂快感 = trainPack.阴蒂快感 * (Train.Estrus("C") * 0.5 + 1)
+    trainPack.胸部快感 = trainPack.胸部快感 * (Train.Estrus("B") * 0.5 + 1)
 
     if tostring(Female.sex) == "男" then
-        trainPack.快Ａ = 1.2
+        trainPack.菊穴快感 = 1.2
     end
 
 
     local t = trainData : GetValue("媚药")
-    trainPack.快Ａ = trainPack.快Ａ + t / 100
-    trainPack.快Ｂ = trainPack.快Ｂ + t / 100
-    trainPack.快Ｃ = trainPack.快Ｃ + t / 100
-    trainPack.快Ｍ = t / 100
-    trainPack.快Ｖ = t / 100
+    trainPack.菊穴快感 = trainPack.菊穴快感 + t / 100
+    trainPack.胸部快感 = trainPack.胸部快感 + t / 100
+    trainPack.阴蒂快感 = trainPack.阴蒂快感 + t / 100
+    trainPack.嘴部快感 = t / 100
+    trainPack.小穴快感 = t / 100
     trainPack.快尿 = t / 100
 
     local level = Factory : GetSwitchValue("调教室等级")
@@ -1042,12 +1042,12 @@ function Train.AdjustTrainPack()
         trainPack.反感 = trainPack.反感 * 0.8
     end
     if Train.HaveTalent("高傲") then
-        trainPack.屈服 = trainPack.屈服 * 0.5
+        trainPack.屈从 = trainPack.屈从 * 0.5
         trainPack.恐怖 = trainPack.恐怖 * 0.6
         trainPack.反感 = trainPack.反感 * 0.2
     end
     if Train.HaveTalent("谦虚") then
-        trainPack.屈服 = trainPack.屈服 * 2
+        trainPack.屈从 = trainPack.屈从 * 2
         trainPack.恐怖 = trainPack.恐怖 * 1.5
         trainPack.反感 = trainPack.反感 * 0.8
     end
@@ -1065,7 +1065,7 @@ function Train.AdjustTrainPack()
     if Train.HaveTalent("感情缺乏") then
         trainPack.恭顺 = trainPack.恭顺 * 0.5
         trainPack.欲情 = trainPack.欲情 * 0.5
-        trainPack.屈服 = trainPack.屈服 * 0.7
+        trainPack.屈从 = trainPack.屈从 * 0.7
         trainPack.羞耻 = trainPack.羞耻 * 0.8
         trainPack.恐怖 = trainPack.恐怖 * 0.6
         trainPack.反感 = trainPack.反感 * 0.5
@@ -1077,7 +1077,7 @@ function Train.AdjustTrainPack()
     end  
     if Train.HaveTalent("容易迷恋") then
         trainPack.恭顺 = trainPack.恭顺 * 1.2
-        trainPack.屈服 = trainPack.屈服 * 1.1
+        trainPack.屈从 = trainPack.屈从 * 1.1
     end
     if Train.HaveTalent("清楚") then
         trainPack.恭顺 = trainPack.恭顺 * 1.2
@@ -1092,7 +1092,7 @@ function Train.AdjustTrainPack()
         trainPack.习得 = trainPack.习得 * 0.7
     end
     if Train.HaveTalent("献身") then
-        trainPack.屈服 = trainPack.屈服 * 1.5
+        trainPack.屈从 = trainPack.屈从 * 1.5
         trainPack.习得 = trainPack.习得 * 1.5
     end
 
@@ -1133,7 +1133,7 @@ function Train.AdjustTrainPack()
 
     if Female.Oestrus then
         trainPack.欲情 = trainPack.欲情 * 2
-        trainPack.屈服 = trainPack.屈服 * 0.5
+        trainPack.屈从 = trainPack.屈从 * 0.5
         trainPack.习得 = trainPack.习得 * 0.5
         trainPack.羞耻 = trainPack.羞耻 * 0.5
         trainPack.恐怖 = trainPack.恐怖 * 0.5
@@ -1149,7 +1149,7 @@ function Train.AdjustTrainPack()
     if Train.Pos["眼"] == "眼罩" then
         trainPack.恭顺 = trainPack.恭顺 * (((math.min(sn, 5) * 5 - 10) / 100) + 1)
 		trainPack.欲情 = trainPack.欲情 * (((math.min(sn, 5) * 5 - 10) / 100) + 1)
-        trainPack.屈服 = trainPack.屈服 * 1.2
+        trainPack.屈从 = trainPack.屈从 * 1.2
         trainPack.习得 = trainPack.习得 * 0.5
         trainPack.恐怖 = trainPack.恐怖 * 1.2
     end
@@ -1160,14 +1160,14 @@ function Train.AdjustTrainPack()
         trainPack.恭顺 = trainPack.恭顺 * 0.8 * (1 - (math.min(sn, 5) * 5 / 100))
         trainPack.欲情 = trainPack.欲情 * (((math.min(sn, 5) * 5 - 10) / 100) + 1)
         trainPack.习得 = trainPack.习得 * 0.8
-        trainPack.屈服 = trainPack.屈服 * 1.2
+        trainPack.屈从 = trainPack.屈从 * 1.2
     end
     if Train.Pos["嘴"] == "口枷" then
         trainPack.恐怖 = trainPack.恐怖 * 1.1
         trainPack.恭顺 = trainPack.恭顺 * 0.8 * (1 - (math.min(sn, 5) * 5) / 100)
         trainPack.欲情 = trainPack.欲情 * (1 + (math.min(sn, 5) * 5 - 10) / 100)
         trainPack.习得 = trainPack.习得 * 0.9
-        trainPack.屈服 = trainPack.屈服 * 1.2
+        trainPack.屈从 = trainPack.屈从 * 1.2
     end
     if trainData.equipItem : Contains("浣肠") or trainData.Active == "排泄" then
         local c = (trainData : GetValue("肠液") * 10 + 10) / 100 + 1
@@ -1175,7 +1175,7 @@ function Train.AdjustTrainPack()
             c = 2
         end
         trainPack.恐怖 = trainPack.恐怖 * c * 1.5
-        trainPack.屈服 = trainPack.屈服 * c * 1.5
+        trainPack.屈从 = trainPack.屈从 * c * 1.5
         trainPack.恭顺 = trainPack.恭顺 * c * 0.5 * (1 - (math.min(sn, 5) *5) / 100)
         trainPack.习得 = trainPack.习得 * c * 0.5
     end
@@ -1240,12 +1240,12 @@ end
 
 
 function Train.SixFeelAdd(data, num)
-    data.C快乐 = data.C快乐 + num
-    data.A快乐 = data.A快乐 + num
-    data.V快乐 = data.V快乐 + num
-    data.M快乐 = data.M快乐 + num
-    data.B快乐 = data.B快乐 + num
-    data.尿快乐 = data.尿快乐 + num
+    data.阴蒂快感 = data.阴蒂快感 + num
+    data.菊穴快感 = data.菊穴快感 + num
+    data.小穴快感 = data.小穴快感 + num
+    data.嘴部快感 = data.嘴部快感 + num
+    data.胸部快感 = data.胸部快感 + num
+    data.尿道快感 = data.尿道快感 + num
 end
 
 function Train.Mood()
@@ -1283,31 +1283,31 @@ function Train.SettleTrain(data)
     local LC = Train.GetAbility("露出癖")
 
     local trainPack = ActiveData.Source()
-    trainPack.快Ｃ = data.C快乐
-    trainPack.快Ｖ = data.V快乐
-    trainPack.快Ａ = data.A快乐
-    trainPack.快Ｂ = data.B快乐
-    trainPack.快Ｍ = data.M快乐
-    trainPack.快尿 = data.尿快乐
+    trainPack.阴蒂快感 = data.阴蒂快感
+    trainPack.小穴快感 = data.小穴快感
+    trainPack.菊穴快感 = data.菊穴快感
+    trainPack.胸部快感 = data.胸部快感
+    trainPack.嘴部快感 = data.嘴部快感
+    trainPack.快尿 = data.尿道快感
 
 
-    local elseValue = DownPalamLv(data.C快乐 + data.V快乐 + data.A快乐 + data.B快乐 + data.M快乐 + data.尿快乐)
+    local elseValue = DownPalamLv(data.阴蒂快感 + data.小穴快感 + data.菊穴快感 + data.胸部快感 + data.嘴部快感 + data.尿道快感)
     trainPack.恭顺 = elseValue * (Mathf.Min(yuwan, 10) + 2) * 2 / 150
     trainPack.欲情 = elseValue * (Mathf.Min(yuwan, 10) + 2) * 2 / 100
-    trainPack.屈服 = elseValue * (Mathf.Min(yuwan, 10) + 10) * 2 / 400
+    trainPack.屈从 = elseValue * (Mathf.Min(yuwan, 10) + 10) * 2 / 400
     local i = 0
     if Train.HaveTalent("淫核")  then
-        i = i + data.C快乐
+        i = i + data.阴蒂快感
     elseif Train.HaveTalent("淫壶")  then
-        i = i + data.V快乐
+        i = i + data.小穴快感
     elseif Train.HaveTalent("淫尻")  then
-        i = i + data.A快乐
+        i = i + data.菊穴快感
     elseif Train.HaveTalent("淫乳")  then
-        i = i + data.B快乐
+        i = i + data.胸部快感
     elseif Train.HaveTalent("荡唇")  then
-        i = i + data.M快乐
+        i = i + data.嘴部快感
     elseif Train.HaveTalent("尿道狂")  then
-        i = i + data.尿快乐
+        i = i + data.尿道快感
     end
 
     local SP = GetPalamLV(i) * 500
@@ -1333,16 +1333,16 @@ function Train.SettleTrain(data)
         data.性行动 = data.性行动 * 2
     end
     local SF = Train.GetAbility("侍奉技术")
-    if data.达成感 ~= 0 then
+    if data.成就感 ~= 0 then
         if SF <= 5 then
             trainPack.习得 = data.性行动 * (100 + SF * 20) / 100
-            trainPack.恭顺 = trainPack.恭顺 + data.达成感 * (40 + SF * 20) / 100
+            trainPack.恭顺 = trainPack.恭顺 + data.成就感 * (40 + SF * 20) / 100
         elseif SF <= 10 then
             trainPack.习得 = data.性行动 * (200 + (SF - 5) * 10) / 100
-            trainPack.恭顺 = trainPack.恭顺 + data.达成感 * (140 + (SF - 5) * 10) / 100
+            trainPack.恭顺 = trainPack.恭顺 + data.成就感 * (140 + (SF - 5) * 10) / 100
         else
             trainPack.习得 = data.性行动 * (250 + (SF - 10) * 2) / 100
-            trainPack.恭顺 = trainPack.恭顺 + data.达成感 * (190 + (SF - 10) * 2) / 100
+            trainPack.恭顺 = trainPack.恭顺 + data.成就感 * (190 + (SF - 10) * 2) / 100
         end
     end
     if data.疼痛 ~= 0 then
@@ -1388,7 +1388,7 @@ function Train.SettleTrain(data)
         trainPack.恐怖 = trainPack.恐怖 + 恐怖
         trainPack.反感 = trainPack.反感 + 反感
         trainPack.欲情 = trainPack.欲情 + 欲情
-        trainPack.屈服 = trainPack.反感 + data.疼痛 + 恐怖 / 2 + 欲情
+        trainPack.屈从 = trainPack.反感 + data.疼痛 + 恐怖 / 2 + 欲情
     end
 
     if data.充足 ~= 0 then
@@ -1407,7 +1407,7 @@ function Train.SettleTrain(data)
         end
         trainPack.恭顺 = trainPack.恭顺 + 恭顺
         trainPack.欲情 = trainPack.欲情 + 欲情
-        trainPack.屈服 = trainPack.屈服 + 恭顺 + 欲情
+        trainPack.屈从 = trainPack.屈从 + 恭顺 + 欲情
     end
 
     if data.不洁 ~= 0 then
@@ -1476,21 +1476,21 @@ function Train.SettleTrain(data)
         trainPack.欲情 = trainPack.欲情 + DownPalamLv(欲情)
         trainPack.羞耻 = trainPack.羞耻 + 羞耻
     end
-    if data.屈服 ~= 0 then 
-        trainPack.屈服 = data.屈服
+    if data.屈从 ~= 0 then 
+        trainPack.屈从 = data.屈从
     end
 
-    if data.逸脱 ~= 0 then
-        local 欲情 = data.逸脱
+    if data.逃脱 ~= 0 then
+        local 欲情 = data.逃脱
         local 反感 = 0
 
         local temp = math.max(SC, yuwan)
         if temp <= 5 then
-            反感 = data.逸脱 * (80 - temp * 10) / 100
+            反感 = data.逃脱 * (80 - temp * 10) / 100
         elseif temp <= 10 then
-            反感 = data.逸脱 * (30 - (temp - 5) * 5) / 100
+            反感 = data.逃脱 * (30 - (temp - 5) * 5) / 100
         else
-            反感 = data.逸脱 * (5 - (temp - 10) * 1) / 100
+            反感 = data.逃脱 * (5 - (temp - 10) * 1) / 100
         end
 
         if Train.HaveTalent("倒错") or Train.HaveTalent("好奇心") then
@@ -1525,33 +1525,33 @@ function Train.SettleTrain(data)
         end
     end
    
-    local Bfeel = Train.GetAbility("A感觉")
+    local Bfeel = Female.菊穴.感觉
     if Train.GetAbility("淫乳") then
         Bfeel = Bfeel + 1
     end
-    trainPack.快Ｂ = Train.PleasureLimiter(trainPack.快Ｂ, Bfeel)
-    local Afeel = Train.GetAbility("A感觉")
+    trainPack.胸部快感 = Train.PleasureLimiter(trainPack.胸部快感, Bfeel)
+    local Afeel = Female.菊穴.感觉
     if Train.GetAbility("淫尻") then
         Afeel = Afeel + 1
     end
-    trainPack.快Ａ = Train.PleasureLimiter(trainPack.快Ａ, Afeel)
-    local Cfeel = Train.GetAbility("C感觉")
+    trainPack.菊穴快感 = Train.PleasureLimiter(trainPack.菊穴快感, Afeel)
+    local Cfeel = Female.阴蒂.感觉
     if Train.GetAbility("淫核") then
         Cfeel = Cfeel + 1
     end
-    trainPack.快Ｃ = Train.PleasureLimiter(trainPack.快Ｃ, Cfeel)
+    trainPack.阴蒂快感 = Train.PleasureLimiter(trainPack.阴蒂快感, Cfeel)
 
-    local Mfeel = Train.GetAbility("M感觉")
+    local Mfeel = Female.嘴.感觉
     if Train.GetAbility("荡唇") then
         Mfeel = Mfeel + 1
     end
-    trainPack.快Ｍ = Train.PleasureLimiter(trainPack.快Ｍ, Mfeel)
+    trainPack.嘴部快感 = Train.PleasureLimiter(trainPack.嘴部快感, Mfeel)
 
-    local Vfeel = Train.GetAbility("V感觉")
+    local Vfeel = Female.小穴.感觉
     if Train.GetAbility("淫壶") then
         Vfeel = Vfeel + 1
     end
-    trainPack.快Ｖ = Train.PleasureLimiter(trainPack.快Ｖ, Vfeel)
+    trainPack.小穴快感 = Train.PleasureLimiter(trainPack.小穴快感, Vfeel)
 
     local nfeel = Train.GetAbility("尿感觉")
     if Train.GetAbility("尿道狂") then
@@ -1561,21 +1561,21 @@ function Train.SettleTrain(data)
 
     if trainData.SameActive then
         trainPack.快尿 = trainPack.快尿 * 1.25
-        trainPack.快Ｖ = trainPack.快Ｖ * 1.25
-        trainPack.快Ｍ = trainPack.快Ｍ * 1.25
-        trainPack.快Ｃ = trainPack.快Ｃ * 1.25
-        trainPack.快Ａ = trainPack.快Ａ * 1.25
-        trainPack.快Ｂ = trainPack.快Ｂ * 1.25
+        trainPack.小穴快感 = trainPack.小穴快感 * 1.25
+        trainPack.嘴部快感 = trainPack.嘴部快感 * 1.25
+        trainPack.阴蒂快感 = trainPack.阴蒂快感 * 1.25
+        trainPack.菊穴快感 = trainPack.菊穴快感 * 1.25
+        trainPack.胸部快感 = trainPack.胸部快感 * 1.25
     end
 
     if trainPack.痛苦 >= 100 then
         local i = Mathf.Clamp(100 - GetPalamLV(trainPack.痛苦) * 20 + Train.GetAbility("受虐属性") * 20, 10, 150)
         trainPack.快尿 = trainPack.快尿 * i / 100
-        trainPack.快Ｖ = trainPack.快Ｖ * i / 100
-        trainPack.快Ｍ = trainPack.快Ｍ * i / 100
-        trainPack.快Ｃ = trainPack.快Ｃ * 1 / 100
-        trainPack.快Ａ = trainPack.快Ａ * 1 / 100
-        trainPack.快Ｂ = trainPack.快Ｂ * 1 / 100
+        trainPack.小穴快感 = trainPack.小穴快感 * i / 100
+        trainPack.嘴部快感 = trainPack.嘴部快感 * i / 100
+        trainPack.阴蒂快感 = trainPack.阴蒂快感 * 1 / 100
+        trainPack.菊穴快感 = trainPack.菊穴快感 * 1 / 100
+        trainPack.胸部快感 = trainPack.胸部快感 * 1 / 100
         Train.HPDown = Train.HPDown * (100 + (GetPalamLV(trainPack.痛苦) * (GetPalamLV(trainPack.痛苦) + 1) / 2) * 10 ) / 100
     end
     local friend = Female.Friend
@@ -1609,31 +1609,31 @@ function Train.SettleTrain(data)
     end
     local Obedience = Female.Obedience
     if Obedience <= -50 then
-        trainPack.屈服 = trainPack.屈服 * 0.2
+        trainPack.屈从 = trainPack.屈从 * 0.2
         trainPack.习得 = trainPack.习得 * 0.2
     elseif Obedience <= 0 then
-        trainPack.屈服 = trainPack.屈服 * 0.5
+        trainPack.屈从 = trainPack.屈从 * 0.5
         trainPack.习得 = trainPack.习得 * 0.5
     elseif Obedience <= 50 then
-        trainPack.屈服 = trainPack.屈服 * 0.75
+        trainPack.屈从 = trainPack.屈从 * 0.75
         trainPack.习得 = trainPack.习得 * 0.75
     elseif Obedience <= 100 then
-        trainPack.屈服 = trainPack.屈服 * 0.9
+        trainPack.屈从 = trainPack.屈从 * 0.9
         trainPack.习得 = trainPack.习得 * 0.9
     elseif Obedience <= 500 then
-        trainPack.屈服 = trainPack.屈服 * 1.1
+        trainPack.屈从 = trainPack.屈从 * 1.1
         trainPack.习得 = trainPack.习得 * 1.1
     elseif Obedience <= 2000 then      
-        trainPack.屈服 = trainPack.屈服 * 1.3
+        trainPack.屈从 = trainPack.屈从 * 1.3
         trainPack.习得 = trainPack.习得 * 1.3
     elseif Obedience <= 5000 then 
-        trainPack.屈服 = trainPack.屈服 * 1.5
+        trainPack.屈从 = trainPack.屈从 * 1.5
         trainPack.习得 = trainPack.习得 * 1.5
     elseif Obedience <= 10000 then      
-        trainPack.屈服 = trainPack.屈服 * 1.8
+        trainPack.屈从 = trainPack.屈从 * 1.8
         trainPack.习得 = trainPack.习得 * 1.8
     else
-        trainPack.屈服 = trainPack.屈服 * 2
+        trainPack.屈从 = trainPack.屈从 * 2
         trainPack.习得 = trainPack.习得 * 2
     end
     local Happy = 1
@@ -1668,11 +1668,11 @@ function Train.SettleTrain(data)
     end
 
     trainPack.快尿 = trainPack.快尿 * Happy 
-    trainPack.快Ａ = trainPack.快Ａ * Happy 
-    trainPack.快Ｂ = trainPack.快Ｂ * Happy 
-    trainPack.快Ｃ = trainPack.快Ｃ * Happy 
-    trainPack.快Ｍ = trainPack.快Ｍ * Happy 
-    trainPack.快Ｖ = trainPack.快Ｖ * Happy 
+    trainPack.菊穴快感 = trainPack.菊穴快感 * Happy 
+    trainPack.胸部快感 = trainPack.胸部快感 * Happy 
+    trainPack.阴蒂快感 = trainPack.阴蒂快感 * Happy 
+    trainPack.嘴部快感 = trainPack.嘴部快感 * Happy 
+    trainPack.小穴快感 = trainPack.小穴快感 * Happy 
 
     if trainPack.恐怖 <= 10 then
         trainPack.恐怖 = 0
@@ -1709,99 +1709,99 @@ function Train.TrainlHandle()
         end
     end
 
-    if Train.HaveTalent("A性向") or Train.HaveTalent("淫尻") then
-        CSourcePack.快Ａ = CSourcePack.快Ａ * 2
+    if Train.HaveTalent("肛性向") or Train.HaveTalent("淫尻") then
+        CSourcePack.菊穴快感 = CSourcePack.菊穴快感 * 2
     end
-    if Train.HaveTalent("B性向") or Train.HaveTalent("淫乳") then
-        CSourcePack.快Ｂ = CSourcePack.快Ｂ * 2
+    if Train.HaveTalent("胸性向") or Train.HaveTalent("淫乳") then
+        CSourcePack.胸部快感 = CSourcePack.胸部快感 * 2
     end
-    if Train.HaveTalent("C性向") or Train.HaveTalent("淫核") then
-        CSourcePack.快Ｃ = CSourcePack.快Ｃ * 2
+    if Train.HaveTalent("阴蒂性向") or Train.HaveTalent("淫核") then
+        CSourcePack.阴蒂快感 = CSourcePack.阴蒂快感 * 2
     end
-    if Train.HaveTalent("V性向") or Train.HaveTalent("淫壶") then
-        CSourcePack.快Ｖ = CSourcePack.快Ｖ * 2
+    if Train.HaveTalent("阴道性向") or Train.HaveTalent("淫壶") then
+        CSourcePack.小穴快感 = CSourcePack.小穴快感 * 2
     end
-    if Train.HaveTalent("M性向") or Train.HaveTalent("荡唇") then
-        CSourcePack.快Ｍ = CSourcePack.快Ｍ * 2
+    if Train.HaveTalent("唇性向") or Train.HaveTalent("荡唇") then
+        CSourcePack.嘴部快感 = CSourcePack.嘴部快感 * 2
     end
-    if Train.HaveTalent("U性向") or Train.HaveTalent("尿道狂") then
+    if Train.HaveTalent("尿性向") or Train.HaveTalent("尿道狂") then
         CSourcePack.快尿 = CSourcePack.快尿 * 2
     end
-    if CSourcePack.快Ｃ > 0 then
-        local n = Train.GetAbility("C感觉")
+    if CSourcePack.阴蒂快感 > 0 then
+        local n = Female.阴蒂.感觉
         if Train.HaveTalent("淫核") then
             n = n + 1
         end
-        if Train.HaveTalent("C性向") then
+        if Train.HaveTalent("阴蒂性向") then
             n = n + 1
         end
-        CSourcePack.快Ｃ = Train.PleasureLimiter(CSourcePack.快Ｃ, n)
+        CSourcePack.阴蒂快感 = Train.PleasureLimiter(CSourcePack.阴蒂快感, n)
     end
-    if CSourcePack.快Ｖ > 0 then
-        local n = Train.GetAbility("V感觉")
+    if CSourcePack.小穴快感 > 0 then
+        local n = Female.小穴.感觉
         if Train.HaveTalent("淫壶") then
             n = n + 1
         end
-        if Train.HaveTalent("V性向") then
+        if Train.HaveTalent("阴道性向") then
             n = n + 1
         end
-        CSourcePack.快Ｖ = Train.PleasureLimiter(CSourcePack.快Ｖ, n)
+        CSourcePack.小穴快感 = Train.PleasureLimiter(CSourcePack.小穴快感, n)
     end
-    if CSourcePack.快Ａ > 0 then
-        local n = Train.GetAbility("A感觉")
+    if CSourcePack.菊穴快感 > 0 then
+        local n = Female.菊穴.感觉
         if Train.HaveTalent("淫尻") then
             n = n + 1
         end
-        if Train.HaveTalent("A性向") then
+        if Train.HaveTalent("肛性向") then
             n = n + 1
         end
-        CSourcePack.快Ａ = Train.PleasureLimiter(CSourcePack.快Ａ, n)
+        CSourcePack.菊穴快感 = Train.PleasureLimiter(CSourcePack.菊穴快感, n)
     end
-    if CSourcePack.快Ｂ > 0 then
-        local n = Train.GetAbility("B感觉")
+    if CSourcePack.胸部快感 > 0 then
+        local n = Female.胸.感觉
         if Train.HaveTalent("淫乳") then
             n = n + 1
         end
-        if Train.HaveTalent("B性向") then
+        if Train.HaveTalent("胸性向") then
             n = n + 1
         end
-        CSourcePack.快Ｂ = Train.PleasureLimiter(CSourcePack.快Ｂ, n)
+        CSourcePack.胸部快感 = Train.PleasureLimiter(CSourcePack.胸部快感, n)
     end
-    if CSourcePack.快Ｍ > 0 then
-        local n = Train.GetAbility("M感觉")
+    if CSourcePack.嘴部快感 > 0 then
+        local n = Female.嘴.感觉
         if Train.HaveTalent("荡唇") then
             n = n + 1
         end
-        if Train.HaveTalent("M性向") then
+        if Train.HaveTalent("唇性向") then
             n = n + 1
         end
-        CSourcePack.快Ｍ = Train.PleasureLimiter(CSourcePack.快Ｍ, n)
+        CSourcePack.嘴部快感 = Train.PleasureLimiter(CSourcePack.嘴部快感, n)
     end
     if CSourcePack.快尿 > 0 then
         local n = Train.GetAbility("尿感觉")
         if Train.HaveTalent("尿道狂") then
             n = n + 1
         end
-        if Train.HaveTalent("U性向") then
+        if Train.HaveTalent("尿性向") then
             n = n + 1
         end
         CSourcePack.快尿 = Train.PleasureLimiter(CSourcePack.快尿, n)
     end
     if trainData.SameActive then
-        CSourcePack.快Ｃ = CSourcePack.快Ｃ * 1.25
-        CSourcePack.快Ｖ = CSourcePack.快Ｖ * 1.25
-        CSourcePack.快Ａ = CSourcePack.快Ａ * 1.25
-        CSourcePack.快Ｂ = CSourcePack.快Ｂ * 1.25
-        CSourcePack.快Ｍ = CSourcePack.快Ｍ * 1.25
+        CSourcePack.阴蒂快感 = CSourcePack.阴蒂快感 * 1.25
+        CSourcePack.小穴快感 = CSourcePack.小穴快感 * 1.25
+        CSourcePack.菊穴快感 = CSourcePack.菊穴快感 * 1.25
+        CSourcePack.胸部快感 = CSourcePack.胸部快感 * 1.25
+        CSourcePack.嘴部快感 = CSourcePack.嘴部快感 * 1.25
         CSourcePack.快尿 = CSourcePack.快尿 * 1.25
     end
     if CSourcePack.痛苦 >= 100 then
         local n = Mathf.Clamp(100 - GetPalamLV(CSourcePack.痛苦) * 20 + Train.GetAbility("受虐属性") * 20, 10, 110)
-        CSourcePack.快Ｃ = CSourcePack.快Ｃ * (n / 100)
-        CSourcePack.快Ｖ = CSourcePack.快Ｖ * (n / 100)
-        CSourcePack.快Ａ = CSourcePack.快Ａ * (n / 100)
-        CSourcePack.快Ｂ = CSourcePack.快Ｂ * (n / 100)
-        CSourcePack.快Ｍ = CSourcePack.快Ｍ * (n / 100)
+        CSourcePack.阴蒂快感 = CSourcePack.阴蒂快感 * (n / 100)
+        CSourcePack.小穴快感 = CSourcePack.小穴快感 * (n / 100)
+        CSourcePack.菊穴快感 = CSourcePack.菊穴快感 * (n / 100)
+        CSourcePack.胸部快感 = CSourcePack.胸部快感 * (n / 100)
+        CSourcePack.嘴部快感 = CSourcePack.嘴部快感 * (n / 100)
         CSourcePack.快尿 = CSourcePack.快尿 * (n / 100)
 
         trainData.DownHP = (100 + (GetPalamLV(CSourcePack.痛苦) * (GetPalamLV(CSourcePack.痛苦) + 1) / 2) * 10) / 100 * trainData.DownHP
@@ -1880,8 +1880,8 @@ end
 
 
 function Train.MarkGetCheck()
-    local happy = math.max(CSourcePack.快尿, CSourcePack.快Ａ, CSourcePack.快Ｂ, CSourcePack.快Ｃ, CSourcePack.快Ｍ, CSourcePack.快Ｖ,
-    (CSourcePack.快尿 + CSourcePack.快Ａ + CSourcePack.快Ｂ + CSourcePack.快Ｃ + CSourcePack.快Ｍ + CSourcePack.快Ｖ) / 2)
+    local happy = math.max(CSourcePack.快尿, CSourcePack.菊穴快感, CSourcePack.胸部快感, CSourcePack.阴蒂快感, CSourcePack.嘴部快感, CSourcePack.小穴快感,
+    (CSourcePack.快尿 + CSourcePack.菊穴快感 + CSourcePack.胸部快感 + CSourcePack.阴蒂快感 + CSourcePack.嘴部快感 + CSourcePack.小穴快感) / 2)
     local happyMark = 0
     if happy > 30000 then
         happyMark = 3
@@ -1917,7 +1917,7 @@ function Train.MarkGetCheck()
         Message : AddMessage(text)
     end
 
-    local surrender = CSourcePack.屈服
+    local surrender = CSourcePack.屈从
     local surrenderMark = 0
     if surrender > 30000 then
         surrenderMark = 3
@@ -1927,7 +1927,7 @@ function Train.MarkGetCheck()
         surrenderMark = 1
     end
     if surrenderMark > Female.Mark[2] then
-        local text = "取得了屈服刻印Lv"..surrenderMark
+        local text = "取得了屈从刻印Lv"..surrenderMark
         Female.Mark[2] = surrenderMark
         Message : AddMessage(text)
     end
@@ -1977,7 +1977,7 @@ end
 function Train.OrgasmHandle()
     local data = ActiveData.new()
     local feels = {"尿", "Ａ", "Ｂ", "Ｃ", "Ｖ", "Ｍ"}
-    local Orgasms = {快Ｃ = 0, 快Ｖ = 0, 快Ａ = 0, 快尿 = 0, 快Ｂ = 0, 快Ｍ = 0}
+    local Orgasms = {阴蒂快感 = 0, 小穴快感 = 0, 菊穴快感 = 0, 快尿 = 0, 胸部快感 = 0, 嘴部快感 = 0}
     for index, value in ipairs(feels) do
         local valuea = "快"..value
         local es = CSourcePack[valuea] + trainData.Source : get_Item(valuea)
@@ -2001,64 +2001,64 @@ function Train.OrgasmHandle()
     local orgasmsNumber = 0
     local Otypes = 0
 
-    if Orgasms["快Ｃ"] > 0 then
-        data.露出 = 300 * Orgasms["快Ｃ"]
-        if Train.HaveTalent("C性向") or Train.HaveTalent("淫核") then
-            data.屈服 = data.屈服 + 1000
+    if Orgasms["阴蒂快感"] > 0 then
+        data.露出 = 300 * Orgasms["阴蒂快感"]
+        if Train.HaveTalent("阴蒂性向") or Train.HaveTalent("淫核") then
+            data.屈从 = data.屈从 + 1000
             Train.fav = Train.fav + 2
         end
-        orgasmsNumber = orgasmsNumber + Orgasms["快Ｃ"]
+        orgasmsNumber = orgasmsNumber + Orgasms["阴蒂快感"]
         Otypes = Otypes + 1
     end
-    if Orgasms["快Ｖ"] > 0 then
-        data.露出 = data.露出 + 500 * Orgasms["快Ｖ"]
-        data.屈服 = data.屈服 + 500
-        if Train.HaveTalent("V性向") or Train.HaveTalent("淫壶") then
-            data.屈服 = data.屈服 + 1000
+    if Orgasms["小穴快感"] > 0 then
+        data.露出 = data.露出 + 500 * Orgasms["小穴快感"]
+        data.屈从 = data.屈从 + 500
+        if Train.HaveTalent("阴道性向") or Train.HaveTalent("淫壶") then
+            data.屈从 = data.屈从 + 1000
             Train.fav = Train.fav + 2
         end
         data.欲情追加 = data.欲情追加 + 500
-        orgasmsNumber = orgasmsNumber + Orgasms["快Ｖ"]
+        orgasmsNumber = orgasmsNumber + Orgasms["小穴快感"]
         Otypes = Otypes + 1
     end
-    if Orgasms["快Ａ"] > 0 then
-        data.露出 = data.露出 + 1000 * Orgasms["快Ａ"]
-        data.屈服 = data.屈服 + 2000
-        if Train.HaveTalent("A性向") or Train.HaveTalent("淫尻") then
-            data.屈服 = data.屈服 + 1000
+    if Orgasms["菊穴快感"] > 0 then
+        data.露出 = data.露出 + 1000 * Orgasms["菊穴快感"]
+        data.屈从 = data.屈从 + 2000
+        if Train.HaveTalent("肛性向") or Train.HaveTalent("淫尻") then
+            data.屈从 = data.屈从 + 1000
             Train.fav = Train.fav + 2
         end
         data.欲情追加 = data.欲情追加 + 500
-        orgasmsNumber = orgasmsNumber + Orgasms["快Ａ"]
+        orgasmsNumber = orgasmsNumber + Orgasms["菊穴快感"]
         Otypes = Otypes + 1
     end
     if Orgasms["快尿"] > 0 then
         data.露出 = data.露出 + 1000 * Orgasms["快尿"]
-        data.屈服 = data.屈服 + 2000
-        if Train.HaveTalent("U性向") or Train.HaveTalent("尿道狂") then
-            data.屈服 = data.屈服 + 1000
+        data.屈从 = data.屈从 + 2000
+        if Train.HaveTalent("尿性向") or Train.HaveTalent("尿道狂") then
+            data.屈从 = data.屈从 + 1000
             Train.fav = Train.fav + 2
         end
         data.欲情追加 = data.欲情追加 + 500
         orgasmsNumber = orgasmsNumber + Orgasms["快尿"]
         Otypes = Otypes + 1
     end
-    if Orgasms["快Ｂ"] > 0 then
-        data.露出 = data.露出 + 300 * Orgasms["快Ｂ"]
-        if Train.HaveTalent("B性向") or Train.HaveTalent("淫乳") then
-            data.屈服 = data.屈服 + 1000
+    if Orgasms["胸部快感"] > 0 then
+        data.露出 = data.露出 + 300 * Orgasms["胸部快感"]
+        if Train.HaveTalent("胸性向") or Train.HaveTalent("淫乳") then
+            data.屈从 = data.屈从 + 1000
             Train.fav = Train.fav + 2
         end
-        orgasmsNumber = orgasmsNumber + Orgasms["快Ｂ"]
+        orgasmsNumber = orgasmsNumber + Orgasms["胸部快感"]
         Otypes = Otypes + 1
     end
-    if Orgasms["快Ｍ"] > 0 then
-        data.情爱 = data.情爱 + 500 * Orgasms["快Ｍ"]
-        if Train.HaveTalent("M性向") or Train.HaveTalent("荡唇") then
-            data.屈服 = data.屈服 + 1000
+    if Orgasms["嘴部快感"] > 0 then
+        data.情爱 = data.情爱 + 500 * Orgasms["嘴部快感"]
+        if Train.HaveTalent("唇性向") or Train.HaveTalent("荡唇") then
+            data.屈从 = data.屈从 + 1000
             Train.fav = Train.fav + 2
         end
-        orgasmsNumber = orgasmsNumber + Orgasms["快Ｍ"]
+        orgasmsNumber = orgasmsNumber + Orgasms["嘴部快感"]
         Otypes = Otypes + 1
     end
 
@@ -2071,10 +2071,10 @@ function Train.OrgasmHandle()
     Train.fav = Train.fav + Otypes
     Train.堕落 = Train.堕落 + Otypes
     trainData : AddContent("绝顶", Otypes)
-    data.逸脱 = data.逸脱 - 20
+    data.逃脱 = data.逃脱 - 20
     data.露出 = data.露出 - 20
     data.反感追加 = data.反感追加 -  20
-    data.屈服 = data.屈服 * Otypes
+    data.屈从 = data.屈从 * Otypes
     data.欲情追加 = data.欲情追加 * Otypes
     data.恭顺追加 = data.恭顺追加 * Otypes
 
@@ -2136,10 +2136,10 @@ function Train.OrgasmHandle()
         level = level - 1
     end
 
-    local jd = CSourcePack.快Ｃ * trainData.FemaleSamen.y / 10000
+    local jd = CSourcePack.阴蒂快感 * trainData.FemaleSamen.y / 10000
     trainData.FemaleSamen.x = trainData.FemaleSamen.x + math.floor(jd)
     if trainData.Position[4] or trainData.Active == "肛门拳交" or  trainData.Active == "双穴拳交" then
-        trainData.FemaleSamen.x = trainData.FemaleSamen.x + CSourcePack.快Ａ * trainData.FemaleSamen.y / 20000
+        trainData.FemaleSamen.x = trainData.FemaleSamen.x + CSourcePack.菊穴快感 * trainData.FemaleSamen.y / 20000
     end
     if trainData.FemaleSamen.x > trainData.FemaleSamen.y then
         local s = 0
@@ -2154,21 +2154,21 @@ function Train.OrgasmHandle()
         trainData.AddContent(Female.."射精")
         local level = Female : SetSexexp("射精经验")
         if GetExpLV(level) < 1 then
-            data.屈服 = data.屈服 + 650 * s
+            data.屈从 = data.屈从 + 650 * s
         elseif GetExpLV(level) < 2 then
-            data.屈服 = data.屈服 + 550 * s
+            data.屈从 = data.屈从 + 550 * s
         elseif GetExpLV(level) < 3 then
-            data.屈服 = data.屈服 + 450 * s
+            data.屈从 = data.屈从 + 450 * s
         elseif GetExpLV(level) < 4 then
-            data.屈服 = data.屈服 + 400 * s
+            data.屈从 = data.屈从 + 400 * s
         elseif GetExpLV(level) < 5 then
-            data.屈服 = data.屈服 + 300 * s
+            data.屈从 = data.屈从 + 300 * s
         else
-            data.屈服 = data.屈服 + 200 * s
+            data.屈从 = data.屈从 + 200 * s
         end
 
-        AddSexexp("射精经验", 1)
-        AddSexexp("精液经验", s, Trainer)
+        TrainManager:获得经验("射精经验", 1)
+        TrainManager:获得经验("精液经验", s, Trainer)
         trainData.FemaleSamen.x = 0
         if s == 3 then
             Message : AddMessage(Female.."超强射精")
@@ -2181,10 +2181,10 @@ function Train.OrgasmHandle()
 
     if Train.HaveTalent("母乳体质") then
         local milk = math.random(0,1000)
-        if CSourcePack.快Ｂ <= 10000 then
-            milk = milk + CSourcePack.快Ｂ
+        if CSourcePack.胸部快感 <= 10000 then
+            milk = milk + CSourcePack.胸部快感
         else
-            milk = milk + (10000 + DownPalamLv(CSourcePack.快Ｂ - 10000))
+            milk = milk + (10000 + DownPalamLv(CSourcePack.胸部快感 - 10000))
         end
         if Train.HaveTalent("巨乳") then
             milk = milk + 500
@@ -2198,7 +2198,7 @@ function Train.OrgasmHandle()
 
         trainData.FemaleMilk.x = trainData.FemaleMilk.x + milk
         local b = 0
-        if CSourcePack.快Ｂ and Orgasms["快Ｂ"] and trainData.FemaleMilk.x > trainData.FemaleMilk.y then
+        if CSourcePack.胸部快感 and Orgasms["胸部快感"] and trainData.FemaleMilk.x > trainData.FemaleMilk.y then
 
             if trainData.FemaleMilk.x > trainData.FemaleMilk.y * 3 then
                 b = 3
@@ -2210,7 +2210,7 @@ function Train.OrgasmHandle()
         end
         if b > 0 then
             trainData.AddContent("喷乳")
-            Female : AddSexexp("喷乳经验", b)
+            Female : TrainManager:获得经验("喷乳经验", b)
             data.露出 = data.露出 + 500 * b
             trainData.FemaleMilk.x = 0
             if Train.HaveTalent("倒错") then
@@ -2234,7 +2234,7 @@ function Train.OrgasmHandle()
     CSourcePack = CSourcePack + pack
 
     --经验
-    local text = SB.new()
+    local text = SB.New()
     if Otypes == 5 then
         SB.append(text,"五重绝顶")
     elseif Otypes == 4 then
@@ -2242,14 +2242,14 @@ function Train.OrgasmHandle()
     else
         for key, value in pairs(feels) do
             if Orgasms["快"..feels] >= 4 then
-                SB.append(text, feels.."超强绝顶")
+                text:Append(feels.."超强绝顶")
             elseif Orgasms["快"..feels] > 2 then
-                SB.append(text, feels.."强绝顶")
+                text:Append(feels.."强绝顶")
             else
-                SB.append(text, feels.."绝顶")
+                text:Append(feels.."绝顶")
             end
         end
-        Message : AddMessage(SB.tostr(text))
+        Message : AddMessage(text:ToStr())
     end
 
     if Train.GetAbility("欲望") < level then
@@ -2279,20 +2279,20 @@ function Train.OrgasmHandle()
     if Train.HaveTalent("淫乱") then
         Female.Depraved = Female.Depraved + orgasmsNumber
     end
-    Female : AddSexexp("绝顶经验", orgasmsNumber)
+    Female : TrainManager:获得经验("绝顶经验", orgasmsNumber)
     Message : AddMessage("绝顶经验增加了"..orgasmsNumber)
     Message : AddMessage("堕落度上升到了"..Female.Depraved)
 end
 
 function Train.ExpCheck()
     if tostring(Female.sex) ~= "男" and tostring(Trainer.sex) ~= "男" then
-        AddSexexp("百合经验", 1)
+        TrainManager:获得经验("百合经验", 1)
     elseif tostring(Female.sex) == "男" and tostring(Trainer.sex) == "男" then
-        AddSexexp("断袖经验", 1)
+        TrainManager:获得经验("断袖经验", 1)
     end
 
 
-    local value = CSourcePack.快Ａ + CSourcePack.快Ｃ + CSourcePack.快Ｖ + CSourcePack.快Ｂ + CSourcePack.快Ｍ + CSourcePack.快尿 + CSourcePack.欲情
+    local value = CSourcePack.菊穴快感 + CSourcePack.阴蒂快感 + CSourcePack.小穴快感 + CSourcePack.胸部快感 + CSourcePack.嘴部快感 + CSourcePack.快尿 + CSourcePack.欲情
     local LOCAL = 0
     if value >= 30000 then
         LOCAL = 3
@@ -2304,7 +2304,7 @@ function Train.ExpCheck()
         LOCAL = 0
     end
     local temp = 0
-    local text = SB.new()
+    local text = SB.New()
     if SexType("侍奉快乐") then
         temp = LOCAL + 1
         if trainData.equipItem : Contains("媚药") then
@@ -2321,9 +2321,9 @@ function Train.ExpCheck()
         temp = temp / 2
         temp = math.floor(temp)
     end
-    Female : AddSexexp("侍奉快乐经验", math.max(temp,0))
+    Female : TrainManager:获得经验("侍奉快乐经验", math.max(temp,0))
     if temp > 0 then
-        SB.appendLine(text, "侍奉快乐经验 +"..temp)
+        text:AppendLine("侍奉快乐经验 +"..temp)
     end
     Female.Mood = Female.Mood + temp / 2
     temp = 0
@@ -2337,15 +2337,15 @@ function Train.ExpCheck()
         end
         if SexType("侍奉快乐") and Train.GetAbility("侍奉技术") >= Train.GetAbility("施虐属性") then
             temp = temp - 1
-        end
+        endF
     end
     if Trainer.Name ~= Factory.Characters[0].Name then
         temp = temp / 2
         temp = math.floor(temp)
     end
-    Female : AddSexexp("嗜虐快乐经验", math.max(temp,0))
+    Female : TrainManager:获得经验("嗜虐快乐经验", math.max(temp,0))
     if temp > 0 then
-        SB.appendLine(text, "嗜虐快乐经验 +"..temp)
+        text:AppendLine("嗜虐快乐经验 +"..temp)
     end
     Female.Mood = Female.Mood + temp / 2
     LOCAL = math.min(value, CSourcePack.羞耻)
@@ -2368,9 +2368,9 @@ function Train.ExpCheck()
             temp = temp + 1
         end
     end
-    Female : AddSexexp("羞耻快乐经验", math.max(temp,0))
+    Female : TrainManager:获得经验("羞耻快乐经验", math.max(temp,0))
     if temp > 0 then
-        SB.appendLine(text, "羞耻快乐经验 +"..temp)
+        text:AppendLine("羞耻快乐经验 +"..temp)
     end
     Female.Mood = Female.Mood + temp / 2
     LOCAL = math.min(value, CSourcePack.痛苦)
@@ -2393,9 +2393,9 @@ function Train.ExpCheck()
             temp = temp + 1
         end
     end
-    Female : AddSexexp("被虐快乐经验", math.max(temp,0))
+    Female : TrainManager:获得经验("被虐快乐经验", math.max(temp,0))
     if temp > 0 then
-        SB.appendLine(text, "被虐快乐经验 +"..temp)
+        text:AppendLine("被虐快乐经验 +"..temp)
     end
     Female.Mood = Female.Mood + temp / 2
 end
@@ -2421,39 +2421,39 @@ function Train.SamenHandle()
         sj = 20
     end
     sj = sj * math.random(50, 180) / 100
-    AddSexexp("射精经验", s, Trainer)
-    CtrainPack.达成感 = CtrainPack.达成感 * (jy * 0.5 + 1)
-    CtrainPack.屈服 = CtrainPack.屈服 * (jy * 0.5 + 1)
+    TrainManager:获得经验("射精经验", s, Trainer)
+    CtrainPack.成就感 = CtrainPack.成就感 * (jy * 0.5 + 1)
+    CtrainPack.屈从 = CtrainPack.屈从 * (jy * 0.5 + 1)
 
     if Train.SePlace == "小穴" then
         local n = 50 * Female.Mark[4]
         CtrainPack.充足 = CtrainPack.充足 + n * (jy - 1)
         CtrainPack.不洁 = CtrainPack.不洁 + 20
-        Female : AddSexexp("腔内精液经验", s)
+        Female : TrainManager:获得经验("腔内精液经验", s)
     elseif Train.SePlace == "肛门" then
         CtrainPack.充足 = CtrainPack.充足 + 50 * (jy - 1)
         CtrainPack.不洁 = CtrainPack.不洁 + 50
-        Female : AddSexexp("肛内精液经验", s)
+        Female : TrainManager:获得经验("肛内精液经验", s)
     elseif Train.SePlace == "尿道" then
         CtrainPack.充足 = CtrainPack.充足 + 100 * (jy - 1)
         CtrainPack.不洁 = CtrainPack.不洁 + 200
-        Female : AddSexexp("膀胱精液经验", s)
+        Female : TrainManager:获得经验("膀胱精液经验", s)
     elseif Train.SePlace == "口腔" then
         CtrainPack.充足 = CtrainPack.充足 + 250 * (jy - 1)
         CtrainPack.不洁 = CtrainPack.不洁 + 50
-        Female : AddSexexp("饮精经验", s)
+        Female : TrainManager:获得经验("饮精经验", s)
     elseif Train.SePlace == "胸部" then
         CtrainPack.充足 = CtrainPack.充足 + 200 * (jy - 1)
         CtrainPack.不洁 = CtrainPack.不洁 + 100
-        Female : AddSexexp("精液经验", s)
+        Female : TrainManager:获得经验("精液经验", s)
     elseif Train.SePlace == "身上" then
         CtrainPack.充足 = CtrainPack.充足 + 150 * (jy - 1)
         CtrainPack.不洁 = CtrainPack.不洁 + 100
-        Female : AddSexexp("精液经验", s)
+        Female : TrainManager:获得经验("精液经验", s)
     elseif Train.SePlace == "脸部" then
         CtrainPack.充足 = CtrainPack.充足 + 300 * (jy - 1)
         CtrainPack.不洁 = CtrainPack.不洁 + 100
-        Female : AddSexexp("颜射经验", s)
+        Female : TrainManager:获得经验("颜射经验", s)
     end
     if Train.SePlace == "小穴" then
         local SPERM = sj * (10 + math.random(0,21))
@@ -2512,11 +2512,12 @@ function Train.JJLike()
 end
 
 function Train.LovePlay(base, value)
-    base.充足 = base.充足 + DownPalamLv(value, 1) + 100
-    base.不洁 = base.不洁 + math.max(DownPalamLv(base.不洁, 1) - 500, 0)
-    base.逸脱 = base.逸脱 + math.max(DownPalamLv(base.逸脱, 1) - 500, 0)
-    base.恐惧 = base.恐惧 + math.max(DownPalamLv(base.恐惧, 1) - 500, 0)
-    base.反感追加 = base.反感追加 + math.max(DownPalamLv(base.反感追加, 1) - 500, 0)
+    local d = require("Data/参数")
+    base.充足 = base.充足 + d:DownPalamLv(value, 1) + 100
+    base.不洁 = base.不洁 + math.max(d:DownPalamLv(base.不洁, 1) - 500, 0)
+    base.逃脱 = base.逃脱 + math.max(d:DownPalamLv(base.逃脱, 1) - 500, 0)
+    base.恐惧 = base.恐惧 + math.max(d:DownPalamLv(base.恐惧, 1) - 500, 0)
+    base.反感追加 = base.反感追加 + math.max(d:DownPalamLv(base.反感追加, 1) - 500, 0)
 end
 
 function Train.AddLust()
@@ -2535,7 +2536,7 @@ function Train.Estrus(type)
         if Train.HaveTalent("淫乳") then
             temp = temp + 1
         end
-        if Train.GetAbility("B感觉") >= 5 or trainData.Source : get_Item("欲情") >= 10000 or trainData : PrevPlay("B绝顶") > 0 then
+        if Female.胸.感觉 >= 5 or trainData.Source : get_Item("欲情") >= 10000 or trainData : PrevPlay("B绝顶") > 0 then
             temp = temp + 1
         end
         if trainData.Source : get_Item("欲情") >= 30000 then
@@ -2556,7 +2557,7 @@ function Train.Estrus(type)
         if trainData.Source : get_Item("欲情") >= 10000 or trainData.equipItem : Contains("媚药") then
             temp = temp + 1
         end
-        if Train.GetAbility("V感觉") >= 3 or trainData.Source : get_Item("欲情") >= 3000 then
+        if Female.小穴.感觉 >= 3 or trainData.Source : get_Item("欲情") >= 3000 then
             temp = temp + 1
         end
         if trainData : PrevPlay("Ｖ绝顶") > 0 or trainData.FemaleClimax[1] >= 3 then
@@ -2569,7 +2570,7 @@ function Train.Estrus(type)
         if trainData.Source : get_Item("欲情") >= 30000 then
             temp = temp + 1
         end
-        if (Train.GetAbility("C感觉") >= 5 and trainData.Source : get_Item("欲情") >= 3000) or trainData : PrevPlay("Ｃ绝顶") > 0 then
+        if (Female.阴蒂.感觉 >= 5 and trainData.Source : get_Item("欲情") >= 3000) or trainData : PrevPlay("Ｃ绝顶") > 0 then
             temp = temp + 1
         end
         if trainData : PrevPlay("C绝顶") > 4 then
@@ -2584,7 +2585,7 @@ end
 
 function Train.AllowAction()
     local value = 0
-    local text = SB.new()
+    local text = SB.New()
 
     local temp = math.min(Train.GetAbility("顺从"), 10)
     if(temp > 0) then
@@ -2676,7 +2677,7 @@ function Train.AllowAction()
 
     if Female.Feel : ToInt() < 4 and Female.Feel : ToInt() > 0 then
         value = value + 5 * Female.Feel : ToInt()
-        SB.append(text, tostring(Female.Feel)..": +"..5 * Female.Feel : ToInt())
+        text:Append(tostring(Female.Feel)..": +"..5 * Female.Feel : ToInt())
     end
 
     if trainData.equipItem : Contains("摄像机") then
@@ -2703,7 +2704,7 @@ function Train.ShowOrder(value, text, need)
         SB.append(text," < "..need)
     end
     
-    Message : AddMessage(SB.tostr(text))
+    Message : AddMessage(text:ToStr())
     if value >= need then
         return true
     else

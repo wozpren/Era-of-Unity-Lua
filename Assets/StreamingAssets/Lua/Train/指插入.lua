@@ -1,4 +1,4 @@
-function SexActive(Active, Select)
+function t:SexActive(Active, Select)
     local base
     if Train.Pos["小穴"] == "振动棒" then
         base = InsertAcitve(Active, Select)
@@ -10,29 +10,29 @@ function SexActive(Active, Select)
         end
     end
     if Select == "小穴" then
-        AddSexexp("V经验", 1)
+        TrainManager:获得经验("小穴经验", 1)
     elseif Select == "肛门" then
-        AddSexexp("A经验", 1)
+        TrainManager:获得经验("菊穴经验", 1)
     elseif Select == "尿道" then
-        AddSexexp("尿道经验", 1)
+        TrainManager:获得经验("尿道经验", 1)
     end
-    AddSexexp("手淫经验", 1)
+    TrainManager:获得经验("手淫经验", 1)
 
 
     return base
 end
 
-function TrainMessage()
+function t:TrainMessage()
     ImplementKoujiu("指插入")
 end
 
-function SexType(type)
+function t:SexType(type)
     if type == "V插入" then
         return true
     end
     return false
 end
 
-function Check()
+function t:Check()
     return true
 end

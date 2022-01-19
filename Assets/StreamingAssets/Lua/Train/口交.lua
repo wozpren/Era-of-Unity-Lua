@@ -1,4 +1,5 @@
-function SexActive(Active, Select)
+local t = {}
+function t:SexActive(Active, Select)
     local base = ServicePlay()
     HPDown = HPDown + 100
 
@@ -6,22 +7,22 @@ function SexActive(Active, Select)
 
     base.不洁 = base.不洁 + 200
     base.欲情追加 = Train.AddLust()
-    base.屈服 = base.屈服 + 1500
-    base.逸脱 = base.逸脱 + 500
-    base.M快乐 = trainData : CalcfStimulate("M刺激", 2)
+    base.屈从 = base.屈从 + 1500
+    base.逃脱 = base.逃脱 + 500
+    base.嘴部快感 = Female:计算刺激度("M刺激", 2)
 
     if Select == "清洁口交" then
-        base.达成感 = base.达成感 + 1000
+        base.成就感 = base.成就感 + 1000
         base.性行动 = base.性行动 + 1000
-        base.M快乐 = base.M快乐 * 1.2
-        base.屈服 = base.屈服 + 1000
+        base.嘴部快感 = base.嘴部快感 * 1.2
+        base.屈从 = base.屈从 + 1000
     elseif Select == "深喉" then
-        base.达成感 = base.达成感 * 1.5
+        base.成就感 = base.成就感 * 1.5
         base.性行动 = base.性行动 * 1.5
-        base.M快乐 = base.M快乐 * 1.5
-        base.屈服 = base.屈服 * 2
+        base.嘴部快感 = base.嘴部快感 * 1.5
+        base.屈从 = base.屈从 * 2
         base.不洁 = base.不洁 * 1.5
-        base.逸脱 = base.逸脱 * 6
+        base.逃脱 = base.逃脱 * 6
 
         Train.PosOccupy("嘴", "肉棒")
 
@@ -40,33 +41,33 @@ function SexActive(Active, Select)
             base.疼痛 = 300
         end
     elseif Select == "阴茎接吻" then--修改
-        base.达成感 = base.达成感 * 0.1 
+        base.成就感 = base.成就感 * 0.1 
         base.性行动 = base.性行动 * 0.1
-        base.M快乐 = base.M快乐 * 1.5
+        base.嘴部快感 = base.嘴部快感 * 1.5
         base.疼痛 = base.疼痛 * 0.1
-        base.屈服 = base.屈服 * 0.5
+        base.屈从 = base.屈从 * 0.5
         base.不洁 = base.不洁 * 1.5
         if Train.GetAbility("顺从") >= 2 then
-            base.逸脱 = base.逸脱 * 0.5
+            base.逃脱 = base.逃脱 * 0.5
             base.恐惧 = base.恐惧 * 0.5
             base.情爱 = base.情爱 + 700 
         else
-            base.逸脱 = base.逸脱 * 1.5
+            base.逃脱 = base.逃脱 * 1.5
             base.恐惧 = base.恐惧 * 1.5
         end
     end
 
-    if Train.HaveTalent("M性向") then
-        Train.LovePlay(base, base.M快乐)
+    if Female:检查特性("唇性向") then
+        TrainManager:性癖增益(base, base.嘴部快感)
     end
 
     base.Samen = base.Samen + 500 + base.ABLTech * 6
     base.Samen = base.Samen + Train.GetAbility("精液中毒") * 100
 
-    AddSexexp("口交经验", 1)
+    TrainManager:获得经验("口交经验", 1)
     if Train.Pos["嘴"] == "JJ" then
         base.Samen = base.Samen + ABL_T(Female) * 50
-        AddSexexp("喉性交经验", 1)
+        TrainManager:获得经验("喉性交经验", 1)
     end
     MultiSet(base, "口")
 
@@ -83,11 +84,11 @@ function SexActive(Active, Select)
     return base
 end
 
-function TrainMessage()
+function t:TrainMessage()
     ImplementKoujiu("口交")
 end
 
-function SexType(type)
+function t:SexType(type)
     if type == "侍奉" then
         return true
     elseif type == "侍奉快乐" then
@@ -101,7 +102,7 @@ end
 
 
 
-function Check()
+function t:Check()
     local value, text = Train.AllowAction()
 
     local temp = Train.GetAbility("侍奉技术")
@@ -129,10 +130,12 @@ function Check()
         value = value - 1
         SB.append(text,"否定快感: -1")
     end
-    if(Female: HaveTalent("M性向")) then
+    if(Female: HaveTalent("唇性向")) then
         value = value + 10
-        SB.append(text,"M性向: +10")
+        SB.append(text,"唇性向: +10")
     end
     
     return Train.ShowOrder(value, text, 24)
 end
+
+return t

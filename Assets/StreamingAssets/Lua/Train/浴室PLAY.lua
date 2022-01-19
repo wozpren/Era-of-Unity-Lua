@@ -1,4 +1,4 @@
-function SexActive(Active, Select)
+function t:SexActive(Active, Select)
     if trainData.equipItem : Contains("浴室PLAY") then
         trainData.equipItem : Remove("浴室PLAY")
     else
@@ -24,16 +24,16 @@ function SexActive(Active, Select)
     return base
 end
 
-function SexType(type)
+function t:SexType(type)
     if type == "羞耻快乐" then
         return true
     end
     return false
 end
 
-function TrainMessage()
+function t:TrainMessage()
 end
 
-function Check()
+function t:Check()
     return true
 end

@@ -1,4 +1,4 @@
-function SexActive(Active, Select)
+function t:SexActive(Active, Select)
     if trainData.equipItem : Contains("新婚PLAY") then
         trainData.equipItem : Remove("新婚PLAY")
     else
@@ -8,7 +8,7 @@ function SexActive(Active, Select)
 
     local base = ActiveData.new()
     base.情爱 = 500
-    base.逸脱 = 100
+    base.逃脱 = 100
 
     local lv = Train.GetAbility("侍奉技术")
     if lv == 1 then
@@ -23,32 +23,32 @@ function SexActive(Active, Select)
         base.情爱 = base.情爱 * 2
     end
 
-    if Train.HaveTalent("好奇") then
+    if Female:检查特性("好奇") then
         base.情爱 = base.情爱 * 1.5
     end
-    if Train.HaveTalent("献身") then
+    if Female:检查特性("献身") then
         base.情爱 = base.情爱 * 1.5
     end
-    if Train.HaveTalent("软弱") then
-        base.逸脱 = base.逸脱 * 1.5
+    if Female:检查特性("软弱") then
+        base.逃脱 = base.逃脱 * 1.5
     end
-    if Train.HaveTalent("害羞") then
-        base.逸脱 = base.逸脱 * 1.5
+    if Female:检查特性("害羞") then
+        base.逃脱 = base.逃脱 * 1.5
     end
-    if Train.HaveTalent("高傲") then
-        base.逸脱 = base.逸脱 * 1.5
+    if Female:检查特性("高傲") then
+        base.逃脱 = base.逃脱 * 1.5
     end
     return base
 end
 
-function SexType(type)
+function t:SexType(type)
     return false
 end
 
-function TrainMessage()
+function t:TrainMessage()
 end
 
 
-function Check()
+function t:Check()
     return true
 end

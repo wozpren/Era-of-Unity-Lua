@@ -1,13 +1,13 @@
-function SexActive(Active, Select)
+function t:SexActive(Active, Select)
     local base = ServicePlay()
 
     base.不洁 = base.不洁 + 100
     base.欲情追加 = base.欲情追加 + Train.AddLust()
-    base.屈服 = base.屈服 + 500
-    base.逸脱 = base.逸脱 + 100
+    base.屈从 = base.屈从 + 500
+    base.逃脱 = base.逃脱 + 100
 
 
-    AddSexexp("手淫经验", 1)
+    TrainManager:获得经验("手淫经验", 1)
     base.Samen = base.Samen + 500 + base.ABLTech * 7
     MultiSet(base, "手")
     if Select == "手交口交" then
@@ -22,11 +22,11 @@ function SexActive(Active, Select)
     return base
 end
 
-function TrainMessage()
+function t:TrainMessage()
     ImplementKoujiu("手淫")
 end
 
-function SexType(type)
+function t:SexType(type)
     if type == "侍奉" then
         return true
     elseif type == "侍奉快乐" then
@@ -39,7 +39,7 @@ end
 
 
 
-function Check()
+function t:Check()
     local value, text = Train.AllowAction()
 
     local temp = Train.GetAbility("侍奉技术")
@@ -78,7 +78,7 @@ function Check()
         SB.append(text," < 14")
     end
     
-    Message : AddMessage(SB.tostr(text))
+    Message : AddMessage(text:ToStr())
     if value >= 14 then
         return true
     else

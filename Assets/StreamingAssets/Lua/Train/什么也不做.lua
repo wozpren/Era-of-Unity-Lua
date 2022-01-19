@@ -1,16 +1,16 @@
-function SexActive(Active, Select)
+function t:SexActive(Active, Select)
     local base = ActiveData.new()
     return base
 end
 
-function SexType(type)
+function t:SexType(type)
     return false
 end
 
-function TrainMessage()
+function t:TrainMessage()
     ImplementKoujiu("什么都不做")
 end
 
-function Check()
+function t:Check()
     return true
 end
