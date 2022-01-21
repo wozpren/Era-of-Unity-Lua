@@ -828,7 +828,7 @@ function Train.Adjustment()
     if m1 > 0 or (m1 < 0 and not Train.HaveTalent("淫壶")) then
         data.小穴快感 = data.小穴快感 + m1
     end
-    if m2 > 0 or (m2 < 0 and not Train.HaveTalent("阴道性向") and Female.小穴.感觉 < 5) then
+    if m2 > 0 or (m2 < 0 and not Train.HaveTalent("小穴性向") and Female.小穴.感觉 < 5) then
         data.小穴快感 = data.小穴快感 + m2
     end
     if Train.HaveTalent("淫尻") then
@@ -864,7 +864,7 @@ function Train.Adjustment()
     if m1 > 0 or (m1 < 0 and not Train.HaveTalent("尿道狂")) then
         data.尿道快感 = data.尿道快感 + m1
     end
-    if m2 > 0 or (m2 < 0 and not Train.HaveTalent("尿性向") and Train.GetAbility("U感觉") < 5) then
+    if m2 > 0 or (m2 < 0 and not trainee:检查特性("尿性向") and Train.GetAbility("U感觉") < 5) then
         data.尿道快感 = data.尿道快感 + m2
     end
     if Train.HaveTalent("尿道狂") then
@@ -996,7 +996,7 @@ function Train.AdjustTrainPack()
     trainPack.阴蒂快感 = trainPack.阴蒂快感 + t / 100
     trainPack.嘴部快感 = t / 100
     trainPack.小穴快感 = t / 100
-    trainPack.快尿 = t / 100
+    trainPack.尿道快感 = t / 100
 
     local level = Factory : GetSwitchValue("调教室等级")
     if level == 0 then
@@ -1288,7 +1288,7 @@ function Train.SettleTrain(data)
     trainPack.菊穴快感 = data.菊穴快感
     trainPack.胸部快感 = data.胸部快感
     trainPack.嘴部快感 = data.嘴部快感
-    trainPack.快尿 = data.尿道快感
+    trainPack.尿道快感 = data.尿道快感
 
 
     local elseValue = DownPalamLv(data.阴蒂快感 + data.小穴快感 + data.菊穴快感 + data.胸部快感 + data.嘴部快感 + data.尿道快感)
@@ -1557,10 +1557,10 @@ function Train.SettleTrain(data)
     if Train.GetAbility("尿道狂") then
         nfeel = nfeel + 1
     end
-    trainPack.快尿 = Train.PleasureLimiter(trainPack.快尿, nfeel)
+    trainPack.尿道快感 = Train.PleasureLimiter(trainPack.尿道快感, nfeel)
 
     if trainData.SameActive then
-        trainPack.快尿 = trainPack.快尿 * 1.25
+        trainPack.尿道快感 = trainPack.尿道快感 * 1.25
         trainPack.小穴快感 = trainPack.小穴快感 * 1.25
         trainPack.嘴部快感 = trainPack.嘴部快感 * 1.25
         trainPack.阴蒂快感 = trainPack.阴蒂快感 * 1.25
@@ -1570,7 +1570,7 @@ function Train.SettleTrain(data)
 
     if trainPack.痛苦 >= 100 then
         local i = Mathf.Clamp(100 - GetPalamLV(trainPack.痛苦) * 20 + Train.GetAbility("受虐属性") * 20, 10, 150)
-        trainPack.快尿 = trainPack.快尿 * i / 100
+        trainPack.尿道快感 = trainPack.尿道快感 * i / 100
         trainPack.小穴快感 = trainPack.小穴快感 * i / 100
         trainPack.嘴部快感 = trainPack.嘴部快感 * i / 100
         trainPack.阴蒂快感 = trainPack.阴蒂快感 * 1 / 100
@@ -1667,7 +1667,7 @@ function Train.SettleTrain(data)
         Happy = 2
     end
 
-    trainPack.快尿 = trainPack.快尿 * Happy 
+    trainPack.尿道快感 = trainPack.尿道快感 * Happy 
     trainPack.菊穴快感 = trainPack.菊穴快感 * Happy 
     trainPack.胸部快感 = trainPack.胸部快感 * Happy 
     trainPack.阴蒂快感 = trainPack.阴蒂快感 * Happy 
@@ -1718,14 +1718,14 @@ function Train.TrainlHandle()
     if Train.HaveTalent("阴蒂性向") or Train.HaveTalent("淫核") then
         CSourcePack.阴蒂快感 = CSourcePack.阴蒂快感 * 2
     end
-    if Train.HaveTalent("阴道性向") or Train.HaveTalent("淫壶") then
+    if Train.HaveTalent("小穴性向") or Train.HaveTalent("淫壶") then
         CSourcePack.小穴快感 = CSourcePack.小穴快感 * 2
     end
     if Train.HaveTalent("唇性向") or Train.HaveTalent("荡唇") then
         CSourcePack.嘴部快感 = CSourcePack.嘴部快感 * 2
     end
-    if Train.HaveTalent("尿性向") or Train.HaveTalent("尿道狂") then
-        CSourcePack.快尿 = CSourcePack.快尿 * 2
+    if trainee:检查特性("尿性向") or Train.HaveTalent("尿道狂") then
+        CSourcePack.尿道快感 = CSourcePack.尿道快感 * 2
     end
     if CSourcePack.阴蒂快感 > 0 then
         local n = Female.阴蒂.感觉
@@ -1742,7 +1742,7 @@ function Train.TrainlHandle()
         if Train.HaveTalent("淫壶") then
             n = n + 1
         end
-        if Train.HaveTalent("阴道性向") then
+        if Train.HaveTalent("小穴性向") then
             n = n + 1
         end
         CSourcePack.小穴快感 = Train.PleasureLimiter(CSourcePack.小穴快感, n)
@@ -1777,15 +1777,15 @@ function Train.TrainlHandle()
         end
         CSourcePack.嘴部快感 = Train.PleasureLimiter(CSourcePack.嘴部快感, n)
     end
-    if CSourcePack.快尿 > 0 then
+    if CSourcePack.尿道快感 > 0 then
         local n = Train.GetAbility("尿感觉")
         if Train.HaveTalent("尿道狂") then
             n = n + 1
         end
-        if Train.HaveTalent("尿性向") then
+        if trainee:检查特性("尿性向") then
             n = n + 1
         end
-        CSourcePack.快尿 = Train.PleasureLimiter(CSourcePack.快尿, n)
+        CSourcePack.尿道快感 = Train.PleasureLimiter(CSourcePack.尿道快感, n)
     end
     if trainData.SameActive then
         CSourcePack.阴蒂快感 = CSourcePack.阴蒂快感 * 1.25
@@ -1793,7 +1793,7 @@ function Train.TrainlHandle()
         CSourcePack.菊穴快感 = CSourcePack.菊穴快感 * 1.25
         CSourcePack.胸部快感 = CSourcePack.胸部快感 * 1.25
         CSourcePack.嘴部快感 = CSourcePack.嘴部快感 * 1.25
-        CSourcePack.快尿 = CSourcePack.快尿 * 1.25
+        CSourcePack.尿道快感 = CSourcePack.尿道快感 * 1.25
     end
     if CSourcePack.痛苦 >= 100 then
         local n = Mathf.Clamp(100 - GetPalamLV(CSourcePack.痛苦) * 20 + Train.GetAbility("受虐属性") * 20, 10, 110)
@@ -1802,7 +1802,7 @@ function Train.TrainlHandle()
         CSourcePack.菊穴快感 = CSourcePack.菊穴快感 * (n / 100)
         CSourcePack.胸部快感 = CSourcePack.胸部快感 * (n / 100)
         CSourcePack.嘴部快感 = CSourcePack.嘴部快感 * (n / 100)
-        CSourcePack.快尿 = CSourcePack.快尿 * (n / 100)
+        CSourcePack.尿道快感 = CSourcePack.尿道快感 * (n / 100)
 
         trainData.DownHP = (100 + (GetPalamLV(CSourcePack.痛苦) * (GetPalamLV(CSourcePack.痛苦) + 1) / 2) * 10) / 100 * trainData.DownHP
     end
@@ -1880,8 +1880,8 @@ end
 
 
 function Train.MarkGetCheck()
-    local happy = math.max(CSourcePack.快尿, CSourcePack.菊穴快感, CSourcePack.胸部快感, CSourcePack.阴蒂快感, CSourcePack.嘴部快感, CSourcePack.小穴快感,
-    (CSourcePack.快尿 + CSourcePack.菊穴快感 + CSourcePack.胸部快感 + CSourcePack.阴蒂快感 + CSourcePack.嘴部快感 + CSourcePack.小穴快感) / 2)
+    local happy = math.max(CSourcePack.尿道快感, CSourcePack.菊穴快感, CSourcePack.胸部快感, CSourcePack.阴蒂快感, CSourcePack.嘴部快感, CSourcePack.小穴快感,
+    (CSourcePack.尿道快感 + CSourcePack.菊穴快感 + CSourcePack.胸部快感 + CSourcePack.阴蒂快感 + CSourcePack.嘴部快感 + CSourcePack.小穴快感) / 2)
     local happyMark = 0
     if happy > 30000 then
         happyMark = 3
@@ -1977,7 +1977,7 @@ end
 function Train.OrgasmHandle()
     local data = ActiveData.new()
     local feels = {"尿", "Ａ", "Ｂ", "Ｃ", "Ｖ", "Ｍ"}
-    local Orgasms = {阴蒂快感 = 0, 小穴快感 = 0, 菊穴快感 = 0, 快尿 = 0, 胸部快感 = 0, 嘴部快感 = 0}
+    local Orgasms = {阴蒂快感 = 0, 小穴快感 = 0, 菊穴快感 = 0, 尿道快感 = 0, 胸部快感 = 0, 嘴部快感 = 0}
     for index, value in ipairs(feels) do
         local valuea = "快"..value
         local es = CSourcePack[valuea] + trainData.Source : get_Item(valuea)
@@ -2013,7 +2013,7 @@ function Train.OrgasmHandle()
     if Orgasms["小穴快感"] > 0 then
         data.露出 = data.露出 + 500 * Orgasms["小穴快感"]
         data.屈从 = data.屈从 + 500
-        if Train.HaveTalent("阴道性向") or Train.HaveTalent("淫壶") then
+        if Train.HaveTalent("小穴性向") or Train.HaveTalent("淫壶") then
             data.屈从 = data.屈从 + 1000
             Train.fav = Train.fav + 2
         end
@@ -2032,15 +2032,15 @@ function Train.OrgasmHandle()
         orgasmsNumber = orgasmsNumber + Orgasms["菊穴快感"]
         Otypes = Otypes + 1
     end
-    if Orgasms["快尿"] > 0 then
-        data.露出 = data.露出 + 1000 * Orgasms["快尿"]
+    if Orgasms["尿道快感"] > 0 then
+        data.露出 = data.露出 + 1000 * Orgasms["尿道快感"]
         data.屈从 = data.屈从 + 2000
-        if Train.HaveTalent("尿性向") or Train.HaveTalent("尿道狂") then
+        if trainee:检查特性("尿性向") or Train.HaveTalent("尿道狂") then
             data.屈从 = data.屈从 + 1000
             Train.fav = Train.fav + 2
         end
         data.欲情追加 = data.欲情追加 + 500
-        orgasmsNumber = orgasmsNumber + Orgasms["快尿"]
+        orgasmsNumber = orgasmsNumber + Orgasms["尿道快感"]
         Otypes = Otypes + 1
     end
     if Orgasms["胸部快感"] > 0 then
@@ -2070,7 +2070,6 @@ function Train.OrgasmHandle()
 
     Train.fav = Train.fav + Otypes
     Train.堕落 = Train.堕落 + Otypes
-    trainData : AddContent("绝顶", Otypes)
     data.逃脱 = data.逃脱 - 20
     data.露出 = data.露出 - 20
     data.反感追加 = data.反感追加 -  20
@@ -2292,7 +2291,7 @@ function Train.ExpCheck()
     end
 
 
-    local value = CSourcePack.菊穴快感 + CSourcePack.阴蒂快感 + CSourcePack.小穴快感 + CSourcePack.胸部快感 + CSourcePack.嘴部快感 + CSourcePack.快尿 + CSourcePack.欲情
+    local value = CSourcePack.菊穴快感 + CSourcePack.阴蒂快感 + CSourcePack.小穴快感 + CSourcePack.胸部快感 + CSourcePack.嘴部快感 + CSourcePack.尿道快感 + CSourcePack.欲情
     local LOCAL = 0
     if value >= 30000 then
         LOCAL = 3

@@ -6,6 +6,9 @@ local b = require("Data/身体")
 ---@field 检查特性 function
 ---@field 获取经验 function
 ---@field 获取能力 function
+---@field 能力提升 function
+---@field 设置能力 function
+---@field 调用口上 function
 ---@field 计算刺激度 function
 ---@field 获取外层装备 function
 ---@field 获取装备厚度 function
@@ -14,8 +17,8 @@ local chara =
     Type = "Character",--表类型，无需修改
     ID = 0, --ID仅在加入玩家数据时生成
     名字 = "测试人形",
-    性别 = 2,--指外貌 请使用数字 1为男，2为女，3为中性
-    口上 = "TestDoll", --口上将从 Chara\口上 的搜索文件夹下搜索
+    性别 = "女",--指外貌 男，女，中性
+    口上 = "TestDoll", --口上将从 Chara\[口上] 的文件夹下搜索
     年龄 = 24,
     体力 = 100,
     精力 = 100,
@@ -25,9 +28,10 @@ local chara =
     特殊经验 = {},
     经验 = {},
     能力 = {},
-    宝珠 = {},
-    刻印 = {},
+    宝珠 = require("Data/宝珠"):New(),
+    刻印 = require("Data/刻印"):New(),
     衣服 = {},
+    状态 = {},
 
     头 = b.头(),
     嘴 = b.嘴(),

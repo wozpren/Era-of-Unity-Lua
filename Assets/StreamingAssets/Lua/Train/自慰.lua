@@ -125,7 +125,7 @@ local function PlayPlace()
             p.V = p.V - 3
         end
     end
-    if Female:检查特性("阴道性向") then
+    if Female:检查特性("小穴性向") then
         p.V = p.V + 3
     end
     if Female:检查特性("淫壶") then

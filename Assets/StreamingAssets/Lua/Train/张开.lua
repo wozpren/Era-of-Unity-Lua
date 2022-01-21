@@ -15,7 +15,7 @@ function t:SexActive(Active, Select)
         else
             base.充足 = 3500 + (lcp - 10) * 100
         end
-        if Female:检查特性("阴道性向") then
+        if Female:检查特性("小穴性向") then
             base.不洁 = base.不洁 * 0.5
             base.逃脱 = base.逃脱 * 0.5
             base.充足 = base.充足 * 2

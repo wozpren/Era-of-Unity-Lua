@@ -16,7 +16,7 @@ TrainManager =
         "屈从",
         "习得",
         "羞耻",
-        "痛苦",
+        "疼痛",
         "恐怖",
         "反感",
     }
@@ -27,7 +27,7 @@ TrainManager =
 
 ---开始调试所用方法
 ---第一个作为调教者，第二个作为被调教者，第三个为助手，后续为其他被调教者
----@param ... Character[]
+---@param ... Character
 function TrainManager:StartTrain(...)
     local t = {...}
     local pack = require("Data/FeelPack")
@@ -53,6 +53,7 @@ function TrainManager:StartTrain(...)
     self.行为 = ""
     self.选择 = ""
     TrainManager.体力减少 = 0
+    self.宝珠 = require("Data/宝珠"):New()
     self.总记录 = {}
     self.经验栈 = {}
     self.行为栈 = {}
@@ -199,34 +200,58 @@ end
 
 
 function TrainManager.Option(arg1, arg2)
-    协程 = coroutine.start(TrainManager.Execute,TrainManager, arg1, arg2)
+    TrainManager.行为 = arg1
+    TrainManager.选择 = arg2
+    协程 = coroutine.start(TrainManager.Execute,TrainManager)
 end
 
 
-local function 特性修正(active, func)
-    for index, value in ipairs(active.调教者.特性) do
+local function 被调教者修正(chara, 部位, func)
+    for index, value in ipairs(chara.特性) do
         local tex = require("Data/特性/"..value)
         if tex ~= nil and tex.Type == "特性" then
-            func("调教者", tex)
+            func(部位, tex)
         end
     end
-    for index, value in ipairs(active.被调教者.特性) do
+    for index, value in ipairs(chara.部位.特性) do
         local tex = require("Data/特性/"..value)
         if tex ~= nil and tex.Type == "特性" then
-            func("被调教者", tex)
+            func(部位, tex)
         end
     end
+end
 
+local function 特性修正(active, func)
+    if active.调教者 ~= nil then
+        for index, value in ipairs(active.调教者.特性) do
+            local tex = require("Data/特性/"..value)
+            if tex ~= nil and tex.Type == "特性" then
+                func("调教者", tex)
+            end
+        end
+    end
+    if active.被调教者 ~= nil then
+        for index, value in ipairs(active.被调教者.特性) do
+            local tex = require("Data/特性/"..value)
+            if tex ~= nil and tex.Type == "特性" then
+                func("被调教者", tex)
+            end
+        end
+    end
+    if active.执行 ~= nil then
     for index, value in ipairs(active.执行.特性) do
         local tex = require("Data/特性/"..value)
         if tex ~= nil and tex.Type == "特性" then
             func("执行", tex)
         end
     end
-    for index, value in ipairs(active.目标.特性) do
-        local tex = require("Data/特性/"..value)
-        if tex ~= nil and tex.Type == "特性" then
-            func("目标", tex)
+    end
+    if active.目标 ~= nil then
+        for index, value in ipairs(active.目标.特性) do
+            local tex = require("Data/特性/"..value)
+            if tex ~= nil and tex.Type == "特性" then
+                func("目标", tex)
+            end
         end
     end
 
@@ -247,22 +272,23 @@ local function 执行行为(self)
     TrainManager:行为补正(self, action)
     TrainManager:体力处理(self)
     local feel = TrainManager:ToFeelPack(self, action)
-    TrainManager:感觉补正(feel)
-    TrainManager:性向加成(feel)
-    TrainManager:最终补正(feel)
-    self.感觉包 = feel
+    TrainManager:感觉补正(self, feel)
+    TrainManager:最终补正(self, feel)
+
+    TrainManager:经验处理(self, self.feelpack)
+
 end
 
 
 
 
 --执行调教选项
-function TrainManager:Execute(action, select)
+function TrainManager:Execute()
     if self.上次行为 == self.行为 and self.上次选择 == self.选择 then
         self.相同行动 = true
     end
 
-    local sex = require("Train/"..action)
+    local sex = require("Train/"..self.行为)
 
 --先检查是否能执行
     local active = sex:Check()
@@ -276,18 +302,29 @@ function TrainManager:Execute(action, select)
     for i = 1, #self.行为栈 do
         执行行为(self.行为栈[i])
     end
+    local trainees = {}
+    --
+    for index, value in ipairs(self.行为栈) do
+        local id = self:查找ID(value.被调教者)
+        trainees[value.被调教者.名字] = id
+        if id ~= -1 then
+            --将计算好的包加入总部
+            for key, t in pairs(self.FeelPack[id]) do
+                self.FeelPack[id][key] = self.FeelPack[id][key] + math.floor(value.feelpack[key])
+            end
+        end
+    end
 
-    self:宝珠处理()
-    self:刻印处理()
-    self:经验处理()
-    self:好感处理()
-    self:堕落处理()
-    self:服从处理()
-    self:其他处理()
+    for key, value in pairs(trainees) do
+        local pack = self.FeelPack[value]
+        local chara = self.参与人员[value]
+        self:高潮处理(value, pack)
+        self:刻印处理(value, pack)
+        self:其他处理()
+    end
 
-    self:重置变量()
     self:输出()
-
+    self:重置变量()
     self:最终处理()
 end
 
@@ -590,35 +627,164 @@ function TrainManager:行为补正(active, pack)
         else
             multiPack[key] = math.max(value, -80);
         end
+        pack[key] = pack[key] * ((100 + multiPack[key]) / 100)
     end
 
-    pack = pack * multiPack
 end
 
 ---@param feel ActionPack
 function TrainManager:感觉补正(active, feel)
-
-    local Female = active.被调教者
-
-    local Bfeel = Female.胸.感觉
-    feel.胸部快感 = TrainManager.PleasureLimiter(feel.胸部快感, Bfeel)
-    local Afeel = Female.菊穴.感觉
-    feel.菊穴快感 = TrainManager.PleasureLimiter(feel.菊穴快感, Afeel)
-    local Cfeel = Female.阴蒂.感觉
-    feel.阴蒂快感 = TrainManager.PleasureLimiter(feel.阴蒂快感, Cfeel)
-    local Mfeel = Female.嘴.感觉
-    feel.嘴部快感 = TrainManager.PleasureLimiter(feel.嘴部快感, Mfeel)
-    local Vfeel = Female.小穴.感觉
-    feel.小穴快感 = TrainManager.PleasureLimiter(feel.小穴快感, Vfeel)
-
+    local pack = require("Data/FeelPack"):New()
 
     特性修正(active, function(type, tex)
-        tex:调教感觉补正(active, feel, type)
+        tex:调教感觉补正(active, pack, type)
     end)
 end
 
-function TrainManager:最终补正(pack)
-    
+function TrainManager:快感限制(chara, num, level)
+    local id = TrainManager:查找ID(chara)
+    if id ~= -1 then
+        local yq = TrainManager.FeelPack[id].欲情
+        if yq < 100 then
+            level = level - 3
+        elseif yq < 3000 then
+            level = level - 2
+        elseif yq < 10000 then
+            level = level - 1
+        end
+    end
+    if chara.状态.媚药 ~= nil and chara.状态.媚药 > 0 then
+        level = level + math.floor(chara.状态 / 100)
+    end
+
+    if self:获取上次信息(id, "高潮") ~= nil and self:获取上次信息(id, "高潮") > 0 then
+        level = level + 1
+    end
+    if level < 0 then
+        level = 0
+    end
+      local base = 0
+    local top = 0
+    if level == 0 then
+        base = 100
+        top = 500
+    elseif level == 1 then
+        base = 500
+        top = 3000
+    elseif level < 5 then
+        base = 3000
+        top = 6000
+    elseif level < 9 then
+        base = 6000
+        top = 10000
+    elseif level < 11 then
+        base = 10000
+        top = 20000
+    else
+        base = 10000 + 1000 * (level - 10)
+        top = 20000 + 2000 * (level - 10)
+    end
+    if num < base then
+        base = num
+    else
+        base = base + (num - base) / 5
+        if base > top then
+            base = top + (base - top) / 20
+        end
+    end
+    return math.floor(base)
+end
+
+---@param active ActiveMsg
+---@param pack FeelPack
+function TrainManager:最终补正(active, pack)
+    ---@type Character
+    local trainee = active.被调教者
+
+    if trainee.胸 == nil then
+        pack.胸部快感 = 0
+    else
+        local Bfeel = trainee.胸.感觉
+        if 检查特性(trainee.胸, "淫乳") then
+            Bfeel = Bfeel + 1
+        end
+        if trainee:检查特性("胸性向") then
+            Bfeel = Bfeel + 1
+        end
+        pack.胸部快感 = TrainManager:快感限制(trainee, pack.胸部快感, Bfeel)
+    end
+    if trainee.嘴 == nil then
+        pack.嘴部快感 = 0
+    else
+        local feel = trainee.嘴.感觉
+        if 检查特性(trainee.嘴, "荡唇") then
+            feel = feel + 1
+        end
+        if trainee:检查特性("唇性向") then
+            feel = feel + 1
+        end
+        pack.嘴部快感 = TrainManager:快感限制(trainee, pack.嘴部快感, feel)
+    end
+    if trainee.阴蒂 == nil then
+        pack.阴蒂快感 = 0
+    else
+        local feel = trainee.阴蒂.感觉
+        if 检查特性(trainee.阴蒂, "淫核") then
+            feel = feel + 1
+        end
+        if trainee:检查特性("阴蒂性向") then
+            feel = feel + 1
+        end
+        pack.阴蒂快感 = TrainManager:快感限制(trainee, pack.阴蒂快感, feel)
+    end
+    if trainee.小穴 == nil then
+        pack.小穴快感 = 0
+    else
+        local feel = trainee.小穴.感觉
+        if 检查特性(trainee.小穴, "淫壶") then
+            feel = feel + 1
+        end
+        if trainee:检查特性("小穴性向") then
+            feel = feel + 1
+        end
+        pack.小穴快感 = TrainManager:快感限制(trainee, pack.小穴快感, feel)
+    end
+    if trainee.尿道 == nil then
+        pack.尿道快感 = 0
+    else
+        local feel = trainee.尿道.感觉
+        if 检查特性(trainee.尿道, "尿道狂") then
+            feel = feel + 1
+        end
+        if trainee:检查特性("尿道性向") then
+            feel = feel + 1
+        end
+        pack.尿道快感 = TrainManager:快感限制(trainee, pack.尿道快感, feel)
+    end
+    if trainee.菊穴 == nil then
+        pack.菊穴快感 = 0
+    else
+        local feel = trainee.菊穴.感觉
+        if 检查特性(trainee.菊穴, "淫尻") then
+            feel = feel + 1
+        end
+        if trainee:检查特性("尿道性向") then
+            feel = feel + 1
+        end
+        pack.菊穴快感 = TrainManager:快感限制(trainee, pack.尿道快感, feel)
+    end
+    if self.相同行动 then
+        self.六感同加(pack, 1.25)
+    end
+    if pack.痛苦 >= 100 then
+        local data = require("Data/参数")
+        local n = Mathf.Clamp(100 - data:获取等级(pack.痛苦) * 20 + trainee.获取能力("受虐属性") * 20, 10, 110)
+        self.六感同加(pack, (n / 100))
+
+        active.体力减少 = (100 + (data:获取等级(pack.痛苦) * (data:获取等级(pack.痛苦) + 1) / 2) * 10) / 100 * active.体力减少
+    end
+
+    active.feelpack = pack
 end
 
 ---@param active ActiveMsg
@@ -630,7 +796,7 @@ function TrainManager:体力处理(active)
         hp = tex:调教体力修正(active, hp, t)
     end
     end)
-    TrainManager.体力减少 = TrainManager.体力减少 + hp
+    active.体力减少 = active.体力减少 + hp
 end
 
 
@@ -717,20 +883,367 @@ function TrainManager:射精处理(active, pack)
     end
 end
 
-function TrainManager:性向加成(pack)
+function TrainManager:高潮处理(id, pack)
+    local Orgasms = {阴蒂快感 = 0, 小穴快感 = 0, 菊穴快感 = 0, 尿道快感 = 0, 胸部快感 = 0, 嘴部快感 = 0}
+    local trainee = self.参与人员[id]
+    local data = require("Data/ActionPack"):New()
+    for key, value in pairs(Orgasms) do
+        if pack[key] >= 100000 then
+            Orgasms[key] = 5
+        elseif pack[key] >= 60000 then
+            Orgasms[key] = 4
+        elseif pack[key] >= 30000 then
+            Orgasms[key] = 3
+        elseif pack[key] >= 20000 then
+            Orgasms[key] = 2
+        elseif pack[key] >= 10000 then
+            Orgasms[key] = 1
+        end
+        local ty = string.sub(key, 1, 2)
+        if Orgasms[key] > 0 then
+            self:添加记录(id, ty.."绝顶", Orgasms[key])
+        end
+    end
+
+    local orgasmsNumber = 0
+    local Otypes = 0
+
+    if Orgasms["阴蒂快感"] > 0 then
+        data.露出 = 300 * Orgasms["阴蒂快感"]
+        if 检查特性(trainee.阴蒂, "淫核") or trainee:检查特性("阴蒂性向") then
+            data.屈从 = data.屈从 + 1000
+        end
+        orgasmsNumber = orgasmsNumber + Orgasms["阴蒂快感"]
+        Otypes = Otypes + 1
+
+        被调教者修正(trainee, "阴蒂", function (部位, tex)
+            if tex.高潮修正 ~= nil then
+                tex:高潮修正(trainee, data, 部位, Orgasms["阴蒂快感"])
+            end
+        end)
+    end
+    if Orgasms["小穴快感"] > 0 then
+        data.露出 = data.露出 + 500 * Orgasms["小穴快感"]
+        data.屈从 = data.屈从 + 500
+        data.欲情追加 = data.欲情追加 + 500
+        if 检查特性(trainee.小穴, "淫壶") or trainee:检查特性("小穴性向") then
+            data.屈从 = data.屈从 + 1000
+        end
+        orgasmsNumber = orgasmsNumber + Orgasms["小穴快感"]
+        Otypes = Otypes + 1
+
+        local wlevel = Orgasms["小穴快感"] * 150
+
+        data.小穴液体追加 = data.小穴液体追加 + wlevel
+        data.露出 = data.露出 + wlevel / 2
+
+        被调教者修正(trainee, "小穴", function (部位, tex)
+            if tex.高潮修正 ~= nil then
+                tex:高潮修正(trainee, data, 部位, Orgasms["小穴快感"])
+            end
+        end)
+    end
+    if Orgasms["菊穴快感"] > 0 then
+        data.露出 = data.露出 + 1000 * Orgasms["菊穴快感"]
+        data.屈从 = data.屈从 + 2000
+        data.欲情追加 = data.欲情追加 + 500
+        if 检查特性(trainee.菊穴, "淫尻") or trainee:检查特性("肛性向") then
+            data.屈从 = data.屈从 + 1000
+        end
+        orgasmsNumber = orgasmsNumber + Orgasms["菊穴快感"]
+        Otypes = Otypes + 1
+
+        被调教者修正(trainee, "菊穴", function (部位, tex)
+            if tex.高潮修正 ~= nil then
+                tex:高潮修正(trainee, data, 部位, Orgasms["菊穴快感"])
+            end
+        end)
+    end
+    if Orgasms["尿道快感"] > 0 then
+        data.露出 = data.露出 + 1000 * Orgasms["尿道快感"]
+        data.屈从 = data.屈从 + 2000
+        if trainee:检查特性("尿性向") or 检查特性(trainee.尿道, "尿道狂") then
+            data.屈从 = data.屈从 + 1000
+        end
+        data.欲情追加 = data.欲情追加 + 500
+        orgasmsNumber = orgasmsNumber + Orgasms["尿道快感"]
+        Otypes = Otypes + 1
+
+        被调教者修正(trainee, "尿道", function (部位, tex)
+            if tex.高潮修正 ~= nil then
+                tex:高潮修正(trainee, data, 部位, Orgasms["尿道快感"])
+            end
+        end)
+    end
+    if Orgasms["胸部快感"] > 0 then
+        data.露出 = data.露出 + 300 * Orgasms["胸部快感"]
+        if 检查特性(trainee.尿道, "淫乳") or trainee:检查特性("胸性向") then
+            data.屈从 = data.屈从 + 1000
+        end
+        orgasmsNumber = orgasmsNumber + Orgasms["胸部快感"]
+        Otypes = Otypes + 1
+
+        被调教者修正(trainee, "胸", function (部位, tex)
+            if tex.高潮修正 ~= nil then
+                tex:高潮修正(trainee, data, 部位, Orgasms["胸部快感"])
+            end
+        end)
+    end
+    if Orgasms["嘴部快感"] > 0 then
+        data.露出 = data.露出 + 300 * Orgasms["嘴部快感"]
+        if 检查特性(trainee.嘴, "唇性向") or trainee:检查特性("唇性向") then
+            data.屈从 = data.屈从 + 1000
+        end
+        orgasmsNumber = orgasmsNumber + Orgasms["嘴部快感"]
+        Otypes = Otypes + 1
+        被调教者修正(trainee, "嘴", function (部位, tex)
+            if tex.高潮修正 ~= nil then
+                tex:高潮修正(trainee, data, 部位, Orgasms["嘴部快感"])
+            end
+        end)
+    end
+
     
+    if Otypes == 0 then
+        return
+    end
+
+    data.逃脱 = data.逃脱 - 20
+    data.露出 = data.露出 - 20
+    data.反感追加 = data.反感追加 -  20
+    data.屈从 = data.屈从 * Otypes
+    data.欲情追加 = data.欲情追加 * Otypes
+    data.恭顺追加 = data.恭顺追加 * Otypes
+
+    self:添加记录(id, "绝顶", Otypes)
+    TrainManager:获得经验("绝顶经验", orgasmsNumber)
+    local active = { 被调教者 = trainee, 行为 = "高潮"}
+    local feel TrainManager:ToFeelPack(active, data)
+
+    require("Data/FeelPack"):Add(pack, feel)
+    --文本
+    local text = SB.New()
+    if Otypes == 6 then
+        text:Append("六重")
+    elseif Otypes == 5 then
+        text:Append("五重")
+    elseif Otypes == 4 then
+        text:Append("四重")
+    elseif Otypes == 3 then
+        text:Append("三重")
+    elseif Otypes == 2 then
+        text:Append("二重")
+    else
+        for key, value in pairs(Orgasms) do
+            if value > 0 then
+                text:Append(key)
+            end
+        end
+    end
+    local avg = orgasmsNumber / Otypes
+    if avg > 4 then
+        text:Append("超强绝顶")
+    elseif avg > 2 then
+        text:Append("强绝顶")
+    else
+        text:Append("绝顶")
+    end
+    Message : AddMessage(text:ToStr())
+    trainee:调用口上("高潮", Orgasms, Otypes, orgasmsNumber)
 end
 
-function TrainManager:宝珠处理()
+function TrainManager:经验处理(active, pack)
+    local 调教者 =active.调教者
+    local 被调教者 =active.被调教者
+
+    if 调教者.性别 == "女" and 被调教者.性别 == "女" then
+        self:获得经验("百合经验", 1)
+    elseif 调教者.性别 == "男" and 被调教者.性别 == "男" then
+        self:获得经验("断袖经验", 1)
+    end
     
+
+    local value = pack.菊穴快感 + pack.阴蒂快感 + pack.小穴快感 + pack.胸部快感 + pack.嘴部快感 + pack.尿道快感 + pack.欲情
+    local LOCAL = 0
+    if value >= 30000 then
+        LOCAL = 3
+    elseif value >= 10000 then
+        LOCAL = 2
+    elseif value >= 3000 then
+        LOCAL = 1
+    else
+        LOCAL = 0
+    end
+
+    local temp = 0
+
+    if active.sex:SexType("侍奉快乐") then
+        temp = LOCAL + 1
+        if 被调教者.状态.媚药 ~= nil and 被调教者.状态.媚药 > 0 then
+            temp = temp - math.floor(被调教者.状态.媚药 / 50)
+        end
+        if active.sex:SexType("嗜虐快乐") and 被调教者:获取能力("侍奉技术") <= 被调教者:获取能力("施虐属性") then
+            temp = temp - 1
+        end
+        if temp > 0 then
+            TrainManager:获得经验("侍奉快乐经验", temp)
+        end
+    end
+
+    temp = 0
+    if active.sex:SexType("嗜虐快乐") then
+        temp = LOCAL + 1
+        if 被调教者.状态.媚药 ~= nil and 被调教者.状态.媚药 > 0 then
+            temp = temp - math.floor(被调教者.状态.媚药 / 50)
+        end
+        if active.sex:SexType("侍奉快乐") and 被调教者:获取能力("侍奉技术") >= 被调教者:获取能力("施虐属性") then
+            temp = temp - 1
+        end
+        if temp > 0 then
+            TrainManager:获得经验("嗜虐快乐经验", temp)
+        end
+    end
+
+
+    LOCAL = math.min(value, pack.羞耻)
+    if LOCAL >= 30000 then
+        LOCAL = 3
+    elseif LOCAL >= 10000 then
+        LOCAL = 2
+    elseif LOCAL >= 3000 then
+        LOCAL = 1
+    else
+        LOCAL = 0
+    end
+    temp = 0
+    if active.sex:SexType("羞耻快乐") then
+        temp = LOCAL + 1
+        if 被调教者.状态.媚药 ~= nil and 被调教者.状态.媚药 > 0 then
+            temp = temp - math.floor(被调教者.状态.媚药 / 50)
+        end
+        if temp > 0 then
+            TrainManager:获得经验("羞耻快乐经验", temp)
+        end
+    end
+    if LOCAL >= 30000 then
+        LOCAL = 3
+    elseif LOCAL >= 10000 then
+        LOCAL = 2
+    elseif LOCAL >= 3000 then
+        LOCAL = 1
+    else
+        LOCAL = 0
+    end
+    temp = 0
+    if active.sex:SexType("被虐快乐") then
+        temp = LOCAL + 1
+        if 被调教者.状态.媚药 ~= nil and 被调教者.状态.媚药 > 0 then
+            temp = temp - math.floor(被调教者.状态.媚药 / 50)
+        end
+        if temp > 0 then
+            TrainManager:获得经验("被虐快乐经验", math.max(temp,0))
+        end
+    end
+
 end
 
-function TrainManager:经验处理()
-    
-end
+function TrainManager:刻印处理(id, pack)
+    local Orgasms = {"阴蒂快感", "小穴快感", "菊穴快感", "尿道快感", "胸部快感", "嘴部快感"}
+    local trainee = self.参与人员[id]
+    local happy = 0
+    for int, value in ipairs(Orgasms) do
+        happy = happy + pack[value]
+    end
+    local happyMark = 0
+    if happy > 30000 then
+        happyMark = 3
+    elseif happy > 10000 then
+        happyMark = 2
+    elseif happy > 3000 then
+        happyMark = 1
+    end
 
-function TrainManager:刻印处理()
-    
+    if happyMark > trainee.刻印["快乐刻印"] then
+        local text = "取得了快乐刻印Lv"..happyMark
+        trainee.刻印["快乐刻印"] = happyMark
+        if trainee:获取能力("顺从") < happyMark - 1 and not trainee:检查特性("冷漠") and not trainee:检查特性("感情缺乏") then
+            trainee:能力提升("顺从", 1)
+            AbliTable["顺从"] = nil
+            text = text.."\n同时顺从变成了Lv"..trainee:获取能力("顺从")
+        end
+        Message : AddMessage(text)
+    end
+
+    local pain = pack.痛苦
+    local painMark = 0
+    if pain > 30000 then
+        painMark = 3
+    elseif pain > 20000 then
+        painMark = 2
+    elseif pain > 10000 then
+        painMark = 1
+    end
+    if painMark > trainee.刻印["痛苦刻印"] then
+        local text = "取得了痛苦刻印Lv"..painMark
+        trainee.刻印["痛苦刻印"] = painMark
+        Message : AddMessage(text)
+    end
+
+    local surrender = pack.屈从
+    local surrenderMark = 0
+    if surrender > 30000 then
+        surrenderMark = 3
+    elseif surrender > 20000 then
+        surrenderMark = 2
+    elseif surrender > 10000 then
+        surrenderMark = 1
+    end
+    if surrenderMark > trainee.刻印["屈从刻印"] then
+        local text = "取得了屈从刻印Lv"..surrenderMark
+        trainee.刻印["屈从刻印"] = surrenderMark
+        Message : AddMessage(text)
+    end
+
+    local Revolt = pack.反感
+    local RevoltMark = 0
+    if trainee.刻印["快乐刻印"] == 1 then
+        Revolt = Revolt - 100
+    elseif trainee.刻印["快乐刻印"] == 2 then
+        Revolt = Revolt - 500
+    elseif trainee.刻印["快乐刻印"] == 3 then
+        Revolt = Revolt - 1000
+    end
+    if trainee.刻印["痛苦刻印"]  == 1 then
+        Revolt = Revolt - 500
+    elseif trainee.刻印["痛苦刻印"]  == 2 then
+        Revolt = Revolt - 1500
+    elseif trainee.刻印["痛苦刻印"]  == 3 then
+        Revolt = Revolt - 4000
+    end
+    if trainee.刻印["屈从刻印"] == 1 then
+        Revolt = Revolt - 500
+    elseif trainee.刻印["屈从刻印"] == 2 then
+        Revolt = Revolt - 1500
+    elseif trainee.刻印["屈从刻印"] == 3 then
+        Revolt = Revolt - 2000
+    end
+    if Revolt > 3000 then
+        RevoltMark = 3
+    elseif Revolt > 1500 then
+        RevoltMark = 2
+    elseif Revolt > 800 then
+        RevoltMark = 1
+    end
+
+    if RevoltMark >  trainee.刻印["反抗刻印"] then
+        local text = "取得了反抗刻印Lv"..RevoltMark
+        trainee.刻印["反抗刻印"] = RevoltMark
+        if trainee:获取能力("顺从") > 0 and  trainee:获取能力("顺从") < 3 and not trainee:获取能力("感情缺乏") then
+            trainee:设置能力("顺从", math.max( trainee:获取能力("顺从") - RevoltMark, 0))
+            text = text.."\n同时顺从下降到了Lv"..trainee:获取能力("顺从")
+        end
+        Message : AddMessage(text)
+    end
 end
 
 function TrainManager:好感处理()
@@ -750,7 +1263,9 @@ function TrainManager:其他处理()
 end
 
 function TrainManager:重置变量()
-    
+    TrainManager.体力减少 = 0
+    self.上次行为 = self.行为
+    self.上次选择 = self.选择
 end
 
 function TrainManager:输出()
@@ -781,9 +1296,21 @@ function TrainManager:获得经验(exp, n, chara)
         else
             chara.经验[exp] = chara.经验[exp] + n
         end
+        table.insert(self.经验栈, ("%s获得了%d点%s"):format(chara.Name, n, exp))
+        return
     end
-    table.insert(self.经验栈, ("%s获得了%d点%s"):format(chara.Name, n, exp))
     error("角色经验表为 nil")
+end
+
+function TrainManager:添加记录(id, mess, n)
+    
+end
+
+function TrainManager:获取当前信息(id, mess)
+    if self.记录[mess] ~= nil then
+        return self.记录[id][mess]
+    end
+    return nil
 end
 
 function TrainManager:获取上次信息(id, mess)
@@ -800,6 +1327,16 @@ function TrainManager.六感同加(data, num)
     data.嘴部快感 = data.嘴部快感 + num
     data.胸部快感 = data.胸部快感 + num
     data.尿道快感 = data.尿道快感 + num
+end
+
+function TrainManager:查找ID(chara)
+    for index, value in ipairs(self.参与人员) do
+        if value == chara then
+            return index
+        end
+    end
+    print("未找到"..chara.Name)
+    return -1
 end
 
 return TrainManager

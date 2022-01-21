@@ -438,7 +438,7 @@ end
 
 if Active == "插入小穴" then
     base.液体追加 = base.液体追加 + 100 * math.min(5, PalamLV(base.疼痛))
-    if Female:检查特性("阴道性向") then
+    if Female:检查特性("小穴性向") then
         TrainManager:性癖增益(base, base.小穴快感)
     end
     local t = Female : GetSexMemory("V", Trainer.Name..Insert)
@@ -502,7 +502,7 @@ elseif Active == "指插入" or Active == "拳交" then
     base.液体追加 = base.液体追加 + math.max(GetExpLV(base.疼痛) + size * 100, 100)
     if Select == "肛门" and Female:检查特性("肛性向") then
         TrainManager:性癖增益(base, base.菊穴快感)
-    elseif Select == "小穴" and Female:检查特性("阴道性向") then
+    elseif Select == "小穴" and Female:检查特性("小穴性向") then
         TrainManager:性癖增益(base, base.小穴快感)
     end
 

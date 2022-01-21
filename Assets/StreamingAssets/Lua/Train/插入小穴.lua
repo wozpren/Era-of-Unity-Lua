@@ -197,7 +197,7 @@ if trainData.Posture == "乘骑位" then
     value = OrderRequire(value, text, "talent", "害羞", -10)
     value = OrderRequire(value, text, "talent", "献身", 6)
     value = OrderRequire(value, text, "talent", "否定快感", -1)
-    value = OrderRequire(value, text, "talent", "阴道性向", 10)
+    value = OrderRequire(value, text, "talent", "小穴性向", 10)
     
     if Female.IsChu then
         value = value - 20

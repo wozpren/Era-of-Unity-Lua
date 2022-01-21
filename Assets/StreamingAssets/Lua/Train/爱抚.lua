@@ -5,6 +5,7 @@ local t ={}
 
 function t:SexActive(active, Active, Select)
     Message : AddMessage("爱抚"..Select)
+    ---@type Character
     local Female = active.被调教者
     local 调教者 = active.调教者
     local base = require("Data/ActionPack"):New()
@@ -12,11 +13,22 @@ function t:SexActive(active, Active, Select)
     local abl = Female:获取能力("顺从")
     local tec = 调教者.手.技巧
 
-    local CFeel = Female:获取能力("C感觉")
-    local VFeel = Female:获取能力("V感觉")
-    local BFeel = Female:获取能力("B感觉")
-    local AFeel = Female:获取能力("A感觉")
-
+    local CFeel = 0
+    if Female.阴蒂 ~= nil then
+        CFeel = Female.阴蒂.感觉
+    end
+    local VFeel = 0
+    if Female.小穴 ~= nil then
+        VFeel = Female.小穴.感觉
+    end
+    local BFeel = 0
+    if Female.胸 ~= nil then
+        BFeel = Female.胸.感觉
+    end
+    local AFeel = 0
+    if Female.菊穴 ~= nil then
+        BFeel = Female.菊穴.感觉
+    end
     base.情爱 = 100
     base.逃脱 = 50
 
@@ -88,7 +100,7 @@ function t:SexActive(active, Active, Select)
         base.液体追加 = 20
         base.不洁 = 20
         base.露出 = 300
-        if Female:检查特性("阴道性向") then
+        if Female:检查特性("小穴性向") then
             TrainManager:性癖增益(base, base.小穴快感)
         end
         if VFeel == 0 then

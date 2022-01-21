@@ -45,7 +45,23 @@ function meta:获取经验(name)
     return 0
 end
 
-function meta:获取能力(name, num)
+function meta:设置能力(name, num)
+    if self.能力 ~= nil then
+        self.能力[name] = num
+    end
+end
+
+function meta:能力提升(name, num)
+    if self.能力 ~= nil then
+        if self.能力[name] ~= nil then
+            self.能力[name] = self.能力[name] + num
+        else
+            self.能力[name] = num
+        end
+    end
+end
+
+function meta:获取能力(name)
     if self.能力 ~= nil and self.能力[name] ~= nil then
         return self.能力[name]
     end
@@ -93,11 +109,25 @@ function meta:检查占用(pos, n)
     return false
 end
 
+function meta:获取状态(tal)
+    if self.状态 ~= nil and self.状态[tal] ~= nil then
+        return self.状态[tal]
+    end
+    return false
+end
+
 function meta:检查特性(tal)
     if self.特性 ~= nil and self.特性[tal] then
         return true
     end
     return false
+end
+
+function meta:调用口上(name, ...)
+    local KouJiu = require(("Chara/%s/KouJiu"):format(self.口上))
+    if KouJiu[name] ~= nil then
+        KouJiu[name](...)
+    end
 end
 
 function CharaManager:LoadChara(id)
