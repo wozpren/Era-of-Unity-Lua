@@ -118,7 +118,6 @@ namespace LuaInterface
             ToLua.OpenLibs(L);
             OpenBaseLibs();
             LuaSetTop(0);
-            InitLuaPath();
             Debugger.Log("Init lua state cost: {0}", Time.realtimeSinceStartup - time);
         }        
 
@@ -194,10 +193,10 @@ namespace LuaInterface
                     string msg = string.Format("toluaDir path not exists: {0}, configer it in LuaConst.cs", LuaConst.toluaDir);
                     throw new LuaException(msg);
                 }
-
+#endif
                 AddSearchPath(LuaConst.toluaDir);
                 AddSearchPath(LuaConst.luaDir);
-#endif
+
                 if (LuaFileUtils.Instance.GetType() == typeof(LuaFileUtils))
                 {
                     AddSearchPath(LuaConst.luaResDir);
@@ -217,6 +216,7 @@ namespace LuaInterface
             beStart = true;
 #endif
             Debugger.Log("LuaState start");
+            InitLuaPath();
             OpenBaseLuaLibs();
 #if ENABLE_LUA_INJECTION
             Push(LuaDLL.tolua_tag());

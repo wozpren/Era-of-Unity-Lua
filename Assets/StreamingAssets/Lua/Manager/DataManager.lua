@@ -8,14 +8,14 @@ DataManager =
 
 
 function DataManager:LoadSystemData()
-    local text = io.file_load(self.DataPath.."system.data")
-    if text ~= nil then
+    if io.file_exist(self.DataPath.."system.data") then
+        local text = io.file_load(self.DataPath.."system.data")
         self.SystemData = json.decode(text)
     else
         --这个地方初始化系统设定！！！！
         self.SystemData = 
         {
-            GameName = "Era of Unity",
+            GameName = "Era Unity",
             Version = 0.1
         }
     end
@@ -36,13 +36,13 @@ function DataManager:GenratePlayerData()
 end
 
 function DataManager:LoadPlayerData(index)
-    local text, err = io.file_load(self.DataPath..index..".data")
-    if text ~= nil then
+    if  io.file_exist(self.DataPath..index..".data") then
+        local text = io.file_load(self.DataPath..index..".data")
         self.PlayerIndex = index
         local data = json.decode(text)
         self.PlayerData = require("Data/PlayerData"):SetMeta(data)
     else
-        error(err);
+        error(index.."序号的存档不存在")
     end
 end
 
