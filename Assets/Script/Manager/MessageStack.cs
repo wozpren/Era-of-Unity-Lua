@@ -94,10 +94,9 @@ namespace EraHF
                     while (mess.StartsWith("command"))
                     {
                         string[] args = mess.Split(',');
-                        LuaManager.Instance.LuaClient.luaState.Require(args[1]);
                         List<string> a = new List<string>(args);
-                        a.RemoveRange(0, 3);
-                        LuaManager.Instance.LuaClient.CallFunc(args[2], a.ToArray());
+                        a.RemoveRange(0, 2);
+                        LuaManager.Instance.LuaClient.CallFunc(args[1], a.ToArray());
                         if (messStack.Count > 0)
                             mess = messStack.Dequeue();
                         else
