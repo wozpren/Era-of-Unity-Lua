@@ -45,8 +45,8 @@ elseif Active == "站立位" then
 end
 
 if Train.GetAbility("尿道扩张") > Trainer.Stature.JJSize then
-    base.阴蒂快感 = Female:计算刺激度("C刺激", 2, 30)
-    base.阴蒂快感 = TrainManager:EXABL(Trainer: GetAbility("性交中毒"), base.阴蒂快感)
+    base.阴部快感 = Female:计算刺激度("阴部", 2, 30)
+    base.阴部快感 = TrainManager:EXABL(Trainer: GetAbility("性交中毒"), base.阴部快感)
 end
 
 local YQ = trainData.Source : get_Item("欲情")

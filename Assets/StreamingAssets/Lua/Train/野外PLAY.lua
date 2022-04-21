@@ -12,7 +12,7 @@ function t:TrainMessage()
 end
 
 
-local text = SB.New()
+local text = SB:New()
 text:Append("要去哪里呢？")
 text:Append(AddButton("小树林   ","CoroutineResume,树林"))
 text:Append(AddButton("公园   ","CoroutineResume,公园"))

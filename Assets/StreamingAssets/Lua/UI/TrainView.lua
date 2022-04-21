@@ -77,8 +77,10 @@ end
 
 
 
-function ui:Append(text)
-    UIManager.page[self.Page].Koujiu.text = UIManager.page[self.Page].Koujiu.text + text
+function ui:Append(text, active)
+    text = string.gsub(text, "@player@", active.调教者.名字)
+    text = string.gsub(text, "@target@", active.被调教者.名字)
+    UIManager.page[self.Page].Koujiu.text = UIManager.page[self.Page].Koujiu.text..text
 end
 
 

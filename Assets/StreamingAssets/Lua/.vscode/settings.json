@@ -1,7 +1,8 @@
 {
     "Lua.diagnostics.globals": [
         "UnityEngine",
-        "EraHF"
+        "EraHF",
+        "Time"
     ],
     "Lua.runtime.unicodeName": true
 }

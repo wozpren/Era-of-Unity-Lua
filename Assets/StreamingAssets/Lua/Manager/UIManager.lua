@@ -9,6 +9,12 @@ UIManager.page =
     FullPage = GM.FullPage
 }
 
+function UIManager:Init()
+    EventManager:AddListener("Update", self.Update)
+
+end
+
+
 function UIManager:Navigation(name, ...)
     local ui = require("UI/" .. name)
     if ui ~= true and ui.Type == "UI" then
@@ -43,6 +49,13 @@ end
 function UIManager:UIOnClose(ui)
     if self.CurrnetUI == ui then
         self.CurrnetUI = nil
+    end
+end
+
+
+function UIManager.Update()
+    if UIManager.CurrnetUI ~= nil then
+        UIManager.CurrnetUI:Update()
     end
 end
 

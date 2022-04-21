@@ -20,8 +20,8 @@ function t:SexActive(Active, Select)
 
         
             if Train.GetAbility("V扩张") > Trainer.Stature.JJSize then
-                base.阴蒂快感 = base.阴蒂快感 + Female:计算刺激度("C刺激", 2, 300)
-                base.阴蒂快感 = TrainManager:EXABL(Trainer : GetAbility("性交中毒"), base.阴蒂快感)
+                base.阴部快感 = base.阴部快感 + Female:计算刺激度("阴部", 2, 300)
+                base.阴部快感 = TrainManager:EXABL(Trainer : GetAbility("性交中毒"), base.阴部快感)
             end
             base.Samen = base.Samen + Train.GetAbility("顺从") * 100
 
@@ -114,8 +114,8 @@ function t:SexActive(Active, Select)
             base.屈从 = base.屈从 + 100 * t
         end
         if Train.GetAbility("V扩张") > Size then
-            base.阴蒂快感 = Female:计算刺激度("C刺激", 2, 30)
-            base.阴蒂快感 = TrainManager:EXABL(Trainer: GetAbility("性交中毒"), base.阴蒂快感)
+            base.阴部快感 = Female:计算刺激度("阴部", 2, 30)
+            base.阴部快感 = TrainManager:EXABL(Trainer: GetAbility("性交中毒"), base.阴部快感)
         end
         TrainManager:获得经验("小穴经验", 1)
         TrainManager:获得经验("子宫口经验", 1)

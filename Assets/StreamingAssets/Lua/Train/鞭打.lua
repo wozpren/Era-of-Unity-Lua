@@ -1,7 +1,9 @@
 local t = {}
 
-function t:SexActive(Active, Select)
-    local base = SMPlay("鞭打")
+function t:SexActive(active, Active, Select)
+    local base = TrainManager:SMPlay(active, "鞭打")
+
+    
     local s = Trainer : GetAbility("施虐属性")
     local kt = trainData.Source : get_Item("痛苦")
     local level = math.min(GetPalamLV(kt), 5)

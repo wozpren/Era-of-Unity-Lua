@@ -45,6 +45,7 @@ function TrainManager:StartTrain(...)
     if #t < 2 then
         return false
     end
+    ---@type FeelPack[]
     self.FeelPack = {}
     self.总记录 = {}
 
@@ -212,7 +213,7 @@ function TrainManager:GetOptions()
         if 胯部装备 == nil and not 检查占用(调教者.阴部) then
             if not 检查占用(目标.小穴) then
                 opt:Append(self.Button("插入小穴", "小穴", "插入小穴"))
-            elseif 检查占用(目标.小穴, "阴蒂") then
+            elseif 检查占用(目标.小穴, "肉棒") then
                 opt:Append(self.Button("插入小穴", "小穴", "拔出肉棒"))
                 if 调教者.阴部.技巧 >= 2 then
                     opt:Append(self.Button("插入小穴", "G点", "刺激G点"))
@@ -227,8 +228,8 @@ function TrainManager:GetOptions()
         end
     end
 
-
-
+    --侍奉
+    opt:Append(self.Button("口交"))
     return opt
 end
 
@@ -263,12 +264,25 @@ function TrainManager.AIOption(arg1, arg2)
     协程 = coroutine.start(TrainManager.AI.Option, TrainManager.AI, arg1, arg2)
 end
 
+local function AddOption(arg1, arg2)
+    local train = require("Train/"..arg1)
+    local res = false -- 结果
+    if train ~= nil and train.Check ~= nil then
+        res, arg2 = train:Check(TrainManager.调教者, TrainManager.被调教者, arg2) --check返回两个值，第一个是能否执行，第二个是所选的选项
+        if res then
+            TrainManager:添加行为(TrainManager.调教者, TrainManager.被调教者, arg1, arg2)
+            TrainManager:Execute()
+        else
+            Message:StartPop()
+        end
+    end
+end
 
 function TrainManager.Option(arg1, arg2)
-    TrainManager.行为 = arg1
-    TrainManager.选择 = arg2
-    协程 = coroutine.start(TrainManager.Execute,TrainManager)
+    协程 = coroutine.start(AddOption, arg1, arg2)
 end
+
+
 
 
 local function 被调教者修正(chara, 部位, func)
@@ -328,10 +342,31 @@ local function 特性修正(active, func)
     end
 end
 
+---@param trainer Character
+---@param trainee Character
+---@param action string
+---@param select string
+function TrainManager:添加行为(trainer, trainee, action, select, mutil)
+    local sex = require("Train/"..action)
+    if sex ~= nil then   
+        local active = sex:GetActive(trainer, trainee, select)
+        if active ~= nil then
+            if mutil ~= nil then
+                active.乘数 = mutil
+            end
+            table.insert(self.行为栈, active)
+        end
+    else
+        Message:AddTopMessage("行为不存在")
+        return false
+    end
+end
 
 local function 执行行为(self)
+    TrainManager.当前行为 = self
+
     local action = self.sex:SexActive(self, self.行为, self.选择)
-    if self.调教者.阴蒂 ~= nil and self.调教者.阴蒂.IsJJ and self.调教者.阴蒂.精液 > 10000 then
+    if self.调教者.阴部 ~= nil and self.调教者.阴部.IsJJ and self.调教者.阴部.精液 > 10000 then
         TrainManager:射精处理(self, action)
     end
     TrainManager:行为补正(self, action)
@@ -342,33 +377,17 @@ local function 执行行为(self)
 
     TrainManager:最终补正(self, feel)
     TrainManager:经验处理(self, self.feelpack)
-    TrainManager:输出口上()
+    TrainManager:输出口上(self)
 
 end
 
 
-
-
 --执行调教选项
 function TrainManager:Execute()
-    if self.上次行为 == self.行为 and self.上次选择 == self.选择 then
-        self.相同行动 = true
-    end
-
-    local sex = require("Train/"..self.行为)
-
---先检查是否能执行
-    local active = sex:Check()
-
-    if active == nil then
-        Message : StartPop()
-        return
-    end
-    table.insert(self.行为栈, active)
-
     for i = 1, #self.行为栈 do
         执行行为(self.行为栈[i])
     end
+    self.当前行为 = nil
     local trainees = {}
     --
     for index, value in ipairs(self.行为栈) do
@@ -397,9 +416,6 @@ function TrainManager:Execute()
     self:最终处理()
 end
 
-
-
-
 function TrainManager.Button(arg1, arg2, arg3)
     local s
     if arg2 == nil then
@@ -422,7 +438,8 @@ end
 function TrainManager:EXABL(tec, body)
     local value = 0
     local abl = math.min(tec, 6)
-    if self.获取上次信息(self.被调教者, "绝顶") then
+    local id = self:查找ID(body)
+    if self:获取上次信息(self.被调教者, "绝顶") then
         value = (body + abl * 20) * (1 + abl * 0.01)
     else
         value = (body + abl * 100) * (1 + abl * 0.03)
@@ -483,7 +500,9 @@ function TrainManager:ToFeelPack(active, pack)
             恭顺 = pack.成就感 * (190 + (SF - 10) * 2) / 100
         end
         特性修正(active, function (type, tex)
-            习得, 恭顺 = tex:行为包转感觉包修正(active, type, "成就感", 习得, 恭顺)
+            if tex.行为包转感觉包修正 ~= nil then
+                习得, 恭顺 = tex:行为包转感觉包修正(active, type, "成就感", 习得, 恭顺)
+            end
         end)
         feel.习得 = feel.习得 + 习得
         feel.恭顺 = feel.恭顺 + 恭顺
@@ -868,6 +887,11 @@ function TrainManager:最终补正(active, pack)
 
         active.体力减少 = (100 + (data:获取等级(pack.痛苦) * (data:获取等级(pack.痛苦) + 1) / 2) * 10) / 100 * active.体力减少
     end
+    if active.乘数 ~= nil then
+        for key, value in pairs(pack) do
+            pack[key] = value * active.乘数
+        end
+    end
 
     active.feelpack = pack
 end
@@ -1005,7 +1029,7 @@ function TrainManager:绝顶处理(active, feel)
         orgasmsNumber = orgasmsNumber + Orgasms["阴部快感"]
         Otypes = Otypes + 1
 
-        被调教者修正(trainee, "阴蒂", function (部位, tex)
+        被调教者修正(trainee, "阴部", function (部位, tex)
             if tex.绝顶修正 ~= nil then
                 tex:绝顶修正(trainee, data, 部位, Orgasms["阴部快感"])
             end
@@ -1111,7 +1135,7 @@ function TrainManager:绝顶处理(active, feel)
 
     require("Data/FeelPack"):Add(feel, Refeel)
     --文本
-    local text = SB.New()
+    local text = SB:New()
     if Otypes == 6 then
         text:Append("六重")
     elseif Otypes == 5 then
@@ -1371,7 +1395,7 @@ function TrainManager:重置变量()
             end
         end
     end
-
+    self.经验栈 = {}
     self.回合数 = self.回合数 + 1
 
     上次记录 = 本次记录
@@ -1380,7 +1404,10 @@ function TrainManager:重置变量()
     end
 end
 
+---@param active ActiveMsg
 function TrainManager:输出口上(active)
+    active.sex:TrainMessage(active);
+    require(("Chara/%s/KouJiu"):format(self.被调教者.口上))[active.行为](active)
     
 end
 
@@ -1392,8 +1419,9 @@ function TrainManager:输出(charas)
     Message:AddMessage(text:ToStr())
     for id, feel in pairs(charas) do
         local chara = self.参与人员[id]
+        text = SB:New()
+
         Message:AddMessage(chara.名字.."感觉变化")
-        text:Clear()
         for index, value in ipairs(self.FeelList) do
             text:AppendLine(("%s:%d + %d = %d"):format(value, self.FeelPack[id][value] - feel[value], feel[value], self.FeelPack[id][value]))
         end
@@ -1420,6 +1448,8 @@ function TrainManager:性癖增益(pack, value)
     pack.反感追加 = pack.反感追加 + math.max(d:DownPalamLv(pack.反感追加, 1) - 500, 0)
 end
 
+---@param pack ActionPack
+---@param value number
 function TrainManager:获得经验(exp, n, chara)
     chara = chara or self.被调教者
 
@@ -1429,10 +1459,10 @@ function TrainManager:获得经验(exp, n, chara)
         else
             chara.经验[exp] = chara.经验[exp] + n
         end
-        table.insert(self.经验栈, ("%s获得了%d点%s"):format(chara.Name, n, exp))
-        return
+        table.insert(self.经验栈, ("%s获得了%d点%s"):format(chara.名字, n, exp))
+    else
+        error("角色经验表为 nil")
     end
-    error("角色经验表为 nil")
 end
 
 function TrainManager:添加记录(id, mess, n)
@@ -1526,9 +1556,9 @@ function TrainManager:转化宝珠(chara, feel)
                     var = var * 1.5
                 end
             end
-            if key == "阴部快感" and TrainManager.总记录["阴蒂绝顶"] ~= nil then
-                var = TrainManager.总记录["阴蒂绝顶"] * 500 + var
-                if 检查特性(chara.阴蒂, "阴蒂性向") then
+            if key == "阴部快感" and TrainManager.总记录["阴部绝顶"] ~= nil then
+                var = TrainManager.总记录["阴部绝顶"] * 500 + var
+                if 检查特性(chara.阴部, "阴蒂性向") then
                     var = var * 1.5
                 end
             end
@@ -1557,36 +1587,37 @@ function TrainManager:转化宝珠(chara, feel)
     return orb
 end
 
-function TrainManager:AllowAction()
+function TrainManager:AllowAction(Trainee ,Female)
     local value = 0
-    local text = {}
-    local Female = self.被调教者
+    local text = SB:New()
 
     local temp = math.min(Female:获取能力("顺从"), 10)
-    self:OrderRequire(value, text, "abl", "顺从", temp)
+    value = self:OrderRequire(value, text, "abl", "顺从", temp * 2)
 
     temp = math.min(Female:获取能力("欲望"), 10)
-    self:OrderRequire(value, text, "abl", "欲望", temp)
+    value = self:OrderRequire(value, text, "abl", "欲望", temp * 2)
 
     temp = Female.刻印["痛苦刻印"] * 5--痛苦刻印
-    self:OrderRequire(value, text, "abl", "痛苦刻印", temp)
+    value = self:OrderRequire(value, text, "abl", "痛苦刻印", temp)
 
     temp = Female.刻印["屈从刻印"] * 3
-    self:OrderRequire(value, text, "abl", "屈从刻印", temp)
+    value = self:OrderRequire(value, text, "abl", "屈从刻印", temp)
 
     temp = Female.刻印["快乐刻印"] * 2
-    self:OrderRequire(value, text, "abl", "快乐刻印", temp)
+    value = self:OrderRequire(value, text, "abl", "快乐刻印", temp)
 
     temp = Female.刻印["反抗刻印"] * -5
-    self:OrderRequire(value, text, "abl", "反抗刻印", temp)
+    value = self:OrderRequire(value, text, "abl", "反抗刻印", temp)
 
     local id = self:查找ID(Female)
     local data = require("Data/参数")
 
     temp = data:获取等级(self.FeelPack[id].欲情)
-    self:OrderRequire(value, text, "abl", "欲情", temp)
+    value = self:OrderRequire(value, text, "abl", "欲情", temp )
     temp = data:获取等级(self.FeelPack[id].恐怖)
-    self:OrderRequire(value, text, "abl", "恐怖", temp)
+    value = self:OrderRequire(value, text, "abl", "恐怖", temp)
+    temp = data:获取等级(self.FeelPack[id].屈从)
+    value = self:OrderRequire(value, text, "abl", "恐怖", temp)
 
     value = TrainManager:OrderRequire(value, text, "talent", "叛逆", -10)
     value = TrainManager:OrderRequire(value, text, "talent", "坚强", -5)
@@ -1597,6 +1628,26 @@ function TrainManager:AllowAction()
     value = TrainManager:OrderRequire(value, text, "talent", "好色", 2)
     value = TrainManager:OrderRequire(value, text, "talent", "淫乱", 2)
 
+
+    if Female.性别 ~= "中性" and Trainee.性别 ~= "中性" and Female.性别 == Trainee.性别 then
+        if Female: 检查特性("接受同性") then
+            value = value + 5
+            SB.append(text,"接受同性：(5)")
+        elseif Female: 检查特性("拒绝同性") then
+            value = value - 5
+            SB.append(text,"拒绝同性：(-5)")
+        end
+    end
+
+    if table.Exist(TrainManager.调教地点特性, "摄像机") then
+        value = value - 10
+        text.append(text,"摄像机：(-10)")
+    end
+    if table.Exist(TrainManager.调教地点特性, "野外PLAY") then
+        value = value - 10
+        text.append(text,"野外PLAY：(-10)")
+    end
+    return value, text
 end
 
 function TrainManager:OrderRequire(value, text, type, name, num)
@@ -1645,11 +1696,11 @@ function TrainManager:OrderRequire(value, text, type, name, num)
     else
         return value
     end
-    text:insert(("%s(%s)"):format(name, num))
+    text:Append(("%s：(%s)"):format(name, num))
     return value
 end
 
-function TrainManager:SMPlay(active)
+function TrainManager:SMPlay(active, type)
     local base = require("Data/ActionPack"):New()
     local m = active.被调教者:获取能力("受虐属性")
     local s = active.调教者:获取能力("施虐属性")
@@ -1698,5 +1749,108 @@ function TrainManager:SMPlay(active)
     return base
 end
 
+---@param active ActiveMsg
+---@return ActionPack
+function TrainManager:ServicePlay(active)
+    local Active = active.行为
+    local Female = active.被调教者
+    local data = require("Data/参数")
+
+    local base = require("Data/ActionPack"):New()
+    local sf = Female:获取能力("侍奉精神")
+    if sf == 0 then
+        base.性行动 = 100
+        base.成就感 = 50
+    elseif sf == 1 then
+        base.性行动 = 500
+        base.成就感 = 200
+    elseif sf <= 5 then
+        base.性行动 = 500 + (sf - 1) * 100
+        base.成就感 = 200 + (sf - 1) * 50
+    elseif sf <= 10 then
+        base.性行动 = 900 + (sf - 5) * 60
+        base.成就感 = 400 + (sf - 5) * 20
+    else
+        base.性行动 = 1200 + (sf - 10) * 30
+        base.成就感 = 500 + (sf - 10) * 10
+    end
+    local temp = 0
+    if active.目标.技巧 then
+     temp = active.目标.技巧
+    end
+    if Active == "侍奉舔阴" then
+        base.性行动 = base.性行动 * 1.8
+        base.成就感 = base.成就感 * 1.8
+        temp = temp + data:获取经验等级(Female : 获取经验("口交经验"))
+    elseif Active == "手淫" then
+        temp = temp + data:获取经验等级(Female : 获取经验("手淫经验"))
+    elseif Active == "口交" then
+        base.性行动 = base.性行动 * 1.5
+        base.成就感 = base.成就感 * 1.5
+        temp = temp + data:获取经验等级(Female : 获取经验("口交经验"))
+    elseif Active == "乳交" then
+        temp = temp + data:获取经验等级(Female : 获取经验("乳交经验"))
+    elseif Active == "素股" then
+        temp = temp + Female:获取能力("性交成瘾")
+    elseif Active == "强制口交" or Active == "肛门侍奉" then
+        base.性行动 = base.性行动 * 2
+        base.成就感 = base.成就感 * 2
+        temp = temp + Female:获取能力("口交经验")
+    elseif Active == "足交" then
+        temp = temp + Female:获取能力("施虐属性") * 0.5 + data:获取经验等级(Female : 获取经验("足交经验")) * 0.5
+    elseif Active == "舔足" then
+        temp = temp + Female:获取能力("受虐属性")
+    end
+    temp = math.floor(temp)
+
+    if temp <= 5 then
+        base.性行动 = base.性行动 * (temp * 0.2 + 1)
+        base.成就感 = base.成就感 * (temp * 0.2 + 1)
+    elseif temp <= 10 then
+        base.性行动 = base.性行动 * ((temp - 5) * 0.1 + 2)
+        base.成就感 = base.成就感 * ((temp - 5) * 0.1 + 2)
+    else
+        base.性行动 = base.性行动 * ((temp - 10) * 0.05 + 2.5)
+        base.成就感 = base.成就感 * ((temp - 10) * 0.05 + 2.5)
+    end
+    return base
+end
+
+
+---@param active ActiveMsg
+function TrainManager:AddLust(active)
+    if active.sex.SexType("侍奉快乐") and active.sex.SexType("嗜虐快乐") then
+        return 150 * math.max(active.被调教者.获取能力("侍奉技术"), active.被调教者.获取能力("施虐属性"))
+    elseif active.sex.SexType("侍奉快乐") then
+        return 150 * active.被调教者.获取能力("侍奉技术")
+    else
+        return 150 * active.被调教者.获取能力("施虐属性")
+    end
+end
+
+function TrainManager:ShowOrder(value, text, need)
+    local output = SB:New()
+
+    for index, v in ipairs(text) do
+        output:Append(v)
+        output:Append("+")
+    end
+    output[#output] = nil
+    SB.Append(output," = "..value)
+    if value > need then
+        SB.Append(output," > "..need)
+    elseif value == need then
+        SB.Append(output," = "..need)
+    else
+        SB.Append(output," < "..need)
+    end
+    Message : AddMessage(output:ToStr())
+    if value >= need then
+        return true
+    else
+        return false
+    end
+
+end
 
 return TrainManager

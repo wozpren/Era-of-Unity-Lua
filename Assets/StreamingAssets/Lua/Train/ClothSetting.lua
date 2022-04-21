@@ -1,4 +1,4 @@
-﻿local text = SB.New()
+﻿local text = SB:New()
 text:Append(Female.Name.."的穿着".."\n")
 text:Append("头"..Female : GetOutsideEquip(0).."\n")
 text:Append("眼"..Female : GetOutsideEquip(1).."\n")

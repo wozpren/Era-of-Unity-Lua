@@ -23,6 +23,10 @@ function SB:Remove()
     table.remove(self)
 end
 
+function SB:Clear()
+    self = {}
+end
+
 function SB:Random(...)
     local index = math.random(1, select('#',...))
     local s = {...}

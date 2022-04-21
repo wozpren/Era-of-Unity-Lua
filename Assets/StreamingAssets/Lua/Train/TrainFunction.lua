@@ -59,7 +59,7 @@ function AddSexexp(name, value, Chara)
 end
 
 function SettlementEXP()
-    local text = SB.New()
+    local text = SB:New()
     for name, Chara in pairs(Train.EXP) do
         for key, value in pairs(Chara) do
             if key ~= "chara" and value > 0 then
@@ -297,10 +297,7 @@ function MultiSet(base ,type)
             base.multi = base.multi * t / 100
         end
     elseif type == "口" then
-        if Train.HaveTalent("荡唇") then
-            base.multi = base.multi * 1.5
-        end
-        base.multi = TrainManager:EXABL(base.multi, GetExpLV("口交经验"))
+
     elseif type == "手" then
         base.multi = TrainManager:EXABL(base.multi, GetExpLV("手淫经验"))
     elseif type == "足" then

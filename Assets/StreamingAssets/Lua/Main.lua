@@ -23,9 +23,7 @@ function Init()
 	dofile("Manager/UIManager")
 	dofile("System/coroutine")
 --声明全局变量
-
-
-
+	UIManager:Init()
 
 --读取数据
 	DataManager:LoadSystemData()
@@ -65,9 +63,6 @@ end
 
 
 function table.Exist(list, par)
-	if not list then
-	  return false 
-	end 
 	if type(list) == "table" then
 		for index, value in ipairs(list) do
 			if value == par then
@@ -76,7 +71,7 @@ function table.Exist(list, par)
 		end
 	end
 	return false
-end 
+end
 
 function table.Find(list, par)
 	if not list then
@@ -100,7 +95,9 @@ function TableAdd(data, value)
 end
 
 
-
+function EventInvoke(eventName, ...)
+	EventManager:SendEvent(eventName,...)
+end
 
 
 function CoroutineResume(...)

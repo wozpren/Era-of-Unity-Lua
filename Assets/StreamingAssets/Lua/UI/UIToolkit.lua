@@ -44,7 +44,7 @@ function AddColor(string, color)
 end
 
 function AddGroup(select, func, ...)
-	local text = SB.New()
+	local text = SB:New()
 	for i, v in ipairs{...} do
 		local t = ""
 		if select == v then
@@ -60,7 +60,7 @@ function AddGroup(select, func, ...)
 end
 
 function AddNumberFloat(value, func, min, max)
-	local text = SB.New()
+	local text = SB:New()
 	if min == nil or value > min then
 		text:Append(AddButton("--", func..","..(value - 1)).." ")
 	else
@@ -87,7 +87,7 @@ end
 
 
 function AddNumber(value, func, min, max)
-	local text = SB.New()
+	local text = SB:New()
 	if min == nil or value > min then
 		text:Append(AddButton("-", func..","..(value - 1)))
 	else

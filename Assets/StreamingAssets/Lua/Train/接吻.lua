@@ -6,10 +6,10 @@ function t:SexActive(Active, Select)
     base.性行动 = 300
     base.成就感 = 300
 
-    local JS = Train.GetAbility("技术")
+    local JS = Train.GetAbility("技巧")
 
 
-    base.嘴部快感 = Female:计算刺激度("M刺激", 1)
+    base.嘴部快感 = Female:计算刺激度("嘴", 1)
     base.嘴部快感 = TrainManager:EXABL(JS, base.嘴部快感)
 
     if trainData : PrevPlay("接吻")  ~= 0 then

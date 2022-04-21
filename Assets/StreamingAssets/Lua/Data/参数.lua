@@ -24,7 +24,29 @@ local 参数 = {}
     100000000,  --20
 }
 
+参数.经验等级 =
+{
+    30,
+    60,
+    100,
+    250,
+    500,
+    1000,
+    2500,
+    5000,
+    10000
+}
 
+function 参数:获取经验等级(n)
+    if n < 30 then
+        return 0
+    end
+    for i = 9, 1, -1 do
+        if self.经验等级[i] <= n then
+            return i
+        end
+    end
+end
 
 function 参数:获取等级(n)
     if n < 100 then

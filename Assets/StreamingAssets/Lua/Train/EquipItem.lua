@@ -32,7 +32,7 @@ function equipEvent.嘴(type)
         base.屈从 = base.屈从 * 2
         base.不洁 = base.不洁 * 1.5
         base.逃脱 = base.逃脱 * 6
-        base.嘴部快感 = Female:计算刺激度("M刺激", 2)
+        base.嘴部快感 = Female:计算刺激度("嘴", 2)
         local gap = Train.GetAbility("喉扩张") - Trainer.Stature.JJSize
         if gap <= -2 then
             base.恐惧 = 3000
@@ -174,8 +174,8 @@ function equipEvent.尿道(type)
         base.情爱 = base.情爱 + 500
 
         if Train.GetAbility("尿道扩张") > Trainer.Stature.JJSize then
-            base.阴蒂快感 = Female:计算刺激度("C刺激", 2, 30)
-            base.阴蒂快感 = TrainManager:EXABL(Trainer: GetAbility("性交中毒"), base.阴蒂快感)
+            base.阴部快感 = Female:计算刺激度("阴部", 2, 30)
+            base.阴部快感 = TrainManager:EXABL(Trainer: GetAbility("性交中毒"), base.阴部快感)
         end
         local YQ = trainData.Source : get_Item("欲情")
         if YQ < 100 then

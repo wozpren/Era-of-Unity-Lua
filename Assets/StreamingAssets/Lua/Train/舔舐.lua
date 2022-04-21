@@ -29,14 +29,14 @@ if Select == "胸部" then
         base.胸部快感 = base.胸部快感 * 1.5
     end
 elseif Select == "小穴" then
-    base.阴蒂快感 = Female:计算刺激度("C刺激", 1)
-    base.阴蒂快感 = TrainManager:EXABL(JS, base.阴蒂快感)
+    base.阴部快感 = Female:计算刺激度("阴部", 1)
+    base.阴部快感 = TrainManager:EXABL(JS, base.阴部快感)
     base.小穴快感 = Female:计算刺激度("V刺激", 1)
     base.小穴快感 = TrainManager:EXABL(JS, base.小穴快感)
     base.不洁 =  200
 
     base.小穴快感 = base.小穴快感 * 0.6
-    base.阴蒂快感 = base.阴蒂快感 * 0.6
+    base.阴部快感 = base.阴部快感 * 0.6
 
     if LCP >= 1 and LCP <= 5 then
         base.露出 = base.露出 + LCP * 200
@@ -49,22 +49,22 @@ elseif Select == "小穴" then
     TrainManager:获得经验("小穴经验", 1)
 
     if Female:检查特性("阴蒂性向") then
-        TrainManager:性癖增益(base, base.阴蒂快感)
+        TrainManager:性癖增益(base, base.阴部快感)
     end
     local b = Female : GetOutsideEquip(6)
     if b ~= nil then
         if b.Type ~= "内裤" then
-            base.阴蒂快感 = base.阴蒂快感 * 0.6
+            base.阴部快感 = base.阴部快感 * 0.6
             base.小穴快感 = base.小穴快感 * 0.6
             base.露出 = base.露出 * 0.4
         else
-            base.阴蒂快感 = base.阴蒂快感 * 0.8
+            base.阴部快感 = base.阴部快感 * 0.8
             base.小穴快感 = base.小穴快感 * 0.8
             base.露出 = base.露出 * 0.6
         end
     end
     if Train.Estrus("V") then
-        base.阴蒂快感 = base.阴蒂快感 * 1.5
+        base.阴部快感 = base.阴部快感 * 1.5
         base.小穴快感 = base.小穴快感 * 1.5
     end
 elseif Select == "肛门" then
@@ -134,8 +134,8 @@ elseif Select == "脚部" then
         base.情爱 = base.情爱 + 2000
     end
 elseif Select == "肉棒" then
-    base.阴蒂快感 = Female:计算刺激度("C刺激", 1)
-    base.阴蒂快感 = TrainManager:EXABL(JS, base.阴蒂快感)
+    base.阴部快感 = Female:计算刺激度("阴部", 1)
+    base.阴部快感 = TrainManager:EXABL(JS, base.阴部快感)
     base.不洁 = 200
     base.恐惧 = 500
     base.逃脱 = base.逃脱 + 1000
@@ -163,8 +163,8 @@ elseif Select == "肉棒" then
 
     TrainManager:获得经验("口交经验", 1, Trainer)
 elseif Select == "阴核" then
-    base.阴蒂快感 = Female:计算刺激度("C刺激", 1)
-    base.阴蒂快感 = TrainManager:EXABL(JS, base.阴蒂快感)
+    base.阴部快感 = Female:计算刺激度("阴部", 1)
+    base.阴部快感 = TrainManager:EXABL(JS, base.阴部快感)
     base.不洁 = 200
     base.恐惧 = 100
     local SC = Train.GetAbility("顺从")
@@ -209,7 +209,7 @@ end
 
 
 function t:Check()
-    local text = SB.New()
+    local text = SB:New()
     text:Append("要舔舐哪里\n")
     text:Append(AddButtonL("胸部","CoroutineResume,胸部"))
     text:Append(AddButtonL("小穴","CoroutineResume,小穴"))

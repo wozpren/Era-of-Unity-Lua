@@ -40,8 +40,6 @@ function ui:Exit()
     UnityEngine.Application.Exit()
 end
 
-
-
 function ui:Test(...)
     print(...)
 end

@@ -74,7 +74,7 @@ function t:Check()
     
     
     if Train.ShowOrder(value, text, 60) then
-        local text = SB.New()
+        local text = SB:New()
         text:Append(AddButton("完全剃光   ","CoroutineResume,完全剃光"))
         text:Append(AddButton("修正形态   ","CoroutineResume,修正形态"))
         text:Append(AddButton("还是算了   ","CoroutineResume,还是算了"))
@@ -84,7 +84,7 @@ function t:Check()
         select = coroutine.yield()
         Message : Continue()
         if select == "修正形态" then
-            local text = SB.New()
+            local text = SB:New()
             text:Append(AddButton("▼型   ","CoroutineResume,▼"))
             text:Append(AddButton("⭐型   ","CoroutineResume,⭐"))
             text:Append(AddButton("❤型   ","CoroutineResume,❤"))

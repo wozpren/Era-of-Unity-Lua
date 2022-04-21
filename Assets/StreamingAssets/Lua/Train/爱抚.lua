@@ -1,10 +1,7 @@
 local t ={}
 ---@type Character
 
-
-
 function t:SexActive(active, Active, Select)
-    Message : AddMessage("爱抚"..Select)
     ---@type Character
     local Female = active.被调教者
     local 调教者 = active.调教者
@@ -14,8 +11,8 @@ function t:SexActive(active, Active, Select)
     local tec = 调教者.手.技巧
 
     local CFeel = 0
-    if Female.阴蒂 ~= nil then
-        CFeel = Female.阴蒂.感觉
+    if Female.阴部 ~= nil then
+        CFeel = Female.阴部.感觉
     end
     local VFeel = 0
     if Female.小穴 ~= nil then
@@ -82,8 +79,8 @@ function t:SexActive(active, Active, Select)
             base.露出 = base.露出 * l * 0.2
         end
     elseif Select == "小穴" then
-        base.阴蒂快感 = Female:计算刺激度("阴蒂", 1)
-        base.阴蒂快感 = TrainManager:EXABL(tec, base.阴蒂快感)
+        base.阴部快感 = Female:计算刺激度("阴部", 1)
+        base.阴部快感 = TrainManager:EXABL(tec, base.阴部快感)
         base.小穴快感 = Female:计算刺激度("小穴", 1)
         base.小穴快感 = TrainManager:EXABL(tec, base.小穴快感)
         if Female:检查特性("处女") then
@@ -121,7 +118,7 @@ function t:SexActive(active, Active, Select)
         local b = Female:获取装备厚度("身体")
         if b > 0 then
             local l = math.max(5 - b, 0)
-            base.阴蒂快感 = base.阴蒂快感 * l * 0.2
+            base.阴部快感 = base.阴部快感 * l * 0.2
             base.小穴快感 = base.小穴快感 * l * 0.2
             base.露出 = base.露出 * l * 0.2
         end
@@ -187,53 +184,52 @@ function t:SexActive(active, Active, Select)
     return base
 end
 
-function t:TrainMessage()
+---@param active ActiveMsg
+function t:TrainMessage(active)
     local text = SB:New()
-    text:Append("[player]用手")
-    if trainData.Select == "头部" then
+    text:Append("@player@用手")
+    if active.选择 == "头" then
         text:Random("轻轻","温柔","细致")
         text:Append("地反复")
         text:Random("抚摸","爱抚")
-        text:Append("着[target]的头部")
-    elseif trainData.Select == "胸部" then
-        local equip Female:获取外层装备("身体")
-        local size = Female.胸.大小
-        text:Append("将")
-        if equip ~= nil and equip.Type == "护甲" then
-            text:Append("隔着坚固的护甲，感受来自胸部的温暖")
+        text:Append("着@target@的头部")
+    elseif active.选择 == "胸" then
+        local b = active.被调教者:获取装备厚度("身体")
+        local size = active.被调教者.胸.大小
+        if b ~= nil and b >= 3 then
+            text:Append("隔着厚实的衣物，感受来自胸部的温暖")
         else
-            if equip ~= nil then
-                if equip.Type == "内衣" then
-                    text:Append("胸罩掀起，")       
-                else
-                    text:Append("拉开胸前的衣物，")
-                end
-                text:Append("对着暴露在空气中的")
-            end
+            --if equip ~= nil then
+                --if equip.Type == "内衣" then
+                    --text:Append("胸罩掀起，")
+                --else
+                    --text:Append("拉开胸前的衣物，")
+                --end
+                --text:Append("对着暴露在空气中的")
+            --end
             if size > 5 then
                 text:Append("如同棉花糖般柔软的巨房")
                 if Female.胸.感觉 >= 3 then
-
+                    text:Random("用手揉捏成各种形状","随着手的变成各种样子","握在手中，乳肉从指间溢出")
                 else
                     text:Random("用手揉捏成各种形状","随着手的变成各种样子","握在手中，乳肉从指间溢出")
                 end
             elseif size > 2 then
-                text:Append("大小适中的乳房")
-                text:Random("用手揉不断揉捻着","用手享受着柔软的触感")
+                text:Append("在大小适中的乳房")
+                text:Random("揉不断揉捻着","享受着柔软的触感")
             elseif size > 1 then
-                text:Append("微微发育的乳房")
-                text:Random("用手按摩着","手指围着可爱的乳头画圈")
+                text:Append("在微微发育的乳房")
+                text:Random("按摩着","围着可爱的乳头画圈")
             else
-                text:Append("飞机场般的乳房")
-                text:Random("手指围着可爱的乳头画圈","双手覆盖上去，手掌感受中间的突起")
+                text:Append("在飞机场般的乳房")
+                text:Random("手指围着可爱的乳头画圈","覆盖上去，手掌感受中间的突起")
             end
         end
-    elseif trainData.Select == "小穴" then
-        text:Append("爱抚着[taget]的小穴")
+    elseif active.选择 == "小穴" then
+        text:Append("爱抚着@target@的小穴")
     end
-     text:ToStr()
 
-    ImplementKoujiu("爱抚")
+    UIManager:GetUI("TrainView"):Append(text:ToStr(), active)
 end
 
 function t:SexType(type)
@@ -258,20 +254,28 @@ function t:Check()
     ---@type string
     local Select = coroutine.yield()
     Message : Continue()
+    return true, Select
+end
 
+---@return ActiveMsg
+function t:GetActive(trainer, trainee, select)
+    
     ---@class ActiveMsg
     local o = 
     {
-        调教者 = TrainManager.调教者,
-        被调教者 = TrainManager.被调教者,
-        执行 = TrainManager.调教者.手,
-        目标 = TrainManager.被调教者[Select],
+        ---@type Character
+        调教者 = trainer,
+        ---@type Character
+        被调教者 = trainee,
+        执行 = trainer.手,
+        目标 = trainee[select],
         sex = self,
         体力减少 = 10,
         行为 = "爱抚",
-        选择 = Select,
+        选择 = select,
         次数 = 1,
     }
+
     return o
 end
 

@@ -1,5 +1,5 @@
 local radius = 0
-
+local t = {}
 function t:SexActive(Active, Select)
     local base = InsertAcitve("探针", radius)
     return base
@@ -45,3 +45,5 @@ function t:Check()
     
     return Train.ShowOrder(value, text, 55)
 end
+
+return t
