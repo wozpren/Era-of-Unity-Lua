@@ -14,7 +14,7 @@ if Select == "胸部" then
     base.胸部快感 = Female:计算刺激度("B刺激", 1)
     base.胸部快感 = TrainManager:EXABL(JS, base.胸部快感)
     base.不洁 =  200
-    base.情爱 = base.情爱 + Female.胸.感觉 * 100
+    base.情爱 = base.情爱 + Female.胸部.感觉 * 100
     local b = Female : GetOutsideEquip(5)
     if b ~= nil then
         if b.Type ~= "内衣" then
@@ -208,7 +208,7 @@ end
 
 
 
-function t:Check()
+function t:Check(Trainee, Female, Select)
     local text = SB:New()
     text:Append("要舔舐哪里\n")
     text:Append(AddButtonL("胸部","CoroutineResume,胸部"))

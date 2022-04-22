@@ -183,10 +183,10 @@ function t:TrainMessage()
     ImplementKoujiu("插入小穴")
 end
 
-function t:Check()
+function t:Check(Trainee, Female, Select)
 
 if trainData.Posture == "乘骑位" then
-    local value, text = Train.AllowAction()
+    local value, text = TrainManager:AllowAction()
     local n = Train.GetAbility("侍奉技术")
     value = OrderRequire(value, text, "abl", "侍奉技术", n * 2)
 

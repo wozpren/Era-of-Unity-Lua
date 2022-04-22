@@ -126,8 +126,10 @@ function meta:获取状态(tal)
     return false
 end
 
-function meta:检查特性(tal)
-    if self.特性 ~= nil and table.Exist(self.特性, tal) then
+function meta:检查特性(tal, pos)
+    if pos ~= nil and self[pos].特性 ~= nil and table.Exist(self[pos].特性, tal) then
+        return true
+    elseif self.特性 ~= nil and table.Exist(self.特性, tal) then
         return true
     end
     return false
@@ -151,11 +153,15 @@ function meta:调用口上(name, ...)
     end
 end
 
-function meta:检查性玩具(name)
-    local t = {"嘴", "胸", "小穴", "子宫", "阴部", "尿道", "菊穴", "头"}
+function meta:检查性玩具(name, pos)
+    if pos ~= nil then
+       return table.Exist(self[pos].装备, name)
+    end
+
+    local t = {"嘴部", "胸部", "小穴", "子宫", "阴部", "尿道", "菊穴", "头部"}
 
     for i, value in ipairs(t) do
-        if meta[value].装备[name] then
+        if table.Exist(self[value].装备, name) then
             return true
         end
     end
@@ -164,14 +170,14 @@ function meta:检查性玩具(name)
 end
 
 function meta:特性修正(func)
-    for index, value in ipairs(meta.特性) do
+    for index, value in ipairs(self.特性) do
         local tex = require(("Data/特性/%s"):format(value))
         if tex then
             func(tex)
         end
     end
 
-    for index, value in ipairs(meta.状态) do
+    for index, value in ipairs(self.状态) do
         local tex = require(("Data/状态/%s"):format(value))
         if tex then
             func(tex)

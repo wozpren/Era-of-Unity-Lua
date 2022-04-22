@@ -19,8 +19,8 @@ function t:SexActive(active, Active, Select)
         VFeel = Female.小穴.感觉
     end
     local BFeel = 0
-    if Female.胸 ~= nil then
-        BFeel = Female.胸.感觉
+    if Female.胸部 ~= nil then
+        BFeel = Female.胸部.感觉
     end
     local AFeel = 0
     if Female.菊穴 ~= nil then
@@ -46,11 +46,11 @@ function t:SexActive(active, Active, Select)
 
 
     elseif Select == "胸部" then
-        base.胸部快感 = Female:计算刺激度("胸", 1)
+        base.胸部快感 = Female:计算刺激度("胸部", 1)
         base.胸部快感 = TrainManager:EXABL(tec, base.胸部快感)
 
 
-        if Female:检查特性("胸性向") then
+        if Female:检查特性("胸部性向") then
             TrainManager:性癖增益(base, base.胸部快感)
             BFeel = BFeel + 1
         end
@@ -70,7 +70,7 @@ function t:SexActive(active, Active, Select)
         elseif BFeel == 5 then
             base.逃脱 = base.逃脱 * 0.2
         end
-        TrainManager:获得经验("胸经验", 1)
+        TrainManager:获得经验("胸部经验", 1)
         TrainManager:获得经验("手淫经验", 1, 调教者)
         local b = Female:获取装备厚度("身体")
         if b > 0 then
@@ -193,9 +193,9 @@ function t:TrainMessage(active)
         text:Append("地反复")
         text:Random("抚摸","爱抚")
         text:Append("着@target@的头部")
-    elseif active.选择 == "胸" then
+    elseif active.选择 == "胸部" then
         local b = active.被调教者:获取装备厚度("身体")
-        local size = active.被调教者.胸.大小
+        local size = active.被调教者.胸部.大小
         if b ~= nil and b >= 3 then
             text:Append("隔着厚实的衣物，感受来自胸部的温暖")
         else
@@ -209,7 +209,7 @@ function t:TrainMessage(active)
             --end
             if size > 5 then
                 text:Append("如同棉花糖般柔软的巨房")
-                if Female.胸.感觉 >= 3 then
+                if Female.胸部.感觉 >= 3 then
                     text:Random("用手揉捏成各种形状","随着手的变成各种样子","握在手中，乳肉从指间溢出")
                 else
                     text:Random("用手揉捏成各种形状","随着手的变成各种样子","握在手中，乳肉从指间溢出")
@@ -240,11 +240,11 @@ function t:SexType(type)
 end
 
 
-function t:Check()
+function t:Check(Trainee, Female, Select)
     local text = SB:New()
     text:Append( "要爱抚哪里\n")
-    text:Append( AddButtonL("头部","CoroutineResume,头"))
-    text:Append( AddButtonL("胸部","CoroutineResume,胸"))
+    text:Append( AddButtonL("头部","CoroutineResume,头部"))
+    text:Append( AddButtonL("胸部","CoroutineResume,胸部"))
     if TrainManager.被调教者.小穴 ~= nil then
         text:Append( AddButtonL("小穴","CoroutineResume,小穴"))
     end

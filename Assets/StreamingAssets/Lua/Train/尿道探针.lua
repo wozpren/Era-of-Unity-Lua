@@ -20,28 +20,28 @@ end
 
 
 
-function t:Check()
-    local value, text = Train.AllowAction()
+function t:Check(Trainee, Female, Select)
+    local value, text = TrainManager:AllowAction()
     local n = Train.GetAbility("露出癖")
-    value = OrderRequire(value, text, "abl", "露出癖", n * 2)
-    n = Train.GetAbility("受虐属性")
-    value = OrderRequire(value, text, "abl", "露出癖", n * 3)
-    
-    value = OrderRequire(value, text, "talent", "冷漠", -5)
-    value = OrderRequire(value, text, "talent", "害羞", -15)
-    value = OrderRequire(value, text, "talent", "不知羞耻", 2)
-    value = OrderRequire(value, text, "talent", "清楚", -10)
-    value = OrderRequire(value, text, "talent", "接受快感", 5)
-    value = OrderRequire(value, text, "talent", "否定快感", -5)
-    value = OrderRequire(value, text, "talent", "倒错的", 10)
-    value = OrderRequire(value, text, "talent", "尿道性感", 10)
-    
-    value = OrderRequire(value, text, "equip", "摄像机", -20)
-    value = OrderRequire(value, text, "equip", "拘束", 30)
-    value = OrderRequire(value, text, "equip", "媚药", 2)
-    
-    value = OrderRequire(value, text, "place", "野外PLAY", -10)
-    value = OrderRequire(value, text, "place", "室内PLAY", -10)
+    value = OrderRequire(Female, value, text, "abl", "露出癖", n * 2)
+    n = Train.GetAbility(Female, "受虐属性")
+    value = OrderRequire(Female, value, text, "abl", "露出癖", n * 3)
+ 
+    value = OrderRequire(Female, value, text, "talent", "冷漠", -5)
+    value = OrderRequire(Female, value, text, "talent", "害羞", -15)
+    value = OrderRequire(Female, value, text, "talent", "不知羞耻", 2)
+    value = OrderRequire(Female, value, text, "talent", "清楚", -10)
+    value = OrderRequire(Female, value, text, "talent", "接受快感", 5)
+    value = OrderRequire(Female, value, text, "talent", "否定快感", -5)
+    value = OrderRequire(Female, value, text, "talent", "倒错的", 10)
+    value = OrderRequire(Female, value, text, "talent", "尿道性感", 10)
+
+    value = OrderRequire(Female, value, text, "equip", "摄像机", -20)
+    value = OrderRequire(Female, value, text, "equip", "拘束", 30)
+    value = OrderRequire(Female, value, text, "equip", "媚药", 2)
+
+    value = OrderRequire(Female, value, text, "place", "野外PLAY", -10)
+    value = OrderRequire(Female, value, text, "place", "室内PLAY", -10)
     
     return Train.ShowOrder(value, text, 55)
 end

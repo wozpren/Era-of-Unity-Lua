@@ -32,8 +32,8 @@ end
 
 
 
-function t:Check()
-    local value, text = Train.AllowAction()
+function t:Check(Trainee, Female, Select)
+    local value, text = TrainManager:AllowAction()
     local n = Train.GetAbility("侍奉技术")
     value = OrderRequire(value, text, "abl", "侍奉技术", n * 2)
     if Select == "足" then   

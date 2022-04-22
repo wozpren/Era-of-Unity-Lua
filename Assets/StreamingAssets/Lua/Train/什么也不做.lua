@@ -11,6 +11,6 @@ function t:TrainMessage()
     ImplementKoujiu("什么都不做")
 end
 
-function t:Check()
+function t:Check(Trainee, Female, Select)
     return true
 end

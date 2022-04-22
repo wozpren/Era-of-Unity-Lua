@@ -22,6 +22,6 @@ function t:TrainMessage()
     ImplementKoujiu("穿戴")
 end
 
-function t:Check()
+function t:Check(Trainee, Female, Select)
     return true
 end

@@ -33,6 +33,6 @@ function t:SexType(type)
     return false
 end
 
-function t:Check()
+function t:Check(Trainee, Female, Select)
     return true
 end

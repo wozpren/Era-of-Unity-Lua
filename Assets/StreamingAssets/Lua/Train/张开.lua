@@ -100,8 +100,8 @@ end
 
 
 
-function t:Check()
-    local value, text = Train.AllowAction()
+function t:Check(Trainee, Female, Select)
+    local value, text = TrainManager:AllowAction()
     local n = Train.GetAbility("露出癖")
     value = OrderRequire(value, text, "abl", "露出癖", n * 2)
     

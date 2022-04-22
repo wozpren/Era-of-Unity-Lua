@@ -30,8 +30,8 @@ end
 
 
 
-function t:Check()
-    local value, text = Train.AllowAction()
+function t:Check(Trainee, Female, Select)
+    local value, text = TrainManager:AllowAction()
 
     local n = Train.GetAbility("施虐属性")
     value = OrderRequire(value, text, "abl", "施虐属性", n * 5)

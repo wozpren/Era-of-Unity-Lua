@@ -154,12 +154,12 @@ function TrainManager:GetOptions()
     TrainManager.Line = 0
 
 
-    if 调教者.手 ~= nil then
+    if 调教者.手部 ~= nil then
         opt:Append(self.Button("爱抚"))
     end
-    if 调教者.嘴 ~= nil then
+    if 调教者.嘴部 ~= nil then
         opt:Append(self.Button("舔舐"))
-        if 检查占用(调教者.嘴) and 检查占用(目标.嘴) then
+        if 检查占用(调教者.嘴部) and 检查占用(目标.嘴部) then
             opt:Append(self.Button("接吻"))
         end
     end
@@ -180,13 +180,13 @@ function TrainManager:GetOptions()
     end
 
     --指插入系
-    if 胯部装备 == nil and not 检查占用(目标.小穴) and not 检查占用(调教者.手) then
+    if 胯部装备 == nil and not 检查占用(目标.小穴) and not 检查占用(调教者.手部) then
         opt:Append(self.Button("指插入", "小穴"))
     end
     if 胯部装备 == nil and self.上次行为 == "指插入小穴" then
         opt.Append(self.Button("指插入", "G点", "刺激G点"))
     end
-    if 胯部装备 == nil and not 检查占用(目标.菊穴) and not 检查占用(调教者.手) then
+    if 胯部装备 == nil and not 检查占用(目标.菊穴) and not 检查占用(调教者.手部) then
         opt:Append(self.Button("指插入", "肛门"))
     end
 
@@ -438,8 +438,8 @@ end
 function TrainManager:EXABL(tec, body)
     local value = 0
     local abl = math.min(tec, 6)
-    local id = self:查找ID(body)
-    if self:获取上次信息(self.被调教者, "绝顶") then
+    local id = self:查找ID(self.当前行为.被调教者)
+    if self:获取上次信息(id, "绝顶") then
         value = (body + abl * 20) * (1 + abl * 0.01)
     else
         value = (body + abl * 100) * (1 + abl * 0.03)
@@ -805,23 +805,23 @@ function TrainManager:最终补正(active, pack)
     ---@type Character
     local trainee = active.被调教者
 
-    if trainee.胸 == nil then
+    if trainee.胸部 == nil then
         pack.胸部快感 = 0
     else
-        local Bfeel = trainee.胸.感觉
-        if 检查特性(trainee.胸, "淫乳") then
+        local Bfeel = trainee.胸部.感觉
+        if 检查特性(trainee.胸部, "淫乳") then
             Bfeel = Bfeel + 1
         end
-        if trainee:检查特性("胸性向") then
+        if trainee:检查特性("胸部性向") then
             Bfeel = Bfeel + 1
         end
         pack.胸部快感 = TrainManager:快感限制(trainee, pack.胸部快感, Bfeel)
     end
-    if trainee.嘴 == nil then
+    if trainee.嘴部 == nil then
         pack.嘴部快感 = 0
     else
-        local feel = trainee.嘴.感觉
-        if 检查特性(trainee.嘴, "荡唇") then
+        local feel = trainee.嘴部.感觉
+        if 检查特性(trainee.嘴部, "荡唇") then
             feel = feel + 1
         end
         if trainee:检查特性("唇性向") then
@@ -1090,13 +1090,13 @@ function TrainManager:绝顶处理(active, feel)
     end
     if Orgasms["胸部快感"] > 0 then
         data.露出 = data.露出 + 300 * Orgasms["胸部快感"]
-        if 检查特性(trainee.尿道, "淫乳") or trainee:检查特性("胸性向") then
+        if 检查特性(trainee.尿道, "淫乳") or trainee:检查特性("胸部性向") then
             data.屈从 = data.屈从 + 1000
         end
         orgasmsNumber = orgasmsNumber + Orgasms["胸部快感"]
         Otypes = Otypes + 1
 
-        被调教者修正(trainee, "胸", function (部位, tex)
+        被调教者修正(trainee, "胸部", function (部位, tex)
             if tex.绝顶修正 ~= nil then
                 tex:绝顶修正(trainee, data, 部位, Orgasms["胸部快感"])
             end
@@ -1104,12 +1104,12 @@ function TrainManager:绝顶处理(active, feel)
     end
     if Orgasms["嘴部快感"] > 0 then
         data.露出 = data.露出 + 300 * Orgasms["嘴部快感"]
-        if 检查特性(trainee.嘴, "唇性向") or trainee:检查特性("唇性向") then
+        if 检查特性(trainee.嘴部, "唇性向") or trainee:检查特性("唇性向") then
             data.屈从 = data.屈从 + 1000
         end
         orgasmsNumber = orgasmsNumber + Orgasms["嘴部快感"]
         Otypes = Otypes + 1
-        被调教者修正(trainee, "嘴", function (部位, tex)
+        被调教者修正(trainee, "嘴部", function (部位, tex)
             if tex.绝顶修正 ~= nil then
                 tex:绝顶修正(trainee, data, 部位, Orgasms["嘴部快感"])
             end
@@ -1448,8 +1448,6 @@ function TrainManager:性癖增益(pack, value)
     pack.反感追加 = pack.反感追加 + math.max(d:DownPalamLv(pack.反感追加, 1) - 500, 0)
 end
 
----@param pack ActionPack
----@param value number
 function TrainManager:获得经验(exp, n, chara)
     chara = chara or self.被调教者
 
@@ -1552,7 +1550,7 @@ function TrainManager:转化宝珠(chara, feel)
             end
             if key == "胸部快感" and TrainManager.总记录["胸部绝顶"] ~= nil then
                 var = TrainManager.总记录["胸部绝顶"] * 500 + var
-                if 检查特性(chara.胸, "胸部性向") then
+                if 检查特性(chara.胸部, "胸部性向") then
                     var = var * 1.5
                 end
             end
@@ -1592,41 +1590,41 @@ function TrainManager:AllowAction(Trainee ,Female)
     local text = SB:New()
 
     local temp = math.min(Female:获取能力("顺从"), 10)
-    value = self:OrderRequire(value, text, "abl", "顺从", temp * 2)
+    value = self:OrderRequire(Female, value, text, "abl", "顺从", temp * 2)
 
     temp = math.min(Female:获取能力("欲望"), 10)
-    value = self:OrderRequire(value, text, "abl", "欲望", temp * 2)
+    value = self:OrderRequire(Female, value, text, "abl", "欲望", temp * 2)
 
     temp = Female.刻印["痛苦刻印"] * 5--痛苦刻印
-    value = self:OrderRequire(value, text, "abl", "痛苦刻印", temp)
+    value = self:OrderRequire(Female, value, text, "abl", "痛苦刻印", temp)
 
     temp = Female.刻印["屈从刻印"] * 3
-    value = self:OrderRequire(value, text, "abl", "屈从刻印", temp)
+    value = self:OrderRequire(Female, value, text, "abl", "屈从刻印", temp)
 
     temp = Female.刻印["快乐刻印"] * 2
-    value = self:OrderRequire(value, text, "abl", "快乐刻印", temp)
+    value = self:OrderRequire(Female, value, text, "abl", "快乐刻印", temp)
 
     temp = Female.刻印["反抗刻印"] * -5
-    value = self:OrderRequire(value, text, "abl", "反抗刻印", temp)
+    value = self:OrderRequire(Female, value, text, "abl", "反抗刻印", temp)
 
     local id = self:查找ID(Female)
     local data = require("Data/参数")
 
     temp = data:获取等级(self.FeelPack[id].欲情)
-    value = self:OrderRequire(value, text, "abl", "欲情", temp )
+    value = self:OrderRequire(Female, value, text, "abl", "欲情", temp )
     temp = data:获取等级(self.FeelPack[id].恐怖)
-    value = self:OrderRequire(value, text, "abl", "恐怖", temp)
+    value = self:OrderRequire(Female, value, text, "abl", "恐怖", temp)
     temp = data:获取等级(self.FeelPack[id].屈从)
-    value = self:OrderRequire(value, text, "abl", "恐怖", temp)
+    value = self:OrderRequire(Female, value, text, "abl", "恐怖", temp)
 
-    value = TrainManager:OrderRequire(value, text, "talent", "叛逆", -10)
-    value = TrainManager:OrderRequire(value, text, "talent", "坚强", -5)
-    value = TrainManager:OrderRequire(value, text, "talent", "坦率", 5)
-    value = TrainManager:OrderRequire(value, text, "talent", "高傲", -15)
-    value = TrainManager:OrderRequire(value, text, "talent", "谦虚", 5)
-    value = TrainManager:OrderRequire(value, text, "talent", "喜欢引人注目", 2)
-    value = TrainManager:OrderRequire(value, text, "talent", "好色", 2)
-    value = TrainManager:OrderRequire(value, text, "talent", "淫乱", 2)
+    value = TrainManager:OrderRequire(Female, value, text, "talent", "叛逆", -10)
+    value = TrainManager:OrderRequire(Female, value, text, "talent", "坚强", -5)
+    value = TrainManager:OrderRequire(Female, value, text, "talent", "坦率", 5)
+    value = TrainManager:OrderRequire(Female, value, text, "talent", "高傲", -15)
+    value = TrainManager:OrderRequire(Female, value, text, "talent", "谦虚", 5)
+    value = TrainManager:OrderRequire(Female, value, text, "talent", "喜欢引人注目", 2)
+    value = TrainManager:OrderRequire(Female, value, text, "talent", "好色", 2)
+    value = TrainManager:OrderRequire(Female, value, text, "talent", "淫乱", 2)
 
 
     if Female.性别 ~= "中性" and Trainee.性别 ~= "中性" and Female.性别 == Trainee.性别 then
@@ -1650,9 +1648,9 @@ function TrainManager:AllowAction(Trainee ,Female)
     return value, text
 end
 
-function TrainManager:OrderRequire(value, text, type, name, num)
+function TrainManager:OrderRequire(Female, value, text, type, name, num)
     if type == "talent" then
-        if self.被调教者:检查特性(name) then
+        if Female:检查特性(name) then
             value = value + num
         else
             return value
@@ -1664,13 +1662,13 @@ function TrainManager:OrderRequire(value, text, type, name, num)
             return value
         end
     elseif type == "equip" then
-        if self.被调教者:检查性玩具(name) then
+        if Female:检查性玩具(name) then
             value = value + num
         else
             return value
         end
     elseif type == "state" then
-        if self.被调教者:检查状态(name) then
+        if Female:检查状态(name) then
             value = value + num
         else
             return value
@@ -1682,7 +1680,7 @@ function TrainManager:OrderRequire(value, text, type, name, num)
             return value
         end
     elseif type == "sex" then
-        if self.被调教者.性别== name then
+        if Female.性别== name then
             value = value + num
         else
             return value

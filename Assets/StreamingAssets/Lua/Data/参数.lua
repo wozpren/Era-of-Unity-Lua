@@ -38,6 +38,10 @@ local 参数 = {}
 }
 
 function 参数:获取经验等级(n)
+    if n == nil then
+        return 0
+    end
+
     if n < 30 then
         return 0
     end
@@ -49,6 +53,9 @@ function 参数:获取经验等级(n)
 end
 
 function 参数:获取等级(n)
+    if n == nil then
+        return 0
+    end
     if n < 100 then
         return 0
     end

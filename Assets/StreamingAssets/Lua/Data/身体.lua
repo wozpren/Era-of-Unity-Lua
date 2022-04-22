@@ -1,9 +1,9 @@
 local 身体 = {}
 
-function 身体.头(...)
+function 身体.头部(...)
     local o =
     {
-        Name = "头",
+        Name = "头部",
         特性 = {...},
         装备 = {}
     }
@@ -30,23 +30,23 @@ function 身体.胯部(...)
     return o
 end
 
-function 身体.腿(...)
+function 身体.腿部(...)
     local o =
     {
-        Name = "腿",
+        Name = "腿部",
         特性 = {...},
         装备 = {}
     }
     return o
 end
 
-function 身体.脚(_技巧, ...)
+function 身体.脚部(_技巧, ...)
     if not _技巧 then
         _技巧 = 0
     end
     local o = 
     {
-        Name = "脚",
+        Name = "脚部",
         技巧 = _技巧,
         特性 = {...},
         装备 = {}
@@ -54,7 +54,7 @@ function 身体.脚(_技巧, ...)
     return o
 end
 
-function 身体.嘴(_感觉,_技巧, _扩张,...)
+function 身体.嘴部(_感觉,_技巧, _扩张,...)
     if not _技巧 then
         _技巧 = 0
     end
@@ -66,7 +66,7 @@ function 身体.嘴(_感觉,_技巧, _扩张,...)
     end
     local o = 
     {
-        Name = "嘴",
+        Name = "嘴部",
         感觉 = _感觉,
         技巧 = _技巧,
         扩张 = _扩张,
@@ -76,14 +76,14 @@ function 身体.嘴(_感觉,_技巧, _扩张,...)
     return o
 end
 
-function 身体.手(_技巧, ...)
+function 身体.手部(_技巧, ...)
     if not _技巧 then
         _技巧 = 0
     end
 
     local o =
     {
-        Name = "手",
+        Name = "手部",
         技巧 = _技巧,
         特性 = {...},
         装备 = {}
@@ -91,7 +91,7 @@ function 身体.手(_技巧, ...)
     return o
 end
 
-function 身体.胸(_感觉, _大小, ...)
+function 身体.胸部(_感觉, _大小, ...)
     if not _感觉 then
         _感觉 = 0
     end
@@ -101,7 +101,7 @@ function 身体.胸(_感觉, _大小, ...)
 
     local o = 
     {
-        Name = "胸",
+        Name = "胸部",
         感觉 = _感觉,
         大小 = _大小,
         特性 = {...},

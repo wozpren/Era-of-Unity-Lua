@@ -1272,7 +1272,7 @@ function Train.Mood()
     end
     bad = math.floor(bad / 100)
     temp = temp - bad
-    temp = Mathf.Clamp(temp, 0, 240)
+    temp = UnityEngine.Mathf.Clamp(temp, 0, 240)
     return temp
 end
 
@@ -1569,7 +1569,7 @@ function Train.SettleTrain(data)
     end
 
     if trainPack.痛苦 >= 100 then
-        local i = Mathf.Clamp(100 - GetPalamLV(trainPack.痛苦) * 20 + Train.GetAbility("受虐属性") * 20, 10, 150)
+        local i = UnityEngine.Mathf.Clamp(100 - GetPalamLV(trainPack.痛苦) * 20 + Train.GetAbility("受虐属性") * 20, 10, 150)
         trainPack.尿道快感 = trainPack.尿道快感 * i / 100
         trainPack.小穴快感 = trainPack.小穴快感 * i / 100
         trainPack.嘴部快感 = trainPack.嘴部快感 * i / 100
@@ -2574,7 +2574,7 @@ function Train.Estrus(type)
     return temp
 end
 
-function Train.AllowAction()
+function TrainManager:AllowAction()
     local value = 0
     local text = SB:New()
 

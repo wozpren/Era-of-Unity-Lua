@@ -39,8 +39,8 @@ end
 
 
 
-function t:Check()
-    local value, text = Train.AllowAction()
+function t:Check(Trainee, Female, Select)
+    local value, text = TrainManager:AllowAction()
 
     local temp = Train.GetAbility("侍奉技术")
     if temp > 0 then

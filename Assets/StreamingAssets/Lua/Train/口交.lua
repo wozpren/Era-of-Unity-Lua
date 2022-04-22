@@ -103,17 +103,17 @@ function t:Check(Trainee, Female, Select)
     local value, text = TrainManager:AllowAction(Trainee, Female)
 
     local temp = Female:获取能力("侍奉技术")
-    value = TrainManager:OrderRequire(value, text, "abl", "侍奉技术", temp * 3)
+    value = TrainManager:OrderRequire(Female, value, text, "abl", "侍奉技术", temp * 3)
     local temp = Female:获取能力("精液中毒")
-    value = TrainManager:OrderRequire(value, text, "abl", "精液中毒", temp * 3)
+    value = TrainManager:OrderRequire(Female, value, text, "abl", "精液中毒", temp * 3)
 
-    value = TrainManager:OrderRequire(value, text, "talent", "害羞", -5)
-    value = TrainManager:OrderRequire(value, text, "talent", "献身", 6)
-    value = TrainManager:OrderRequire(value, text, "talent", "否定快感", -1)
-    value = TrainManager:OrderRequire(value, text, "talent", "唇性向", 10)
-    value = TrainManager:OrderRequire(value, text, "talent", "荡唇", 10)
+    value = TrainManager:OrderRequire(Female, value, text, "talent", "害羞", -5)
+    value = TrainManager:OrderRequire(Female, value, text, "talent", "献身", 6)
+    value = TrainManager:OrderRequire(Female, value, text, "talent", "唇性向", 10)
+    value = TrainManager:OrderRequire(Female, value, text, "talent", "荡唇", 10)
+    value = TrainManager:OrderRequire(Female, value, text, "talent", "否定快感", -1)
 
-    return TrainManager:ShowOrder(value, text, 16), Select
+    return TrainManager:ShowOrder(value, text, 22), Select
 end
 
 ---@return ActiveMsg
