@@ -12,7 +12,6 @@ end
 function Init()
 	GM = EraHF.GameManager.Instance
     Message = GM.MessageStack
-	Mathf = UnityEngine.Mahtf
 --读取文件
 	dofile("UI/UIToolkit")
 	dofile("Manager/Util")
@@ -75,7 +74,7 @@ end
 
 function table.Find(list, par)
 	if not list then
-	  return nil
+	  return 0
 	end 
 	if type(list) == "table" then
 		for key, value in pairs(list) do

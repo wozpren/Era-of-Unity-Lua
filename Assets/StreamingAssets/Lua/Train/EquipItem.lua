@@ -135,7 +135,7 @@ function equipEvent.小穴(type)
     
         local v = 1
         local vc = 0
-        if Trainer.IsJJ then
+        if Trainer.Name == "阴茎" then
             vc = 1
             if Trainer.Stature.JJSize >= 2 then
                 v = 2

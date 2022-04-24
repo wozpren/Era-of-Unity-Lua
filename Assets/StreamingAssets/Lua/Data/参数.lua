@@ -67,6 +67,7 @@ function 参数:获取等级(n)
 end
 
 function 参数:获取等级数值(n)
+    n = math.floor(n)
     if n <= 0 then
         return 0
     end

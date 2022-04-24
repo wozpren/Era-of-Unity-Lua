@@ -202,7 +202,7 @@ function t:Check(Trainee, Female, Select)
     text:Append("要舔舐哪里\n")
     text:Append(AddButtonL("胸部","CoroutineResume,胸部"))
     text:Append(AddButtonL("小穴","CoroutineResume,小穴"))
-    if Female.IsJJ then
+    if Female.Name == "阴茎" then
         text:Append(AddButtonL("肉棒","CoroutineResume,阴部"))
     else
         text:Append(AddButtonL("阴蒂","CoroutineResume,阴部"))

@@ -72,7 +72,7 @@ end
 
 function KouJiu.插入小穴()
     local text = SB:New()
-    if trainData.Posture == "正常位" then
+    if TrainManager.姿势 == "正常位" then
         if trainData.Select == "子宫" then
 
         elseif trainData.Select == "G点" then
@@ -80,7 +80,7 @@ function KouJiu.插入小穴()
         elseif trainData.Select == "子宫口" then
     
         end
-    elseif trainData.Posture == "乘骑位" then
+    elseif TrainManager.姿势 == "乘骑位" then
         if trainData.Select == "子宫" then
 
         elseif trainData.Select == "G点" then
@@ -88,7 +88,7 @@ function KouJiu.插入小穴()
         elseif trainData.Select == "子宫口" then
     
         end
-    elseif trainData.Posture == "抱座位" then
+    elseif TrainManager.姿势 == "抱座位" then
         if trainData.Select == "子宫" then
 
         elseif trainData.Select == "G点" then
@@ -96,7 +96,7 @@ function KouJiu.插入小穴()
         elseif trainData.Select == "子宫口" then
     
         end
-    elseif trainData.Posture == "火车便当位" then
+    elseif TrainManager.姿势 == "火车便当位" then
         if trainData.Select == "子宫" then
 
         elseif trainData.Select == "G点" then
@@ -104,7 +104,7 @@ function KouJiu.插入小穴()
         elseif trainData.Select == "子宫口" then
     
         end
-    elseif trainData.Posture == "站立位" then
+    elseif TrainManager.姿势 == "站立位" then
         if trainData.Select == "子宫" then
 
         elseif trainData.Select == "G点" then

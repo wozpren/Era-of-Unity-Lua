@@ -7,6 +7,7 @@ local b = require("Data/身体")
 ---@field 恢复体力 function
 ---@field 检查占用 function
 ---@field 检查能力 function
+---@field 设置特性 function
 ---@field 检查特性 function
 ---@field 获取经验 function
 ---@field 检查状态 function
@@ -50,7 +51,7 @@ local chara =
     胯部 = b.胯部(),
     小穴 = b.小穴(),
     子宫 = b.子宫(),
-    阴部 = b.阴蒂(),
+    阴部 = b.阴茎(),
     尿道 = b.尿道(),
     菊穴 = b.菊穴(),
     腿部 = b.腿部(),

@@ -1,29 +1,30 @@
-function t:SexActive(Active, Select)
-    base.Samen = base.Samen + VFeel * 100
-    local n = Trainer.Stature.JJSize - Train.GetAbility("V扩张")
-    if n >= 3 then
-        base.Samen = base.Samen * 0.1
-    elseif n == 2 then
-        base.Samen = base.Samen * 0.3
-    elseif n == 1 then
-        base.Samen = base.Samen * 0.7
-    end
+local t = {}
 
-    Train.PosOccupy("小穴", "肉棒")
+local Data = require("Data/参数")
+
+function t:SexActive(active, Active, Select)
+    local base = require("Train/插入")(active, Active, Select)
+    local Female = active.被调教者
+    local jy = active.被调教者.小穴.技巧 * 100
+    local n =  active.目标.扩张度 - active.执行.大小
+    if n >= 3 then
+        jy = jy * 0.1
+    elseif n == 2 then
+        jy = jy * 0.3
+    elseif n == 1 then
+        jy = jy * 0.7
+    end
     
-    
-    local base = InsertAcitve(Active, Select)
-    if trainData.Posture == "正常位" then
-        if trainData.IsFace then
+    if TrainManager.姿势 == "正常位" then
+        if TrainManager.正面 then
             base.露出 = base.露出 + 200
             base.情爱 = base.情爱 + 500
 
-        
-            if Train.GetAbility("V扩张") > Trainer.Stature.JJSize then
+            if active.目标.扩张度 < active.执行.大小 then
                 base.阴部快感 = base.阴部快感 + Female:计算刺激度("阴部", 2, 300)
-                base.阴部快感 = TrainManager:EXABL(Trainer : GetAbility("性交中毒"), base.阴部快感)
+                base.阴部快感 = TrainManager:EXABL(active.被调教者 : 获取能力("性交中毒"), base.阴部快感)
             end
-            base.Samen = base.Samen + Train.GetAbility("顺从") * 100
+            jy = jy + active.被调教者.获取能力("顺从") * 100
 
         else
             base.露出 = base.露出 + 1000
@@ -35,19 +36,19 @@ function t:SexActive(Active, Select)
                 end
             end
 
-            base.Samen = base.Samen + Train.GetAbility("受虐属性") * 100
+            jy = jy + active.被调教者 : 获取能力("受虐属性") * 100
         end
-    elseif trainData.Posture == "乘骑位" then
-        if trainData.IsFace then
+    elseif TrainManager.姿势 == "乘骑位" then
+        if TrainManager.正面 then
             base.露出 = base.露出 + 900
             base.情爱 = base.情爱 + 500
         else
             base.露出 = base.露出 + 700
             base.情爱 = base.情爱 + 700
         end
-        base.Samen = base.Samen + Train.GetAbility("性交中毒") * 100
-    elseif trainData.Posture == "抱座位" then
-        if trainData.IsFace then
+        jy = jy + Female:获取能力("性交中毒") * 100
+    elseif TrainManager.姿势 == "抱座位" then
+        if TrainManager.正面 then
             base.露出 = base.露出 + 1000
             base.情爱 = base.情爱 + 300
             if Select == "子宫口" then
@@ -59,8 +60,8 @@ function t:SexActive(Active, Select)
             base.露出 = base.露出 + 500
             base.情爱 = base.情爱 + 500
         end
-    elseif trainData.Posture == "站立位" then
-        if trainData.IsFace then
+    elseif TrainManager.姿势 == "站立位" then
+        if TrainManager.正面 then
             base.露出 = base.露出 + 700
             base.情爱 = base.情爱 + 500
         else
@@ -70,29 +71,33 @@ function t:SexActive(Active, Select)
     end
     local VFeel = Female.小穴.感觉
     if Select == "子宫" then
-        local temp = VFeel + GetExpLV(Female : 获取经验("子宫口经验"))
+        local temp = VFeel + Data:获取经验等级(Female : 获取经验("子宫口经验"))
         if Female:检查特性("子宮性感") then
-            temp = temp + 1
+            temp = temp + 2
         end
         if temp <= 4 then
-            base.疼痛 = base.疼痛 + 3000 
+            base.疼痛 = base.疼痛 + 10000
         elseif temp == 5 then
-            base.疼痛 = base.疼痛 + 2000
+            base.疼痛 = base.疼痛 + 8000
         elseif temp == 6 then
             base.屈从 = base.屈从 + 100
-            base.疼痛 = base.疼痛 + 1000
+            base.疼痛 = base.疼痛 + 6000
         elseif temp == 7 then
             base.屈从 = base.屈从 + 200
-            base.疼痛 = base.疼痛 + 500
+            base.疼痛 = base.疼痛 + 4000
         elseif temp == 8 then
             base.屈从 = base.屈从 + 500
-            base.疼痛 = base.疼痛 + 200
+            base.疼痛 = base.疼痛 + 2000
         elseif temp >= 9 then
-            temp = temp - GetExpLV(Female : 获取经验("子宫口经验"))
-            base.屈从 = base.屈从 + 100 * temp
+            temp = temp - Data:获取经验等级(Female : 获取经验("子宫口经验"))
+            base.屈从 = base.屈从 + 100 * temp + 500
+            base.疼痛 = base.疼痛 + 2000 - (100 * temp)
         end
         TrainManager:获得经验("子宫口经验", 2)
         TrainManager:获得经验("子宫奸经验", 1)
+        if active.执行.Name == "阴茎" then
+            TrainManager:获得经验("子宫插入经验", 1, active.调教者)
+        end
     elseif Select == "G点" then
         base.露出 = base.露出 + 400
         base.屈从 = base.屈从 + VFeel * 400
@@ -103,37 +108,37 @@ function t:SexActive(Active, Select)
         end
         if t <= 2 then
             base.屈从 = base.屈从 + 100
-            base.疼痛 = base.疼痛 + 1000
+            base.疼痛 = base.疼痛 + 3000
         elseif t <= 4 then
             base.屈从 = base.屈从 + 200
-            base.疼痛 = base.疼痛 + 500
+            base.疼痛 = base.疼痛 + 1500
         elseif t <= 6 then
             base.屈从 = base.屈从 + 500
-            base.疼痛 = base.疼痛 + 200
+            base.疼痛 = base.疼痛 + 500
         else
             base.屈从 = base.屈从 + 100 * t
         end
-        if Train.GetAbility("V扩张") > Size then
+        if active.目标.扩张度 < active.执行.大小 then
             base.阴部快感 = Female:计算刺激度("阴部", 2, 30)
-            base.阴部快感 = TrainManager:EXABL(Trainer: GetAbility("性交中毒"), base.阴部快感)
+            base.阴部快感 = TrainManager:EXABL(Female:获取能力("性交中毒"), base.阴部快感)
         end
-        TrainManager:获得经验("小穴经验", 1)
+        TrainManager:获得经验("小穴经验", 2)
         TrainManager:获得经验("子宫口经验", 1)
-        if Trainer.IsJJ then
-            TrainManager:获得经验("V插入经验", vc, Trainer)
+        if active.执行.Name == "阴茎" then
+            TrainManager:获得经验("子宫口插入经验", 1, active.调教者)
         end
     end
 
-    local temp1 = Train.GetAbility("欲望")
+    local temp1 = Female:获取能力("欲望")
     if temp1 <= 5 then
         base.屈从 = base.屈从 * (temp1 * 0.1 + 0.05)
-    elseif temp <= 10 then
+    elseif temp1 <= 10 then
         base.屈从 = base.屈从 * ((temp1 - 5) * 0.05 + 0.55)
     else
         base.屈从 = base.屈从 * ((temp1 - 10) * 0.02 + 0.8)
     end
 
-    local YQ = trainData.Source : get_Item("欲情")
+    local YQ = TrainManager:获取人物状态("欲情")
     if YQ < 100 then
         base.情爱 = base.情爱 * 0.3
     elseif YQ < 500 then
@@ -148,22 +153,22 @@ function t:SexActive(Active, Select)
 
     local v = 1
     local vc = 0
-    if Trainer.IsJJ then
+    if active.执行.Name == "阴茎" then
         vc = 1
-        if Trainer.Stature.JJSize >= 2 then
+        if active.执行.大小 >= 2 then
             v = 2
             vc = 2
         end
 
-        if Trainer.Stature.JJSize >= math.max(Train.GetAbility("V扩张") + 1, 2) then
+        if active.执行.大小 >= math.max(active.目标.扩张度 + 1, 2) then
             TrainManager:获得经验("子宫口经验", 1)
-            v = v + Trainer.Stature.JJSize - Train.GetAbility("V扩张")
-            Expand("v", Trainer.Stature.JJSize, Trainer.Stature.JJHard)
+            v = v + active.执行.大小 - active.目标.扩张度
+            TrainManager:扩张("小穴", active.调教者, active.被调教者)
         end
     end
     TrainManager:获得经验("小穴经验", v)
-    TrainManager:获得经验("V性交经验", 1)
-    TrainManager:获得经验("V插入经验", vc, Trainer)
+    TrainManager:获得经验("小穴性交经验", 1)
+    TrainManager:获得经验("小穴插入经验", vc, active.调教者)
 
     return base
 end
@@ -173,44 +178,69 @@ function t:SexType(type)
         return true
     elseif type == "性交" then
         return true
-    elseif trainData.Posture == "乘骑位" and type == "侍奉快乐"  then
+    elseif TrainManager.姿势 == "乘骑位" and type == "侍奉快乐"  then
         return true
     end
     return false
 end
 
-function t:TrainMessage()
-    ImplementKoujiu("插入小穴")
+function t:TrainMessage(active)
+    local text = SB:New()
+    text:Append("@player@将肉棒插入@target@的小穴中。")
+    UIManager:GetUI("TrainView"):Append(text:ToStr(), active)
 end
 
 function t:Check(Trainee, Female, Select)
 
-if trainData.Posture == "乘骑位" then
-    local value, text = TrainManager:AllowAction()
-    local n = Train.GetAbility("侍奉技术")
-    value = OrderRequire(value, text, "abl", "侍奉技术", n * 2)
+    if TrainManager.姿势 == "乘骑位" then
+        local value, text = TrainManager:AllowAction()
+        local n = Female:获取能力("侍奉技术")
+        value = TrainManager:OrderRequire(Female, value, text, "abl", "侍奉技术", n * 2)
 
-    local n = Train.GetAbility("性交中毒")
-    value = OrderRequire(value, text, "abl", "性交中毒", n * 3)
+        local n = Female:获取能力("性交中毒")
+        value = TrainManager:OrderRequire(Female, value, text, "abl", "性交中毒", n * 3)
 
-    value = OrderRequire(value, text, "talent", "强硬", 10)
-    value = OrderRequire(value, text, "talent", "害羞", -10)
-    value = OrderRequire(value, text, "talent", "献身", 6)
-    value = OrderRequire(value, text, "talent", "否定快感", -1)
-    value = OrderRequire(value, text, "talent", "小穴性向", 10)
-    
-    if Female.IsChu then
-        value = value - 20
-        text:Append("处女: -20 ")
-    elseif GetExpLV(Female : 获取经验("小穴经验")) < 2 then
-        value = value - 5
-        text:Append("小穴经验不足: -5 ")
+        value = TrainManager:OrderRequire(Female, value, text, "talent", "强硬", 10)
+        value = TrainManager:OrderRequire(Female, value, text, "talent", "害羞", -10)
+        value = TrainManager:OrderRequire(Female, value, text, "talent", "献身", 6)
+        value = TrainManager:OrderRequire(Female, value, text, "talent", "否定快感", -1)
+        value = TrainManager:OrderRequire(Female, value, text, "talent", "小穴性向", 10)
+        
+        if Female:检查特性("处女", "小穴") then
+            value = value - 20
+            text:Append("处女:(-20)")
+        elseif require("Data/参数"):获取经验等级(Female : 获取经验("小穴经验")) < 2 then
+            value = value - 5
+            text:Append("小穴经验不足:(-5)")
+        end
+        value = TrainManager:OrderRequire(Female, value, text, "equip", "媚药", 6)
+
+
+        return Train.ShowOrder(value, text, 24), Select
+    else
+        return true, Select
     end
-    value = OrderRequire(value, text, "equip", "媚药", 6)
+end
 
 
-    return Train.ShowOrder(value, text, 24)
-else
-    return true
+---@return ActiveMsg
+function t:GetActive(trainer, trainee, select)
+    local o = 
+    {
+        ---@type Character
+        调教者 = trainer,
+        ---@type Character
+        被调教者 = trainee,
+        执行 = trainee.阴部,
+        目标 = trainer.小穴,
+        sex = self,
+        体力减少 = 8,
+        行为 = "插入小穴",
+        选择 = select,
+        次数 = 1,
+    }
+    TrainManager:添加占用(o)
+    return o
 end
-end
+
+return t

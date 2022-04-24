@@ -9,7 +9,7 @@ local function InsertAcitve(active, Active, Select)
     local VFeel = Female.小穴.感觉
     local TTech = active.执行.技巧
     
-    local id = TrainManager:获取ID(Female)
+    local id = TrainManager:查找ID(Female)
     
     if Active == "插入小穴" then
         if Select == "小穴" then
@@ -114,7 +114,7 @@ local function InsertAcitve(active, Active, Select)
     
     local hard = active.执行.硬度
     local size = active.执行.大小
-    local sized = size - active.目标.扩张
+    local sized = size - active.目标.扩张度
     
     if Female:检查特性("柔软体质") and sized > 0 then
         sized = sized - 1
@@ -144,7 +144,7 @@ local function InsertAcitve(active, Active, Select)
             base.成就感 = base.成就感 + size * size * 500
         end
     else
-        TrainManager.体力减少 = TrainManager.体力减少 + 20
+        active.体力减少 = active.体力减少 + 10 * sized
         base.小穴快感 = base.小穴快感 / math.max(size * 2, 1)
         base.菊穴快感 = base.菊穴快感 / math.max(size * 2, 1)
         base.尿道快感 = base.尿道快感 / math.max(size * 2, 1)
@@ -156,7 +156,7 @@ local function InsertAcitve(active, Active, Select)
     base.逃脱 = base.逃脱 + data:获取等级数值(sized)
     
     local palamRes = 0
-    local id = TrainManager:获取ID(Female)
+    local id = TrainManager:查找ID(Female)
     if Select == "菊穴" then
         palamRes = data:获取等级(TrainManager.FeelPack[id].菊穴润滑) - math.max(sized,0) - 1
     else
@@ -171,9 +171,9 @@ local function InsertAcitve(active, Active, Select)
         if level > 0 then
             base.充足 = base.充足 + level * 500
         end
-        if active.目标.处女 == true then
+        if Female:检查特性("处女", "小穴") == true then
             TrainManager:添加记录(id, "破处", 1)
-            active.目标.处女 = false
+            Female:设置特性("处女", false, "小穴")
             base.疼痛 = base.疼痛 + 1000
             base.逃脱 = base.逃脱 + 500
         end
@@ -256,7 +256,7 @@ local function InsertAcitve(active, Active, Select)
             base.恐惧 = base.恐惧 / 3
             base.逃脱 = base.逃脱 / 3
         end
-        local id = TrainManager:获取ID(Female)
+        local id = TrainManager:查找ID(Female)
         if Active == "插入肛门" then
             palamRes =data:获取等级(TrainManager.FeelPack[id].菊穴润滑) - math.max(sized,0) - 1
         else
@@ -298,19 +298,19 @@ local function InsertAcitve(active, Active, Select)
             base.疼痛 = math.min(base.疼痛 / 5 , 500)
         end
     elseif Active == "插入小穴" then
-        if i > 0 and Trainer.阴部.IsJJ and Female.小穴["扩张度"]>= size then
+        if i > 0 and Trainer.阴部.Name == "阴茎" and Female.小穴["扩张度"]>= size then
             base.屈从 = base.屈从 + base.恐惧 * i
             base.疼痛 = base.疼痛 / i + 1
             base.恐惧 = base.恐惧 / i + 1
         end
     elseif Active == "插入肛门" then
-        if i > 0 and Trainer.阴部.IsJJ and Female.菊穴["扩张度"] >= size then
+        if i > 0 and Trainer.阴部.Name == "阴茎" and Female.菊穴["扩张度"] >= size then
             base.屈从 = base.屈从 + base.恐惧 * i
             base.疼痛 = base.疼痛 / i + 1
             base.恐惧 = base.恐惧 / i + 1
         end
     elseif Active == "插入尿道" then
-        if i > 0 and Trainer.阴部.IsJJ and Female.尿道["扩张度"] >= size then
+        if i > 0 and Trainer.阴部.Name == "阴茎" and Female.尿道["扩张度"] >= size then
             base.屈从 = base.屈从 + base.恐惧 * i
             base.疼痛 = base.疼痛 / i + 1
             base.恐惧 = base.恐惧 / i + 1
@@ -388,10 +388,7 @@ local function InsertAcitve(active, Active, Select)
         elseif Select == "小穴" and Female:检查特性("小穴性向") then
             TrainManager:性癖增益(base, base.小穴快感)
         end
-    
     end
-    
-    active.体力减少 = active.体力减少 + TrainManager:扩张(active.目标.Name, active.目标, active.执行)
     
     return base
 end

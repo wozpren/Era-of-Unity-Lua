@@ -75,6 +75,10 @@ function TrainManager:StartTrain(...)
     self.调教者 = t[1]
     self.被调教者 = t[2]
     self.衣服堆 = {}
+    self.使用堆 = {}
+    self.占用堆 = {}
+    self.姿势 = "正常位"
+    self.正面 = true
     if #t >= 3 then
         self.助手 = t[3]
     else
@@ -129,21 +133,52 @@ function TrainManager.EndTrain(reason)
     Message:StartPop()
 end
 
-local function 检查占用(Table, n)
-    if Table ~= nil and Table.持有 ~= nil then
 
-        if n ~= nil then
-            if Table.持有[n] then
-                return true
-            end
-        elseif #Table.持有 == 0 then
+
+function TrainManager:检查占用(female, pos, equip)
+    local fid = self:查找ID(female)
+    if fid == nil then
+        Message:AddTopMessage("找不到人物")
+        return
+    end
+    if self.占用堆[fid] == nil or #self.占用堆[fid] == 0 then
+        return false
+    end
+    if equip ~= nil then
+        if self.占用堆[fid][pos].Name == equip then
+            return true
+        end
+    else
+        if self.占用堆[fid][pos] ~= nil then
             return true
         end
     end
     return false
 end
 
+function TrainManager:添加占用(active)
+    local tid = self:查找ID(active.调教者)
+    local fid = self:查找ID(active.被调教者)
 
+    if tid == nil or fid == nil then
+        Message:AddTopMessage("找不到人物")
+        return
+    end
+    if self.使用堆[tid] ~= nil and self.使用堆[tid][active.执行.Name] ~= nil then
+        local t = self.使用堆[tid][active.执行.Name]
+        self.使用堆[t.fid][t.目标.Name] = nil
+    end
+
+    if self.占用堆[fid] == nil then
+        self.占用堆[fid] = {}
+    end
+    if type(self.占用堆[fid][active.目标.Name]) == "table" then
+        local t = self.使用堆[fid][active.目标.Name]
+        self.使用堆[t.tid][t.执行.Name] = nil
+    end
+
+    self.占用堆[fid][active.目标.Name] = {调教者 = tid,  执行 = active.执行, }
+end
 
 function TrainManager:GetOptions()
     local opt = SB:New()
@@ -159,7 +194,7 @@ function TrainManager:GetOptions()
     end
     if 调教者.嘴部 ~= nil then
         opt:Append(self.Button("舔舐"))
-        if 检查占用(调教者.嘴部) and 检查占用(目标.嘴部) then
+        if self:检查占用(调教者, "嘴部") and self:检查占用(目标, "嘴部") then
             opt:Append(self.Button("接吻"))
         end
     end
@@ -171,49 +206,49 @@ function TrainManager:GetOptions()
     --张开
     if not 目标:检查状态("拘束") and 目标:获取装备厚度("胯部") < 5 then
         opt:Append(self.Button("自慰"))
-        if 胯部装备 == nil and not 检查占用(目标.小穴) then
+        if 胯部装备 == nil and not self:检查占用(目标, "小穴") then
             opt:Append(self.Button("张开", "小穴"))
         end
-        if 胯部装备 == nil and not 检查占用(目标.菊穴) then
+        if 胯部装备 == nil and not self:检查占用(目标, "菊穴") then
             opt:Append(self.Button("张开", "肛门"))
         end
     end
 
     --指插入系
-    if 胯部装备 == nil and not 检查占用(目标.小穴) and not 检查占用(调教者.手部) then
+    if 胯部装备 == nil and not self:检查占用(目标, "小穴") and not self:检查占用(调教者, "手部") then
         opt:Append(self.Button("指插入", "小穴"))
     end
     if 胯部装备 == nil and self.上次行为 == "指插入小穴" then
         opt.Append(self.Button("指插入", "G点", "刺激G点"))
     end
-    if 胯部装备 == nil and not 检查占用(目标.菊穴) and not 检查占用(调教者.手部) then
+    if 胯部装备 == nil and not self:检查占用(目标, "菊穴") and not self:检查占用(调教者, "手部") then
         opt:Append(self.Button("指插入", "肛门"))
     end
 
     --道具系
     if 胯部装备 == nil and DataManager:HaveSexItem("阴蒂夹") then
-        if not 检查占用(目标.阴部) then
+        if not self:检查占用(目标, "阴部") then
             opt:Append(self.Button("阴蒂夹"))
         end
-        if 检查占用(目标.阴部, "阴蒂夹") then
+        if self:检查占用(目标, "阴部", "阴蒂夹") then
             opt:Append(self.Button("取下阴蒂夹"))
         end
     end
     if 胯部装备 == nil and DataManager:HaveSexItem("振动棒") then
-        if not 检查占用(目标.小穴) then
+        if not self:检查占用(目标, "小穴") then
             opt:Append(self.Button("振动棒"))
         end
-        if 检查占用(目标.小穴, "振动棒") then
+        if self:检查占用(目标, "小穴", "振动棒") then
             opt:Append(self.Button("取下振动棒"))
         end
     end
 
     --插入
-    if 调教者.阴部.IsJJ then
-        if 胯部装备 == nil and not 检查占用(调教者.阴部) then
-            if not 检查占用(目标.小穴) then
+    if 调教者.阴部.Name == "阴茎" then
+        if 胯部装备 == nil and not self:检查占用(调教者, "阴部") then
+            if not self:检查占用(目标, "小穴") then
                 opt:Append(self.Button("插入小穴", "小穴", "插入小穴"))
-            elseif 检查占用(目标.小穴, "肉棒") then
+            elseif self:检查占用(目标, "小穴", "肉棒") then
                 opt:Append(self.Button("插入小穴", "小穴", "拔出肉棒"))
                 if 调教者.阴部.技巧 >= 2 then
                     opt:Append(self.Button("插入小穴", "G点", "刺激G点"))
@@ -366,7 +401,7 @@ local function 执行行为(self)
     TrainManager.当前行为 = self
 
     local action = self.sex:SexActive(self, self.行为, self.选择)
-    if self.调教者.阴部 ~= nil and self.调教者.阴部.IsJJ and self.调教者.阴部.精液 > 10000 then
+    if self.调教者.阴部 ~= nil and self.调教者.阴部.Name == "阴茎" and self.调教者.阴部.精液 > 10000 then
         TrainManager:射精处理(self, action)
     end
     TrainManager:行为补正(self, action)
@@ -517,7 +552,7 @@ function TrainManager:ToFeelPack(active, pack)
         elseif SC <= 10 then
             恐怖 = pack.疼痛 * (40 - (SC - 5) * 4) / 100
         else
-            恐怖 = pack.疼痛 * ((Mathf.Max(20 - (SC - 10) * 1,1)) * 1) / 100
+            恐怖 = pack.疼痛 * ((UnityEngine.Mathf.Max(20 - (SC - 10) * 1,1)) * 1) / 100
         end
 
         if SN <= 5 then
@@ -1814,6 +1849,20 @@ function TrainManager:ServicePlay(active)
     return base
 end
 
+function TrainManager:获取人物状态(name, chara)
+    chara = chara or self.被调教者
+    local id = self:查找ID(chara)
+    if id == nil then
+        Message : AddTopMessage("获取人物状态失败")
+        return 0
+    end
+    if self.FeelPack[id][name] ~= nil then
+        return self.FeelPack[id][name]
+    end
+    Message : AddTopMessage("获取状态失败,属性名称:"..name)
+    return 0
+end
+
 
 ---@param active ActiveMsg
 function TrainManager:AddLust(active)
@@ -1849,6 +1898,74 @@ function TrainManager:ShowOrder(value, text, need)
         return false
     end
 
+end
+
+---@param type string
+---@param Trainer Character
+---@param Female Character
+---@return integer
+function TrainManager:扩张(type, Trainer, Female)
+    local Add = 0
+    local exp = 0
+    local hard = Trainer.阴部.硬度 or 0
+    local size = Trainer.阴部.大小 or 0
+    local Data = require("Data/参数")
+
+    if hard > 2 then
+        Add = Add + 1
+    end
+    if Female:检查特性("扩张适应") then
+        Add = Add + 1
+    end
+
+    Add = Add + size - Female[type].扩张 - 2
+    if Female:检查特性("处女", type) then
+        Add = Add - 1
+    end
+
+    self.当前行为.体力减少 = self.当前行为.体力减少 + 5 * Add
+
+    if size < 2 then
+        return 0
+    end
+
+    exp = size - Female[type].扩张
+    local level = Data:获取经验等级(Female : 获取经验(type.."扩张经验")) + 1
+    local temp = Data.经验等级[level]
+
+    if exp <= - 2 then
+        if size >= 4 then
+            Add = 1
+        else
+            return
+        end
+    elseif exp == -1 then
+        if size >= 3 then
+            Add = 1
+        else
+            return
+        end
+    elseif exp == 0 then
+        Add = 1
+    elseif exp == 1 then
+        Add = UnityEngine.Mathf.Round((temp + 5) / 10)
+        if hard == 1 then
+            Add = 1
+        elseif hard == 2 then
+            Add = math.min(Add, 2)
+        end
+    elseif exp == 2 then
+        Add = UnityEngine.Mathf.Round((temp + 1) / 3)
+    elseif exp >= 3 then
+        Add = temp
+    end
+    if hard >= 3 then
+        Add = math.max(Add, size)
+    end
+
+    Add = UnityEngine.Mathf.Clamp(Add, 1, 20)
+
+    TrainManager:获得经验(type.."扩张经验", Add)
 end
 
 return TrainManager

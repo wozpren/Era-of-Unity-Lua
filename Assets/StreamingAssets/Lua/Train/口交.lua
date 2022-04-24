@@ -29,7 +29,7 @@ function t:SexActive(active, Active, Select)
         base.屈从 = base.屈从 * 2
         base.不洁 = base.不洁 * 1.5
         base.逃脱 = base.逃脱 * 6
-        local gap = Female.嘴.扩张 - Trainer.阴部.大小
+        local gap = Female.嘴部.扩张度 - Trainer.阴部.大小
         if gap <= -2 then
             base.恐惧 = 3000
             base.疼痛 = 8000

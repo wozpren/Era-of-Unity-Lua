@@ -126,6 +126,32 @@ function meta:获取状态(tal)
     return false
 end
 
+function meta:设置特性(Name, state, pos)
+    if pos == nil then
+        local index = table.Find(self.特性, Name)
+        if state then
+            if index == 0 then
+                table.insert(self.特性, Name)
+            end
+        else
+            if index ~= 0 then
+                table.remove(self.特性, index)
+            end
+        end
+    else
+        local index = table.Find(self[pos].特性, Name)
+        if state then
+            if index == 0 then
+                table.insert(self[pos].特性, Name)
+            end
+        else
+            if index ~= 0 then
+                table.remove(self[pos].特性, index)
+            end
+        end
+    end
+end
+
 function meta:检查特性(tal, pos)
     if pos ~= nil and self[pos].特性 ~= nil and table.Exist(self[pos].特性, tal) then
         return true

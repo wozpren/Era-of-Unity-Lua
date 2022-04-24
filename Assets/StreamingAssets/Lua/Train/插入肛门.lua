@@ -3,8 +3,8 @@ function t:SexActive(Active, Select)
 dofile("Train/插入")
 Train.PosOccupy("肛门", "肉棒")
 local base = InsertAcitve(Active, Select)
-if trainData.Posture == posture.正常位 then
-    if trainData.IsFace then
+if TrainManager.姿势 == posture.正常位 then
+    if TrainManager.正面 then
         base.露出 = base.露出 + 1000
         base.情爱 = base.情爱 + 500
     else
@@ -12,7 +12,7 @@ if trainData.Posture == posture.正常位 then
         base.情爱 = base.情爱 + 350
     end
 elseif Active == "乘骑位" then
-    if trainData.IsFace then
+    if TrainManager.正面 then
         base.露出 = base.露出 + 900
         base.情爱 = base.情爱 + 500
     else
@@ -20,7 +20,7 @@ elseif Active == "乘骑位" then
         base.情爱 = base.情爱 + 700
     end
 elseif Active == "抱座位" then
-    if trainData.IsFace then
+    if TrainManager.正面 then
         base.露出 = base.露出 + 1300
         base.情爱 = base.情爱 + 1000
     else
@@ -28,7 +28,7 @@ elseif Active == "抱座位" then
         base.情爱 = base.情爱 + 300
     end
 elseif Active == "火车便当位" then
-    if trainData.IsFace then
+    if TrainManager.正面 then
         base.露出 = base.露出 + 1200
         base.情爱 = base.情爱 + 500
     else
@@ -36,7 +36,7 @@ elseif Active == "火车便当位" then
         base.情爱 = base.情爱 + 500
     end
 elseif Active == "站立位" then
-    if trainData.IsFace then
+    if TrainManager.正面 then
         base.露出 = base.露出 + 1000
         base.情爱 = base.情爱 + 1500
     else
@@ -71,7 +71,7 @@ function t:SexType(type)
         return true
     elseif type == "性交" then
         return true
-    elseif trainData.Posture == "乘骑位" and type == "侍奉快乐"  then
+    elseif TrainManager.姿势 == "乘骑位" and type == "侍奉快乐"  then
         return true
     end
     return false

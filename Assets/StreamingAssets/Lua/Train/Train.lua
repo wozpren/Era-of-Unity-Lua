@@ -36,7 +36,7 @@ end
 function Train.UpdateProperty()
     local text = SB:New()
     text:Append("调教者:"..Trainer.Name.."   ")
-    if(Trainer.IsJJ) then
+    if(Trainer.Name == "阴茎") then
          text:Append("精液:"..GeneralPage : ShowBar(trainData.TrainerSamen.x,trainData.TrainerSamen.y,"white"))
     end
     if(Trainer: HaveTalent("泌乳")) then 
@@ -44,7 +44,7 @@ function Train.UpdateProperty()
     end
     if(Assistant ~= nil) then
         text:Append("助手:"..Assistant.Name)
-        if(Assistant.IsJJ) then
+        if(Assistant.Name == "阴茎") then
             text:Append("精液:"..GeneralPage : ShowBar(trainData.AssiSemen.x,trainData.AssiSemen.y,"white"))
         end
         if(Assistant: HaveTalent("泌乳")) then 
@@ -54,7 +54,7 @@ function Train.UpdateProperty()
     text:Append(string.format("<pos=79%%>眼:%s 活动:%s</pos>", Train.Pos.眼, Train.Pos.活动))
     text:Append("\n调教对象:"..Female.Name)
     text:Append(string.format("   体力:%s", GeneralPage : ShowBar(Female.CurrentHP,Female.BattleInfo.Final.HP, "red")))
-    if(Female.IsJJ) then
+    if(Female.Name == "阴茎") then
         text:Append("精液:"..GeneralPage : ShowBar(trainData.FemaleSamen.x,trainData.FemaleSamen.y,"white"))
     end
     if(Female: HaveTalent("泌乳")) then 
@@ -76,8 +76,8 @@ function Train.UpdateProperty()
             text:Append("\n")
         end
     end
-    text:Append("姿势:"..trainData.Posture)
-    if trainData.IsFace then
+    text:Append("姿势:"..TrainManager.姿势)
+    if TrainManager.正面 then
         text:Append("   正面")
     else
         text:Append("   背面")
@@ -613,11 +613,11 @@ end
 function Train.ChangePosture(pose)
     local text = SB:New() 
         if(pose ~= "改变朝向") then
-            trainData.Posture = pose
+            TrainManager.姿势 = pose
             text:Append("将姿势调整为"..pose.."\n")
         else
-            trainData.IsFace = not trainData.IsFace
-            if trainData.IsFace then
+            TrainManager.正面 = not TrainManager.正面
+            if TrainManager.正面 then
                 text:Append("面对姿势\n")
             else
                 text:Append("背对姿势")
@@ -1141,7 +1141,7 @@ function Train.AdjustTrainPack()
     end
     trainPack.反感 = trainPack.反感 * (1 + (Female.Mark[1] / 10))
 
-    if trainData.Posture == "六九式" then
+    if TrainManager.姿势 == "六九式" then
         trainPack.欲情 = trainPack.欲情 * 1.5
         trainPack.羞耻 = trainPack.羞耻 * 1.5
     end
@@ -1690,7 +1690,7 @@ function Train.TrainlHandle()
         CtrainPack[key] = value * ((100 + adjustPack[key]) / 100)
     end
     Train.HPHandle()
-    if CtrainPack.Samen > 0 and Trainer.IsJJ then
+    if CtrainPack.Samen > 0 and Trainer.Name == "阴茎" then
         Train.EjaculateCheck()
         Train.SamenHandle()
     end
