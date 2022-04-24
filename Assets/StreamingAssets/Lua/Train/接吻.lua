@@ -19,7 +19,7 @@ function t:SexActive(Active, Select)
         base.屈从 = base.屈从 + 100
     end
 
-    if Female:检查特性("唇性向") then
+    if Female:检查特性("嘴部性向") then
         TrainManager:性癖增益(base, base.嘴部快感)
     end
 

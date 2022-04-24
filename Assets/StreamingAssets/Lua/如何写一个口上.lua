@@ -38,7 +38,7 @@ function KouJiu.舔舐()
 
     elseif trainData.Select == "肉棒" then
 
-    elseif trainData.Select == "阴核" then
+    elseif trainData.Select == "阴蒂" then
 
     end
 

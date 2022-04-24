@@ -22,11 +22,11 @@ function meta:获取外层装备(位置)
     if self[位置] ~= nil and self[位置].装备 ~= nil then
         if #self[位置].装备 > 0 then
             local n = #self[位置].装备
-            return self[位置].装备[n]
+            return EquipManager:获取装备(n)
         end
         return nil
     end
-    error(("%s 或 装备 不存在"):format("位置"))
+    error(("%s 或 装备 不存在"):format(位置))
     return nil
 end
 

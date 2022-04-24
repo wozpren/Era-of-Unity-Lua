@@ -12,7 +12,7 @@ function KouJiu.爱抚(active)
     --同时还有 text:AppendLine("这个在结尾会添加换行符")
     -- SB.random(text, "这个可以", "随机添加", "这些引号里", "其中一个到text里")
     local text = SB:New()
-    --trainData是储存调教时的变量
+    --active是储存调教时的变量
     -- if 条件 then 但满足条件时 就会执行if里的语句，不行就到下一个elseif继续判断，或者else
     if active.选择 == "头部" then
 
@@ -29,17 +29,17 @@ end
 
 function KouJiu.舔舐(active)
     local text = SB:New()
-    if trainData.Select == "胸部" then
+    if active.Select == "胸部" then
 
-    elseif trainData.Select == "小穴" then
+    elseif active.Select == "小穴" then
 
-    elseif trainData.Select == "肛门" then
+    elseif active.Select == "肛门" then
 
-    elseif trainData.Select == "脚部" then
+    elseif active.Select == "脚部" then
 
-    elseif trainData.Select == "肉棒" then
+    elseif active.Select == "肉棒" then
 
-    elseif trainData.Select == "阴核" then
+    elseif active.Select == "阴蒂" then
 
     end
 
@@ -66,9 +66,9 @@ end
 
 function KouJiu.张开(active)
     local text = SB:New()
-    if trainData.Select == "小穴" then
+    if active.Select == "小穴" then
 
-    elseif trainData.Select == "肛门" then
+    elseif active.Select == "肛门" then
 
     end
 

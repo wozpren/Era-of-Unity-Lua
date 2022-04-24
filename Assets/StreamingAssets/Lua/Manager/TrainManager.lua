@@ -824,7 +824,7 @@ function TrainManager:最终补正(active, pack)
         if 检查特性(trainee.嘴部, "荡唇") then
             feel = feel + 1
         end
-        if trainee:检查特性("唇性向") then
+        if trainee:检查特性("嘴部性向") then
             feel = feel + 1
         end
         pack.嘴部快感 = TrainManager:快感限制(trainee, pack.嘴部快感, feel)
@@ -836,7 +836,7 @@ function TrainManager:最终补正(active, pack)
         if 检查特性(trainee.阴部, "淫核") then
             feel = feel + 1
         end
-        if trainee:检查特性("阴蒂性向") then
+        if trainee:检查特性("阴部性向") then
             feel = feel + 1
         end
         pack.阴部快感 = TrainManager:快感限制(trainee, pack.阴部快感, feel)
@@ -1023,7 +1023,7 @@ function TrainManager:绝顶处理(active, feel)
 
     if Orgasms["阴部快感"] > 0 then
         data.露出 = 300 * Orgasms["阴部快感"]
-        if 检查特性(trainee.阴部, "淫核") or trainee:检查特性("阴蒂性向") then
+        if 检查特性(trainee.阴部, "淫核") or trainee:检查特性("阴部性向") then
             data.屈从 = data.屈从 + 1000
         end
         orgasmsNumber = orgasmsNumber + Orgasms["阴部快感"]
@@ -1104,7 +1104,7 @@ function TrainManager:绝顶处理(active, feel)
     end
     if Orgasms["嘴部快感"] > 0 then
         data.露出 = data.露出 + 300 * Orgasms["嘴部快感"]
-        if 检查特性(trainee.嘴部, "唇性向") or trainee:检查特性("唇性向") then
+        if 检查特性(trainee.嘴部, "嘴部性向") or trainee:检查特性("嘴部性向") then
             data.屈从 = data.屈从 + 1000
         end
         orgasmsNumber = orgasmsNumber + Orgasms["嘴部快感"]
@@ -1544,7 +1544,7 @@ function TrainManager:转化宝珠(chara, feel)
         if TrainManager.总记录 ~= nil then
             if key == "嘴部快感" and TrainManager.总记录["嘴部绝顶"] ~= nil then
                 var = TrainManager.总记录["嘴部绝顶"] * 500 + var
-                if 检查特性(chara.嘴, "唇性向") then
+                if 检查特性(chara.嘴, "嘴部性向") then
                     var = var * 1.5
                 end
             end
@@ -1556,7 +1556,7 @@ function TrainManager:转化宝珠(chara, feel)
             end
             if key == "阴部快感" and TrainManager.总记录["阴部绝顶"] ~= nil then
                 var = TrainManager.总记录["阴部绝顶"] * 500 + var
-                if 检查特性(chara.阴部, "阴蒂性向") then
+                if 检查特性(chara.阴部, "阴部性向") then
                     var = var * 1.5
                 end
             end

@@ -60,11 +60,10 @@ function t:SexActive(active, Active, Select)
         end
     end
 
-    if Female:检查特性("唇性向") then
+    if Female:检查特性("嘴部性向") then
         TrainManager:性癖增益(base, base.嘴部快感)
     end
 
-    
     local jy = (500 * active.执行.技巧) + (Female:获取能力("精液中毒") * 100) + 100
     if Female:检查特性("荡唇") then
         jy = jy * 1.5
@@ -109,7 +108,7 @@ function t:Check(Trainee, Female, Select)
 
     value = TrainManager:OrderRequire(Female, value, text, "talent", "害羞", -5)
     value = TrainManager:OrderRequire(Female, value, text, "talent", "献身", 6)
-    value = TrainManager:OrderRequire(Female, value, text, "talent", "唇性向", 10)
+    value = TrainManager:OrderRequire(Female, value, text, "talent", "嘴部性向", 10)
     value = TrainManager:OrderRequire(Female, value, text, "talent", "荡唇", 10)
     value = TrainManager:OrderRequire(Female, value, text, "talent", "否定快感", -1)
 
@@ -126,7 +125,7 @@ function t:GetActive(trainer, trainee, select)
         调教者 = trainer,
         ---@type Character
         被调教者 = trainee,
-        执行 = trainee.手,
+        执行 = trainee.嘴部,
         目标 = trainer.阴部,
         sex = self,
         体力减少 = 8,

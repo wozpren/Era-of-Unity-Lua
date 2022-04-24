@@ -204,7 +204,7 @@ function t:Check(Trainee, Female, Select)
     value = TrainManager:OrderRequire(Female, value, text, "place", "摄像机", -20)
     value = TrainManager:OrderRequire(Female, value, text, "place", "野外PLAY", -10)
 
-    return TrainManager:ShowOrder(value, text, 1), Select
+    return TrainManager:ShowOrder(value, text, 33), Select
 end
 
 ---@return ActiveMsg

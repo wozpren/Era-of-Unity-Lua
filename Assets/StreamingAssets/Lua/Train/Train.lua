@@ -819,7 +819,7 @@ function Train.Adjustment()
     if m1 > 0 or (m1 < 0 and not Train.HaveTalent("淫核")) then
         data.阴部快感 = data.阴部快感 + m1
     end
-    if m2 > 0 or (m2 < 0 and not Train.HaveTalent("阴蒂性向") and Female.阴蒂.感觉 < 5) then
+    if m2 > 0 or (m2 < 0 and not Train.HaveTalent("阴部性向") and Female.阴蒂.感觉 < 5) then
         data.阴部快感 = data.阴部快感 + m2
     end
     if Train.HaveTalent("淫核") then
@@ -837,7 +837,7 @@ function Train.Adjustment()
     if m1 > 0 or (m1 < 0 and not Train.HaveTalent("淫尻")) then
         data.菊穴快感 = data.菊穴快感 + m1
     end
-    if m2 > 0 or (m2 < 0 and not Train.HaveTalent("肛性向") and Female.菊穴.感觉 < 5) then
+    if m2 > 0 or (m2 < 0 and not Train.HaveTalent("菊穴性向") and Female.菊穴.感觉 < 5) then
         data.菊穴快感 = data.菊穴快感 + m2
     end
     if Train.HaveTalent("淫壶") then
@@ -855,7 +855,7 @@ function Train.Adjustment()
     if m1 > 0 or (m1 < 0 and not Train.HaveTalent("荡唇")) then
         data.嘴部快感 = data.嘴部快感 + m1
     end
-    if m2 > 0 or (m2 < 0 and not Train.HaveTalent("唇性向") and Female.嘴.感觉 < 5) then
+    if m2 > 0 or (m2 < 0 and not Train.HaveTalent("嘴部性向") and Female.嘴.感觉 < 5) then
         data.嘴部快感 = data.嘴部快感 + m2
     end
     if Train.HaveTalent("淫乳") then
@@ -1709,19 +1709,19 @@ function Train.TrainlHandle()
         end
     end
 
-    if Train.HaveTalent("肛性向") or Train.HaveTalent("淫尻") then
+    if Train.HaveTalent("菊穴性向") or Train.HaveTalent("淫尻") then
         CSourcePack.菊穴快感 = CSourcePack.菊穴快感 * 2
     end
     if Train.HaveTalent("胸性向") or Train.HaveTalent("淫乳") then
         CSourcePack.胸部快感 = CSourcePack.胸部快感 * 2
     end
-    if Train.HaveTalent("阴蒂性向") or Train.HaveTalent("淫核") then
+    if Train.HaveTalent("阴部性向") or Train.HaveTalent("淫核") then
         CSourcePack.阴部快感 = CSourcePack.阴部快感 * 2
     end
     if Train.HaveTalent("小穴性向") or Train.HaveTalent("淫壶") then
         CSourcePack.小穴快感 = CSourcePack.小穴快感 * 2
     end
-    if Train.HaveTalent("唇性向") or Train.HaveTalent("荡唇") then
+    if Train.HaveTalent("嘴部性向") or Train.HaveTalent("荡唇") then
         CSourcePack.嘴部快感 = CSourcePack.嘴部快感 * 2
     end
     if trainee:检查特性("尿性向") or Train.HaveTalent("尿道狂") then
@@ -1732,7 +1732,7 @@ function Train.TrainlHandle()
         if Train.HaveTalent("淫核") then
             n = n + 1
         end
-        if Train.HaveTalent("阴蒂性向") then
+        if Train.HaveTalent("阴部性向") then
             n = n + 1
         end
         CSourcePack.阴部快感 = Train.PleasureLimiter(CSourcePack.阴部快感, n)
@@ -1752,7 +1752,7 @@ function Train.TrainlHandle()
         if Train.HaveTalent("淫尻") then
             n = n + 1
         end
-        if Train.HaveTalent("肛性向") then
+        if Train.HaveTalent("菊穴性向") then
             n = n + 1
         end
         CSourcePack.菊穴快感 = Train.PleasureLimiter(CSourcePack.菊穴快感, n)
@@ -1772,7 +1772,7 @@ function Train.TrainlHandle()
         if Train.HaveTalent("荡唇") then
             n = n + 1
         end
-        if Train.HaveTalent("唇性向") then
+        if Train.HaveTalent("嘴部性向") then
             n = n + 1
         end
         CSourcePack.嘴部快感 = Train.PleasureLimiter(CSourcePack.嘴部快感, n)
@@ -2003,7 +2003,7 @@ function Train.OrgasmHandle()
 
     if Orgasms["阴部快感"] > 0 then
         data.露出 = 300 * Orgasms["阴部快感"]
-        if Train.HaveTalent("阴蒂性向") or Train.HaveTalent("淫核") then
+        if Train.HaveTalent("阴部性向") or Train.HaveTalent("淫核") then
             data.屈从 = data.屈从 + 1000
             Train.fav = Train.fav + 2
         end
@@ -2024,7 +2024,7 @@ function Train.OrgasmHandle()
     if Orgasms["菊穴快感"] > 0 then
         data.露出 = data.露出 + 1000 * Orgasms["菊穴快感"]
         data.屈从 = data.屈从 + 2000
-        if Train.HaveTalent("肛性向") or Train.HaveTalent("淫尻") then
+        if Train.HaveTalent("菊穴性向") or Train.HaveTalent("淫尻") then
             data.屈从 = data.屈从 + 1000
             Train.fav = Train.fav + 2
         end
@@ -2054,7 +2054,7 @@ function Train.OrgasmHandle()
     end
     if Orgasms["嘴部快感"] > 0 then
         data.情爱 = data.情爱 + 500 * Orgasms["嘴部快感"]
-        if Train.HaveTalent("唇性向") or Train.HaveTalent("荡唇") then
+        if Train.HaveTalent("嘴部性向") or Train.HaveTalent("荡唇") then
             data.屈从 = data.屈从 + 1000
             Train.fav = Train.fav + 2
         end

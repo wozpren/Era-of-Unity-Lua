@@ -165,7 +165,7 @@ function t:SexActive(active, Active, Select)
             base.屈从 = base.屈从 * 1.2
         end
 
-        if Female:检查特性("肛性向") then
+        if Female:检查特性("菊穴性向") then
             TrainManager:性癖增益(base, base.菊穴快感)
         end
         TrainManager:获得经验("手淫经验", 1, 调教者)

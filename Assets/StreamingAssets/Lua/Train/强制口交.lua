@@ -60,7 +60,7 @@ function t:SexActive(Active, Select)
 
     end
 
-    if Female:检查特性("唇性向") then
+    if Female:检查特性("嘴部性向") then
         TrainManager:性癖增益(base, base.嘴部快感)
     end
     
@@ -113,7 +113,7 @@ function t:Check(Trainee, Female, Select)
     value = OrderRequire(value, text, "talent", "害羞", -5)
     value = OrderRequire(value, text, "talent", "献身", 6)
     value = OrderRequire(value, text, "talent", "否定快感", -1)
-    value = OrderRequire(value, text, "talent", "唇性向", 10)
+    value = OrderRequire(value, text, "talent", "嘴部性向", 10)
     value = OrderRequire(value, text, "equip", "拘束", 30)
     value = OrderRequire(value, text, "equip", "环形口枷", 30)
     
