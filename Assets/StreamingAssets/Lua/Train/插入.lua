@@ -37,7 +37,7 @@ local function InsertAcitve(active, Active, Select)
                 base.恐惧 =  base.恐惧 + 1000
             end
         end
-    elseif Active == "插入肛门" then
+    elseif Active == "插入菊穴" then
         base.不洁 = 2000
         base.屈从 = 2000
         base.逃脱 = 3000
@@ -66,7 +66,7 @@ local function InsertAcitve(active, Active, Select)
             end
             base.小穴快感 = TrainManager:EXABL(TTech, base.小穴快感)
     
-        elseif Select == "肛门" then
+        elseif Select == "菊穴" then
             base.不洁 = 500
             base.露出 = 500
             base.屈从 = 500
@@ -93,7 +93,7 @@ local function InsertAcitve(active, Active, Select)
             base.逃脱 = base.逃脱 + 10000
             base.小穴快感 = base.小穴快感 + Female:计算刺激度("小穴", 3)
             base.小穴快感 = TrainManager:EXABL(TTech, base.小穴快感)
-        elseif Select == "肛门" then
+        elseif Select == "菊穴" then
             base.不洁 = base.不洁 + 2000
             base.露出 = base.露出 + 1200
             base.屈从 = base.屈从 + 2000
@@ -197,17 +197,17 @@ local function InsertAcitve(active, Active, Select)
         local ZGLV = data:获取经验等级(Female.获取经验("子宫经验"))
         if ZGLV <= 1 then
             base.小穴快感 = base.小穴快感 * 0.2
-            base.疼痛 = base.疼痛 + 1000
+            base.疼痛 = base.疼痛 + 10000
             base.恐惧 = base.恐惧 + 3000
             base.逃脱 = base.逃脱 + 30000
         elseif ZGLV <= 2 then
             base.小穴快感 = base.小穴快感 * 0.4
-            base.疼痛 = base.疼痛 + 500
+            base.疼痛 = base.疼痛 + 5000
             base.恐惧 = base.恐惧 + 1000
             base.逃脱 = base.逃脱 + 6000
         else
             base.小穴快感 = base.小穴快感 * 0.7
-            base.疼痛 = base.疼痛 + 500
+            base.疼痛 = base.疼痛 + 2000
             base.恐惧 = base.恐惧 + 1000
             base.逃脱 = base.逃脱 + 2000
         end
@@ -224,7 +224,7 @@ local function InsertAcitve(active, Active, Select)
         exp = math.min(data:获取经验等级(Female : 获取经验("子宫口经验")) - size - 1 - math.max(sized, 0), 5 - hard)
     
     
-    elseif Select == "肛门" or Select == "插入乙状结肠" then
+    elseif Select == "菊穴" or Select == "乙状结肠" then
         if Select == "乙状结肠" then
             local JCexp = data:获取经验等级(Female : 获取经验("结肠经验"))
             if JCexp <= 0 then 
@@ -257,7 +257,7 @@ local function InsertAcitve(active, Active, Select)
             base.逃脱 = base.逃脱 / 3
         end
         local id = TrainManager:查找ID(Female)
-        if Active == "插入肛门" then
+        if Active == "插入菊穴" then
             palamRes =data:获取等级(TrainManager.FeelPack[id].菊穴润滑) - math.max(sized,0) - 1
         else
             palamRes = math.min(data:获取等级数值(TrainManager.FeelPack[id].菊穴润滑) - math.max(sized,0), 3)
@@ -303,7 +303,7 @@ local function InsertAcitve(active, Active, Select)
             base.疼痛 = base.疼痛 / i + 1
             base.恐惧 = base.恐惧 / i + 1
         end
-    elseif Active == "插入肛门" then
+    elseif Active == "插入菊穴" then
         if i > 0 and Trainer.阴部.Name == "阴茎" and Female.菊穴["扩张度"] >= size then
             base.屈从 = base.屈从 + base.恐惧 * i
             base.疼痛 = base.疼痛 / i + 1
@@ -366,7 +366,7 @@ local function InsertAcitve(active, Active, Select)
         if Female:检查特性("小穴性向") then
             TrainManager:性癖增益(base, base.小穴快感)
         end
-    elseif Active == "插入肛门" then
+    elseif Active == "插入菊穴" then
         base.菊穴液体追加 = base.菊穴液体追加 + math.max(data:获取等级(base.疼痛) + size * 100, 100)
         if Female:检查特性("菊穴性向") then
             TrainManager:性癖增益(base, base.菊穴快感)
@@ -383,7 +383,7 @@ local function InsertAcitve(active, Active, Select)
         end
     elseif Active == "指插入" or Active == "拳交" then
         base.小穴液体追加 = base.小穴液体追加 + math.max(data:获取等级(base.疼痛) + size * 100, 100)
-        if Select == "肛门" and Female:检查特性("菊穴性向") then
+        if Select == "菊穴" and Female:检查特性("菊穴性向") then
             TrainManager:性癖增益(base, base.菊穴快感)
         elseif Select == "小穴" and Female:检查特性("小穴性向") then
             TrainManager:性癖增益(base, base.小穴快感)

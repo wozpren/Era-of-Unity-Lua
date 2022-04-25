@@ -24,7 +24,7 @@ function t:SexActive(active, Active, Select)
                 base.阴部快感 = base.阴部快感 + Female:计算刺激度("阴部", 2, 300)
                 base.阴部快感 = TrainManager:EXABL(active.被调教者 : 获取能力("性交中毒"), base.阴部快感)
             end
-            jy = jy + active.被调教者.获取能力("顺从") * 100
+            jy = jy + active.被调教者:获取能力("顺从") * 100
 
         else
             base.露出 = base.露出 + 1000
@@ -36,7 +36,7 @@ function t:SexActive(active, Active, Select)
                 end
             end
 
-            jy = jy + active.被调教者 : 获取能力("受虐属性") * 100
+            jy = jy + active.被调教者:获取能力("受虐属性") * 100
         end
     elseif TrainManager.姿势 == "乘骑位" then
         if TrainManager.正面 then
@@ -75,24 +75,6 @@ function t:SexActive(active, Active, Select)
         if Female:检查特性("子宮性感") then
             temp = temp + 2
         end
-        if temp <= 4 then
-            base.疼痛 = base.疼痛 + 10000
-        elseif temp == 5 then
-            base.疼痛 = base.疼痛 + 8000
-        elseif temp == 6 then
-            base.屈从 = base.屈从 + 100
-            base.疼痛 = base.疼痛 + 6000
-        elseif temp == 7 then
-            base.屈从 = base.屈从 + 200
-            base.疼痛 = base.疼痛 + 4000
-        elseif temp == 8 then
-            base.屈从 = base.屈从 + 500
-            base.疼痛 = base.疼痛 + 2000
-        elseif temp >= 9 then
-            temp = temp - Data:获取经验等级(Female : 获取经验("子宫口经验"))
-            base.屈从 = base.屈从 + 100 * temp + 500
-            base.疼痛 = base.疼痛 + 2000 - (100 * temp)
-        end
         TrainManager:获得经验("子宫口经验", 2)
         TrainManager:获得经验("子宫奸经验", 1)
         if active.执行.Name == "阴茎" then
@@ -106,18 +88,7 @@ function t:SexActive(active, Active, Select)
         if Female:检查特性("子宮性感") then
             t = t + 3
         end
-        if t <= 2 then
-            base.屈从 = base.屈从 + 100
-            base.疼痛 = base.疼痛 + 3000
-        elseif t <= 4 then
-            base.屈从 = base.屈从 + 200
-            base.疼痛 = base.疼痛 + 1500
-        elseif t <= 6 then
-            base.屈从 = base.屈从 + 500
-            base.疼痛 = base.疼痛 + 500
-        else
-            base.屈从 = base.屈从 + 100 * t
-        end
+
         if active.目标.扩张度 < active.执行.大小 then
             base.阴部快感 = Female:计算刺激度("阴部", 2, 30)
             base.阴部快感 = TrainManager:EXABL(Female:获取能力("性交中毒"), base.阴部快感)
@@ -163,9 +134,11 @@ function t:SexActive(active, Active, Select)
         if active.执行.大小 >= math.max(active.目标.扩张度 + 1, 2) then
             TrainManager:获得经验("子宫口经验", 1)
             v = v + active.执行.大小 - active.目标.扩张度
-            TrainManager:扩张("小穴", active.调教者, active.被调教者)
         end
     end
+    TrainManager:扩张("小穴", active.执行, active.被调教者)
+
+    active.调教者:精液(jy)
     TrainManager:获得经验("小穴经验", v)
     TrainManager:获得经验("小穴性交经验", 1)
     TrainManager:获得经验("小穴插入经验", vc, active.调教者)
@@ -234,12 +207,11 @@ function t:GetActive(trainer, trainee, select)
         执行 = trainee.阴部,
         目标 = trainer.小穴,
         sex = self,
-        体力减少 = 8,
+        体力减少 = 15,
         行为 = "插入小穴",
         选择 = select,
         次数 = 1,
     }
-    TrainManager:添加占用(o)
     return o
 end
 

@@ -245,20 +245,26 @@ function TrainManager:GetOptions()
 
     --插入
     if 调教者.阴部.Name == "阴茎" then
-        if 胯部装备 == nil and not self:检查占用(调教者, "阴部") then
-            if not self:检查占用(目标, "小穴") then
-                opt:Append(self.Button("插入小穴", "小穴", "插入小穴"))
-            elseif self:检查占用(目标, "小穴", "肉棒") then
-                opt:Append(self.Button("插入小穴", "小穴", "拔出肉棒"))
-                if 调教者.阴部.技巧 >= 2 then
-                    opt:Append(self.Button("插入小穴", "G点", "刺激G点"))
-                    if 调教者.阴部.技巧 >= 3 then
-                        opt:Append(self.Button("插入小穴", "子宫口", "刺激子宫口"))
-                        if 目标.获取经验("子宫口经验") then
-                            opt:Append(self.Button("插入小穴", "子宫", "插入子宫"))
-                        end
+        if 胯部装备 == nil and not self:检查占用(目标, "小穴") then
+            opt:Append(self.Button("插入小穴", "小穴", "插入小穴"))
+            if 调教者.阴部.技巧 >= 2 then
+                opt:Append(self.Button("插入小穴", "G点", "刺激G点"))
+                if 调教者.阴部.技巧 >= 3 then
+                    opt:Append(self.Button("插入小穴", "子宫口", "刺激子宫口"))
+                    if 目标.获取经验("子宫口经验") then
+                        opt:Append(self.Button("插入小穴", "子宫", "插入子宫"))
                     end
                 end
+            end
+        end
+    end
+
+
+    if 调教者.阴部.Name == "阴茎" then
+        if 胯部装备 == nil and not self:检查占用(目标, "菊穴") then
+            opt:Append(self.Button("插入菊穴", "菊穴", "插入菊穴"))
+            if 调教者.阴部.技巧 >= 2 then
+                opt:Append(self.Button("插入菊穴", "乙状结肠", "刺激乙状结肠"))
             end
         end
     end
@@ -1901,14 +1907,13 @@ function TrainManager:ShowOrder(value, text, need)
 end
 
 ---@param type string
----@param Trainer Character
 ---@param Female Character
 ---@return integer
-function TrainManager:扩张(type, Trainer, Female)
+function TrainManager:扩张(type, 阴部, Female)
     local Add = 0
     local exp = 0
-    local hard = Trainer.阴部.硬度 or 0
-    local size = Trainer.阴部.大小 or 0
+    local hard = 阴部.硬度 or 0
+    local size = 阴部.大小 or 0
     local Data = require("Data/参数")
 
     if hard > 2 then
