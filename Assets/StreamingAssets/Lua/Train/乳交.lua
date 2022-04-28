@@ -12,7 +12,7 @@ elseif Female:检查特性("贫乳") then
     base.逃脱 = base.逃脱 + 400
 end
 
-base.胸部快感 = Female:计算刺激度("B刺激")
+base.胸部快感 = Female:计算刺激度("胸部")
 
 if Female:检查特性("胸性向") then
     TrainManager:性癖增益(base, base.胸部快感)

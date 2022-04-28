@@ -1,18 +1,23 @@
-function t:SexActive(Active, Select)
-    local base = SMPlay("打屁股")
+local t = {}
+function t:SexActive(active, Active, Select)
+    local base = TrainManager:SMPlay(active, "打屁股")
+    local Data = require("Data/参数")
     base.露出 = base.露出 + 200
     base.逃脱 = base.逃脱 + 200
 
-    local s = Trainer : GetAbility("施虐属性")
-    local kt = trainData.Source : get_Item("痛苦")
-    local level = math.min(GetPalamLV(kt), 5)
+    local s = active.调教者:获取能力("施虐属性")
+    local kt = TrainManager: 获取人物状态("痛苦")
+
+
+
+    local level = math.min(Data:获取等级(kt), 5)
     base.疼痛 = base.疼痛 + (level + 1) * 300
     base.屈从 = base.屈从 + base.疼痛 / 2 * (1 + s * 0.2)
     
-    if Female:检查特性("成长期") then
+    if active.被调教者:检查特性("成长期") then
         base.屈从 = base.屈从 * 1.5
     end
-    if Train.Pos["小穴"] ~= "空" then
+    if not TrainManager:检查占用(active.被调教者, "小穴") then
         base.疼痛 = base.疼痛 * 0.5
         base.露出 = base.露出 * 1.5
         base.屈从 = base.屈从 * 1.5
@@ -34,8 +39,10 @@ function t:SexType(type)
     return false
 end
 
-function t:TrainMessage()
-    
+function t:TrainMessage(active)
+    local text = SB:New()
+    text:Append("@player@用手向@target@的屁股打去。")
+    UIManager:GetUI("TrainView"):Append(text:ToStr(), active)
 end
 
 
@@ -43,3 +50,25 @@ end
 function t:Check(Trainee, Female, Select)
     return true
 end
+
+---@return ActiveMsg
+function t:GetActive(trainer, trainee, select)
+    local o = 
+    {
+        ---@type Character
+        调教者 = trainer,
+        ---@type Character
+        被调教者 = trainee,
+        执行 = trainee.手部,
+        目标 = trainer.胯部,
+        sex = self,
+        体力减少 = 15,
+        行为 = "打屁股",
+        选择 = select,
+        次数 = 1,
+    }
+
+    return o
+end
+
+return t

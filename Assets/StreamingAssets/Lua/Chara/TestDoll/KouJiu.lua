@@ -88,6 +88,12 @@ function KouJiu.插入菊穴(active)
     ui:Append(text:ToStr(), active)
 end
 
+function KouJiu.指插入(active)
+    local text = SB:New()
+
+    ui:Append(text:ToStr(), active)
+end
+
 
 function KouJiu.高潮(pack, type ,number,active)
     local text = SB:New()

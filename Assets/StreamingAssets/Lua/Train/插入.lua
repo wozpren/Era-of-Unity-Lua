@@ -114,6 +114,15 @@ local function InsertAcitve(active, Active, Select)
     
     local hard = active.执行.硬度
     local size = active.执行.大小
+    if Active == "指插入" then
+        size = 1
+        hard = 2
+    elseif Active == "拳交" then
+        size = 5
+        hard = 3
+    end
+
+
     local sized = size - active.目标.扩张度
     
     if Female:检查特性("柔软体质") and sized > 0 then
@@ -362,7 +371,7 @@ local function InsertAcitve(active, Active, Select)
     end
     
     if Active == "插入小穴" then
-        base.小穴液体追加 = base.小穴液体追加 + 100 * math.min(5, data:获取等级(base.疼痛))
+        base.小穴液体追加 = base.小穴液体追加 + 50 * math.min(5, data:获取等级(base.疼痛))
         if Female:检查特性("小穴性向") then
             TrainManager:性癖增益(base, base.小穴快感)
         end

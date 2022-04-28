@@ -32,7 +32,7 @@ function equipEvent.嘴(type)
         base.屈从 = base.屈从 * 2
         base.不洁 = base.不洁 * 1.5
         base.逃脱 = base.逃脱 * 6
-        base.嘴部快感 = Female:计算刺激度("嘴", 2)
+        base.嘴部快感 = Female:计算刺激度("嘴部", 2)
         local gap = Train.GetAbility("喉扩张") - Trainer.Stature.JJSize
         if gap <= -2 then
             base.恐惧 = 3000

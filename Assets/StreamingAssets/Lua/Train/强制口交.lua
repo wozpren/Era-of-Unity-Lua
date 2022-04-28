@@ -5,7 +5,7 @@ function t:SexActive(Active, Select)
     base.屈从 = 3000
     base.逃脱 = 3000
 
-    base.嘴部快感 = Female:计算刺激度("嘴")
+    base.嘴部快感 = Female:计算刺激度("嘴部")
 
     local c = Train.GetAbility("喉扩张") - Trainer.Stature.JJSize
     if c <= -2 then

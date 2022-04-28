@@ -194,7 +194,7 @@ function TrainManager:GetOptions()
     end
     if 调教者.嘴部 ~= nil then
         opt:Append(self.Button("舔舐"))
-        if self:检查占用(调教者, "嘴部") and self:检查占用(目标, "嘴部") then
+        if not self:检查占用(调教者, "嘴部") and not self:检查占用(目标, "嘴部") then
             opt:Append(self.Button("接吻"))
         end
     end
@@ -222,7 +222,7 @@ function TrainManager:GetOptions()
         opt.Append(self.Button("指插入", "G点", "刺激G点"))
     end
     if 胯部装备 == nil and not self:检查占用(目标, "菊穴") and not self:检查占用(调教者, "手部") then
-        opt:Append(self.Button("指插入", "肛门"))
+        opt:Append(self.Button("指插入", "菊穴"))
     end
 
     --道具系
@@ -271,6 +271,10 @@ function TrainManager:GetOptions()
 
     --侍奉
     opt:Append(self.Button("口交"))
+
+
+    --SM
+    opt:Append(self.Button("打屁股"))
     return opt
 end
 
@@ -1448,8 +1452,10 @@ end
 ---@param active ActiveMsg
 function TrainManager:输出口上(active)
     active.sex:TrainMessage(active);
-    require(("Chara/%s/KouJiu"):format(self.被调教者.口上))[active.行为](active)
-    
+    local kj = require(("Chara/%s/KouJiu"):format(self.被调教者.口上))
+    if type(kj[active.行为]) == "function" then
+        kj[active.行为](active)
+    end
 end
 
 function TrainManager:输出(charas)
@@ -1623,7 +1629,7 @@ function TrainManager:转化宝珠(chara, feel)
         orb[key] = var
     end
 
-    return orb
+    return orb 
 end
 
 function TrainManager:AllowAction(Trainee ,Female)
@@ -1698,6 +1704,14 @@ function TrainManager:OrderRequire(Female, value, text, type, name, num)
         end
     elseif type == "abl" then
         if num > 0 then
+            value = value + num
+        else
+            return value
+        end
+    elseif type == "feel" then
+        num = Female[name].感觉
+        if num > 0 then
+            num = num * num
             value = value + num
         else
             return value
@@ -1923,7 +1937,7 @@ function TrainManager:扩张(type, 阴部, Female)
         Add = Add + 1
     end
 
-    Add = Add + size - Female[type].扩张 - 2
+    Add = Add + size - Female[type].扩张度 - 2
     if Female:检查特性("处女", type) then
         Add = Add - 1
     end

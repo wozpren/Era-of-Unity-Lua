@@ -1,29 +1,33 @@
-function t:SexActive(Active, Select)
-    local base
-    if Train.Pos["小穴"] == "振动棒" then
-        base = InsertAcitve(Active, Select)
-        MultData(base, 1.3)
+local t = {}
+function t:SexActive(active, Active, Select)
+    local base = require("Train/插入")(active, Active, Select)
+    local Female = active.被调教者
+
+
+    if TrainManager:检查占用(Female, "阴部", "振动棒") then
+        active.乘数 = 1.3
     else
-        base = InsertAcitve(Active, Select)
         if Select == "G点" then
-            MultData(base, 1.5)
+            active.乘数 = 1.5
         end
     end
     if Select == "小穴" then
         TrainManager:获得经验("小穴经验", 1)
-    elseif Select == "肛门" then
+    elseif Select == "菊穴经验" then
         TrainManager:获得经验("菊穴经验", 1)
     elseif Select == "尿道" then
         TrainManager:获得经验("尿道经验", 1)
     end
-    TrainManager:获得经验("手淫经验", 1)
+    TrainManager:获得经验("手淫经验", 1, active.调教者)
 
 
     return base
 end
 
-function t:TrainMessage()
-    ImplementKoujiu("指插入")
+function t:TrainMessage(active)
+    local text = SB:New()
+    text:Append("@player@用手指玩弄@target@的小穴。")
+    UIManager:GetUI("TrainView"):Append(text:ToStr(), active)
 end
 
 function t:SexType(type)
@@ -33,6 +37,28 @@ function t:SexType(type)
     return false
 end
 
-function t:Check(Trainee, Female, Select)
+function t:Check()
     return true
 end
+
+---@return ActiveMsg
+function t:GetActive(trainer, trainee, select)
+    local o = 
+    {
+        ---@type Character
+        调教者 = trainer,
+        ---@type Character
+        被调教者 = trainee,
+        执行 = trainee.手部,
+        目标 = trainer.小穴,
+        sex = self,
+        体力减少 = 10,
+        行为 = "指插入",
+        选择 = select,
+        次数 = 1,
+    }
+
+    return o
+end
+
+return t

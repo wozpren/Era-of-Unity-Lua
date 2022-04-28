@@ -15,7 +15,7 @@ function t:SexActive(active, Active, Select)
     base.欲情追加 = TrainManager:AddLust(active)
     base.屈从 = base.屈从 + 1500
     base.逃脱 = base.逃脱 + 500
-    base.嘴部快感 = Female:计算刺激度("嘴", 2)
+    base.嘴部快感 = Female:计算刺激度("嘴部", 2)
 
     if Select == "清洁口交" then
         base.成就感 = base.成就感 + 1000
