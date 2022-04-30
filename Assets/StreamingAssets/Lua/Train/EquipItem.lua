@@ -150,7 +150,7 @@ function equipEvent.小穴(type)
         end
         TrainManager:获得经验("小穴经验", v)
         TrainManager:获得经验("V性交经验", 1)
-        TrainManager:获得经验("V插入经验", vc, Trainer)
+        TrainManager:获得经验("小穴插入经验", vc, Trainer)
         
         MultData(base, 0.2)
         return base

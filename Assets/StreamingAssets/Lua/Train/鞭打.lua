@@ -31,7 +31,7 @@ function t:TrainMessage()
     
 end
 
-function t:Check(Trainee, Female, Select)
-    return true
+function t:Check(Trainer, Female, Select)
+    return true, Select
 end
 return t

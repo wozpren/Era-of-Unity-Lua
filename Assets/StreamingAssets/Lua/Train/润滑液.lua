@@ -1,4 +1,4 @@
-function t:SexActive(Active, Select)
+function t:SexActive(active, Active, Select)
     dofile("爱抚")
     local base = SexActive("爱抚","小穴")
     MultData(base, 0.8)
@@ -18,6 +18,6 @@ function t:TrainMessage()
 end
 
 
-function t:Check(Trainee, Female, Select)
-    return true
+function t:Check(Trainer, Female, Select)
+    return true, Select
 end

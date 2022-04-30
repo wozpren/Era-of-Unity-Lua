@@ -1,4 +1,4 @@
-﻿function t:SexActive(Active, Select)
+﻿function t:SexActive(active, Active, Select)
     Train.PosOccupy("小穴", "振动棒")
     local base = InsertAcitve(Active, "小穴")
     if not Train.Pos["小穴"] == "振动棒" then
@@ -22,6 +22,6 @@ function t:SexType(type)
     return false
 end
 
-function t:Check(Trainee, Female, Select)
+function t:Check(Trainer, Female, Select)
     return true
 end

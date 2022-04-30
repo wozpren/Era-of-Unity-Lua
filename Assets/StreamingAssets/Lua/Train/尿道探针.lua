@@ -1,6 +1,6 @@
 local radius = 0
 local t = {}
-function t:SexActive(Active, Select)
+function t:SexActive(active, Active, Select)
     local base = InsertAcitve("探针", radius)
     return base
 end
@@ -20,8 +20,8 @@ end
 
 
 
-function t:Check(Trainee, Female, Select)
-    local value, text = TrainManager:AllowAction()
+function t:Check(Trainer, Female, Select)
+    local value, text = TrainManager:AllowAction(Trainer, Female)
     local n = Train.GetAbility("露出癖")
     value = OrderRequire(Female, value, text, "abl", "露出癖", n * 2)
     n = Train.GetAbility(Female, "受虐属性")
@@ -43,7 +43,7 @@ function t:Check(Trainee, Female, Select)
     value = OrderRequire(Female, value, text, "place", "野外PLAY", -10)
     value = OrderRequire(Female, value, text, "place", "室内PLAY", -10)
     
-    return Train.ShowOrder(value, text, 55)
+    return TrainManager:ShowOrder(value, text, 55), Select
 end
 
 return t

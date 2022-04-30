@@ -1,3 +1,5 @@
+local Data = require("Data/参数")
+
 CharaManager = {}
 
 local meta = {}
@@ -43,6 +45,11 @@ function meta:获取经验(name)
         return self.经验[name]
     end
     return 0
+end
+
+function meta:获取经验等级(name)
+    local exp = self:获取经验(name)
+    return Data:获取经验等级(exp)
 end
 
 function meta:设置能力(name, num)

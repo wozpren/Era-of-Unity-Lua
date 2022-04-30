@@ -1,4 +1,4 @@
-function t:SexActive(Active, Select)
+function t:SexActive(active, Active, Select)
     if trainData.equipItem : Contains("新婚PLAY") then
         trainData.equipItem : Remove("新婚PLAY")
     else
@@ -49,6 +49,6 @@ function t:TrainMessage()
 end
 
 
-function t:Check(Trainee, Female, Select)
+function t:Check(Trainer, Female, Select)
     return true
 end

@@ -183,9 +183,9 @@ function t:TrainMessage(active)
     UIManager:GetUI("TrainView"):Append(text:ToStr(), active)
 end
 
-function t:Check(Trainee, Female, Select)
+function t:Check(Trainer, Female, Select)
     Message:AddMessage("自慰")
-    local value, text = TrainManager:AllowAction(Trainee, Female)
+    local value, text = TrainManager:AllowAction(Trainer, Female)
     local n = Female:获取能力("露出癖")
     value = TrainManager:OrderRequire(Female, value, text, "abl", "露出癖", n * 2)
 
@@ -218,7 +218,7 @@ function t:GetActive(trainer, trainee)
         ---@type Character
         被调教者 = trainee,
         执行 = trainee.手部,
-        目标 = trainer[s],
+        目标 = trainee[s],
         sex = self,
         体力减少 = 8,
         行为 = "自慰",

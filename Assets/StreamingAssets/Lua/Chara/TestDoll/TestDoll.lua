@@ -10,6 +10,7 @@ local b = require("Data/身体")
 ---@field 设置特性 function
 ---@field 检查特性 function
 ---@field 获取经验 function
+---@field 获取经验等级 function
 ---@field 检查状态 function
 ---@field 设置状态 function
 ---@field 特性修正 function
@@ -31,7 +32,8 @@ local chara =
     年龄 = 24,
     体力 = 100,
     精力 = 100,
-
+    当前体力 = 100,
+    当前精力 = 100,
 
     特性 = {"接受快感","嘴部性向"},
     特殊经验 = {},

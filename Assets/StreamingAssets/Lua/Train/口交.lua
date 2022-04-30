@@ -64,11 +64,8 @@ function t:SexActive(active, Active, Select)
         TrainManager:性癖增益(base, base.嘴部快感)
     end
 
-    local jy = (500 * active.执行.技巧) + (Female:获取能力("精液中毒") * 100) + 100
-    if Female:检查特性("荡唇") then
-        jy = jy * 1.5
-    end
-    Trainer:精液(jy)
+    local samen = TrainManager:精液处理(Trainer, Female, 150, "口")
+    Trainer:精液(samen)
     TrainManager:获得经验("口交经验", 1)
 
     if Select == "口交自慰" then
@@ -97,9 +94,9 @@ function t:SexType(type)
 end
 
 
-function t:Check(Trainee, Female, Select)
+function t:Check(Trainer, Female, Select)
     Message:AddMessage("口交")
-    local value, text = TrainManager:AllowAction(Trainee, Female)
+    local value, text = TrainManager:AllowAction(Trainer, Female)
 
     local temp = Female:获取能力("侍奉技术")
     value = TrainManager:OrderRequire(Female, value, text, "abl", "侍奉技术", temp * 3)

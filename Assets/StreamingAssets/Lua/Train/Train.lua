@@ -1,3 +1,6 @@
+--旧地狱 遗留文件
+
+
 Train = {}
 
 function Train.Update()
@@ -2572,115 +2575,6 @@ function Train.Estrus(type)
         end
     end
     return temp
-end
-
-function TrainManager:AllowAction()
-    local value = 0
-    local text = SB:New()
-
-    local temp = math.min(Train.GetAbility("顺从"), 10)
-    if(temp > 0) then
-        value = value + temp
-        SB.append(text,"顺从: +"..temp)
-    end
-    temp = math.min(Train.GetAbility("欲望"), 10)
-    if(temp > 0) then
-        value = value + temp
-        SB.append(text,"欲望: +"..temp)
-    end
-
-    if(Female.Mark[1] > 0) then
-        value = value + Female.Mark[1] * 5--痛苦刻印
-        SB.append(text,"痛苦刻印: +"..Female.Mark[1])
-    end
-    if(Female.Mark[2] > 0) then
-        value = value + Female.Mark[2] * 3--痛苦刻印
-        SB.append(text,"痛苦刻印: +"..Female.Mark[2])
-    end
-    if(Female.Mark[0] > 0) then
-        value = value + Female.Mark[0] * 2--快乐刻印
-        SB.append(text,"快乐刻印: +"..Female.Mark[0])
-    end
-    if(Female.Mark[4] > 0) then
-        value = value + Female.Mark[4] * 1--快乐刻印
-        SB.append(text,"快乐刻印: +"..Female.Mark[4])
-    end
-
-    temp = math.min(GetExpLV(Female.Friend) / 5, 16)
-    if(temp > 0) then
-        value = value + temp
-        SB.append(text,"好感度: +"..temp)
-    end
-
-    temp = GetPalamLV(trainData.Source : get_Item("欲情"))
-    if(temp > 0) then
-        value = value + temp
-        SB.append(text,"欲情: +"..temp)
-    end
-    temp = GetPalamLV(trainData.Source : get_Item("恐怖"))
-    if(temp > 0) then
-        value = value + temp
-        SB.append(text,"恐怖: +"..temp)
-    end
-    if(Female: HaveTalent("叛逆")) then
-        value = value - 10
-        SB.append(text,"叛逆: -10")
-    end
-    if(Female: HaveTalent("坚强")) then
-        value = value - 5
-        SB.append(text,"坚强: -5")
-    end
-    if(Female: HaveTalent("坦率")) then
-        value = value + 5
-        SB.append(text,"坦率: +5")
-    end
-    if(Female: HaveTalent("高傲")) then
-        value = value - 15
-        SB.append(text,"高傲: -15")
-    end
-    if(Female: HaveTalent("谦虚")) then
-        value = value + 5
-        SB.append(text,"谦虚: +5")
-    end
-    if(Female: HaveTalent("喜欢引人注目")) then
-        value = value + 2
-        SB.append(text,"喜欢引人注目: +2")
-    end
-    if(Female: HaveTalent("好色")) then
-        value = value + 2
-        SB.append(text,"好色: +2")
-    end
-    if(Female: HaveTalent("淫乱")) then
-        value = value + 2
-        SB.append(text,"淫乱: +2")
-    end
-    
-
-    if  Female.sex : ToInt()  + Trainer.sex : ToInt() >= 3 or Female.sex == Trainer.sex then
-        if Female: HaveTalent("接受同性") then
-            value = value + 5
-            SB.append(text,"接受同性: +5")
-        elseif Female: HaveTalent("拒绝同性") then
-            value = value - 5
-            SB.append(text,"拒绝同性: -5")
-        end
-    end
-
-    if Female.Feel : ToInt() < 4 and Female.Feel : ToInt() > 0 then
-        value = value + 5 * Female.Feel : ToInt()
-        text:Append(tostring(Female.Feel)..": +"..5 * Female.Feel : ToInt())
-    end
-
-    if trainData.equipItem : Contains("摄像机") then
-        value = value - 10
-        SB.append(text,"摄像机: -10")
-    end
-    if trainData.equipItem : Contains("野外PLAY") then
-        value = value - 10
-        SB.append(text,"野外PLAY: -10")
-    end
-    
-    return value, text
 end
 
 

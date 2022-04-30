@@ -47,8 +47,8 @@ end
 
 
 
-function t:Check(Trainee, Female, Select)
-    return true
+function t:Check(Trainer, Female, Select)
+    return true, Select
 end
 
 ---@return ActiveMsg
@@ -59,8 +59,8 @@ function t:GetActive(trainer, trainee, select)
         调教者 = trainer,
         ---@type Character
         被调教者 = trainee,
-        执行 = trainee.手部,
-        目标 = trainer.胯部,
+        执行 = trainer.手部,
+        目标 = trainee.胯部,
         sex = self,
         体力减少 = 15,
         行为 = "打屁股",

@@ -70,7 +70,7 @@ local function InsertAcitve(active, Active, Select)
             base.不洁 = 500
             base.露出 = 500
             base.屈从 = 500
-            base.逃脱 = 1000
+            base.逃脱 = 800
             base.菊穴快感 = Female:计算刺激度("菊穴", 1)
             base.菊穴快感 = TrainManager:EXABL(TTech, base.菊穴快感)
         elseif Select == "尿道" then

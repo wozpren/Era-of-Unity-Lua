@@ -44,8 +44,8 @@ function t:SexType(type)
 end
 
 
-function t:Check(Trainee, Female, Select)
-    local value, text = TrainManager:AllowAction(Trainee, Female)
+function t:Check(Trainer, Female, Select)
+    local value, text = TrainManager:AllowAction(Trainer, Female)
     local n = Female:获取能力("侍奉技术")
     value = TrainManager:OrderRequire(Female, value, text, "abl", "侍奉技术", n * 2)
 
@@ -58,7 +58,7 @@ function t:Check(Trainee, Female, Select)
     value = TrainManager:OrderRequire(Female, value, text, "talent", "不知羞耻", 3)
     value = TrainManager:OrderRequire(Female, value, text, "talent", "否定快感", -1)
 
-    return TrainManager:ShowOrder(value, text, 20)
+    return TrainManager:ShowOrder(value, text, 20), Select
 end
 
 ---@return ActiveMsg
@@ -69,8 +69,8 @@ function t:GetActive(trainer, trainee, select)
         调教者 = trainer,
         ---@type Character
         被调教者 = trainee,
-        执行 = trainee.嘴部,
-        目标 = trainer.嘴部,
+        执行 = trainer.嘴部,
+        目标 = trainee.嘴部,
         sex = self,
         体力减少 = 5,
         行为 = "接吻",

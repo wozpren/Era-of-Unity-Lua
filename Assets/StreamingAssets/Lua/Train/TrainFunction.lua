@@ -1,3 +1,5 @@
+--旧地狱 遗留文件
+
 function PlayerSamenHandle(data)
     if data.Samen == 0 then
         return
@@ -261,7 +263,7 @@ function SetSexValue(Chara)
 end
 
 
-function MultiSet(base ,type)
+function 精液处理(base ,type)
     if type == "乳" then
         if Train.HaveTalent("淫乳") then
             base.multi = base.multi * 1.5
@@ -278,7 +280,7 @@ function MultiSet(base ,type)
             base.multi = base.multi * 0.7
         end
     elseif type == "小穴" then
-        if Trainer : 获取经验("V插入经验") + Trainer : 获取经验("A插入经验") == 0 then
+        if Trainer : 获取经验("小穴插入经验") + Trainer : 获取经验("菊穴插入经验") == 0 then
             base.multi = base.multi * 3
         end
         if Female.IsCHu then

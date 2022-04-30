@@ -1,5 +1,6 @@
-function t:SexActive(Active, Select)
-    local base = SMPlay("口枷")
+local t = {}
+function t:SexActive(active, Active, Select)
+    local base = TrainManager:SMPlay("口枷")
     Train.PosOccupy("嘴", "口枷")
     
 
@@ -24,6 +25,8 @@ function t:TrainMessage()
 end
 
 
-function t:Check(Trainee, Female, Select)
-    return true
+function t:Check(Trainer, Female, Select)
+    return true, Select
 end
+
+return t

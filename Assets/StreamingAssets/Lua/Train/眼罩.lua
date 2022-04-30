@@ -1,4 +1,4 @@
-function t:SexActive(Active, Select)
+function t:SexActive(active, Active, Select)
     local base = SMPlay("眼罩")
     Train.PosOccupy("眼", "眼罩")
     base.露出 = base.露出 + 1000
@@ -22,6 +22,6 @@ function t:TrainMessage()
     ImplementKoujiu("穿戴")
 end
 
-function t:Check(Trainee, Female, Select)
+function t:Check(Trainer, Female, Select)
     return true
 end

@@ -37,8 +37,8 @@ function t:SexType(type)
     return false
 end
 
-function t:Check()
-    return true
+function t:Check(Trainer, Female, Select)
+    return true, Select
 end
 
 ---@return ActiveMsg
@@ -49,8 +49,8 @@ function t:GetActive(trainer, trainee, select)
         调教者 = trainer,
         ---@type Character
         被调教者 = trainee,
-        执行 = trainee.手部,
-        目标 = trainer.小穴,
+        执行 = trainer.手部,
+        目标 = trainee.小穴,
         sex = self,
         体力减少 = 10,
         行为 = "指插入",

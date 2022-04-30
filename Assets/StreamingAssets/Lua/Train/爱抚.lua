@@ -240,7 +240,7 @@ function t:SexType(type)
 end
 
 
-function t:Check(Trainee, Female, Select)
+function t:Check(Trainer, Female, Select)
     local text = SB:New()
     text:Append( "要爱抚哪里\n")
     text:Append( AddButtonL("头部","CoroutineResume,头部"))

@@ -128,9 +128,9 @@ function t:SexType(type)
     return false
 end
 
-function t:Check(Trainee, Female, Select)
+function t:Check(Trainer, Female, Select)
     if TrainManager.姿势 == "乘骑位" then
-        local value, text = TrainManager:AllowAction()
+        local value, text = TrainManager:AllowAction(Trainer, Female)
         local n = Female:获取能力("侍奉技术")
         value = TrainManager:OrderRequire(Female, value, text, "abl", "侍奉技术", n * 2)
 
@@ -150,7 +150,7 @@ function t:Check(Trainee, Female, Select)
         value = TrainManager:OrderRequire(Female, value, text, "equip", "媚药", 3)
 
 
-        return Train.ShowOrder(value, text, 50), Select
+        return TrainManager:ShowOrder(value, text, 50), Select
     else
         return true, Select
     end
@@ -164,8 +164,8 @@ function t:GetActive(trainer, trainee, select)
         调教者 = trainer,
         ---@type Character
         被调教者 = trainee,
-        执行 = trainee.阴部,
-        目标 = trainer.尿道,
+        执行 = trainer.阴部,
+        目标 = trainee.尿道,
         sex = self,
         体力减少 = 30,
         行为 = "插入尿道",

@@ -1,4 +1,4 @@
-function t:SexActive(Active, Select)
+function t:SexActive(active, Active, Select)
     local base = ActiveData.new()
     
     return base

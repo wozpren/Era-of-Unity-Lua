@@ -270,11 +270,18 @@ function TrainManager:GetOptions()
     end
 
     --侍奉
+    opt:Append(self.Button("手淫"))
     opt:Append(self.Button("口交"))
+    opt:Append(self.Button("乳交"))
+    opt:Append(self.Button("足交"))
+
+    --opt:Append(self.Button("身体侍奉"))
 
 
     --SM
     opt:Append(self.Button("打屁股"))
+    opt:Append(self.Button("拳交", "小穴", "小穴拳交"))
+    opt:Append(self.Button("拳交", "菊穴", "菊穴拳交"))
     return opt
 end
 
@@ -422,7 +429,9 @@ local function 执行行为(self)
 
     TrainManager:最终补正(self, feel)
     TrainManager:经验处理(self, self.feelpack)
-    TrainManager:输出口上(self)
+    if self.没有口上 == nil then
+        TrainManager:输出口上(self)
+    end
 
 end
 
@@ -964,6 +973,7 @@ function TrainManager:射精处理(active, pack)
     text:Append(AddButton("脸部   ","CoroutineResume,脸部"))
     text:Append(AddButton("身上   ","CoroutineResume,身上"))
     Message : AddMessage(text:ToStr())
+    Message : StartPop()
     local select = coroutine.yield()
     Message : Continue()
     local place = ""
@@ -1135,7 +1145,7 @@ function TrainManager:绝顶处理(active, feel)
     end
     if Orgasms["胸部快感"] > 0 then
         data.露出 = data.露出 + 300 * Orgasms["胸部快感"]
-        if 检查特性(trainee.尿道, "淫乳") or trainee:检查特性("胸部性向") then
+        if 检查特性(trainee.胸部, "淫乳") or trainee:检查特性("胸部性向") then
             data.屈从 = data.屈从 + 1000
         end
         orgasmsNumber = orgasmsNumber + Orgasms["胸部快感"]
@@ -1524,17 +1534,24 @@ function TrainManager:添加记录(id, mess, n)
 end
 
 function TrainManager:获取当前信息(id, mess)
-    if 本次记录[id][mess] then
+    if type(id) == "table" then
+        id = self:查找ID(id)
+    end
+    if 本次记录[id] ~= nil and type(本次记录[id][mess]) == "number" then
         return 本次记录[id][mess]
     end
-    return nil
+    return 0
 end
 
 function TrainManager:获取上次信息(id, mess)
-    if 上次记录[id][mess] then
+    if type(id) == "table" then
+        id = self:查找ID(id)
+    end
+
+    if 上次记录[id] ~= nil and type(上次记录[id][mess]) == "number" then
         return 上次记录[id][mess]
     end
-    return nil
+    return 0
 end
 
 function TrainManager.六感同加(data, num)
@@ -1632,7 +1649,7 @@ function TrainManager:转化宝珠(chara, feel)
     return orb 
 end
 
-function TrainManager:AllowAction(Trainee ,Female)
+function TrainManager:AllowAction(Trainer ,Female)
     local value = 0
     local text = SB:New()
 
@@ -1674,7 +1691,7 @@ function TrainManager:AllowAction(Trainee ,Female)
     value = TrainManager:OrderRequire(Female, value, text, "talent", "淫乱", 2)
 
 
-    if Female.性别 ~= "中性" and Trainee.性别 ~= "中性" and Female.性别 == Trainee.性别 then
+    if Female.性别 ~= "中性" and Trainer.性别 ~= "中性" and Female.性别 == Trainer.性别 then
         if Female: 检查特性("接受同性") then
             value = value + 5
             SB.append(text,"接受同性：(5)")
@@ -1703,14 +1720,14 @@ function TrainManager:OrderRequire(Female, value, text, type, name, num)
             return value
         end
     elseif type == "abl" then
-        if num > 0 then
+        if num ~= 0 then
             value = value + num
         else
             return value
         end
     elseif type == "feel" then
         num = Female[name].感觉
-        if num > 0 then
+        if num ~= 0 then
             num = num * num
             value = value + num
         else
@@ -1802,6 +1819,66 @@ function TrainManager:SMPlay(active, type)
     return base
 end
 
+function TrainManager:精液处理(trainer, female, samen, type)
+    samen = samen * (female:获取能力("精液中毒") + 10) / 10
+    if type == "乳" then
+        if female:检查特性("淫乳", "胸部") then
+            samen = samen * 1.5
+        end
+        samen = self:EXABL(female:获取经验等级("乳交经验"), samen)
+        samen = samen * ((female:获取能力("侍奉技术") / 2) + 10) / 10
+        local b = female.胸部.大小
+        if b >= 5 then
+            samen = samen * 2
+        elseif b == 4 then
+            samen = samen * 1.5
+        elseif b == 3 then
+            samen = samen * 1.2
+        elseif b < 2 then
+            samen = samen * 0.7
+        end
+    elseif type == "小穴" or type == "菊穴" then
+        if trainer : 获取经验(type.."插入经验") + trainer : 获取经验(type.."插入经验") == 0 then
+            samen = samen * 3
+        end
+        if female.检查特性("处女", "小穴") then
+            samen = samen * 1.5
+        else
+            samen = (samen * (female : 获取经验等级(type.."性交经验") + 100) / 100)
+        end
+        local n = female[type].扩张度 - trainer.阴部.大小
+        if n <= 0 then
+            samen = samen * 1.2
+        elseif n <= female.小穴.感觉 then
+            local t = UnityEngine.Mathf.Clamp(150 * female.当前体力 / female.体力, 25 , 100)
+            samen = samen * t / 100
+        else
+            local t = UnityEngine.Mathf.Clamp(120 * female.当前体力 / female.体力, 10 , 100)
+            samen = samen * t / 100
+        end
+    elseif type == "口" then
+        samen = TrainManager:EXABL(female : 获取经验等级("口交经验"), samen)
+        samen = samen * ((female:获取能力("侍奉技术") / 2) + 10) / 10
+        local c = female.嘴部.扩张度 - trainer.阴部.大小
+        if c >= 1 then
+            samen = samen * 0.8
+        elseif c < 0 then
+            samen = samen * 1.2
+        end
+        if Female:检查特性("荡唇", "嘴部") then
+            samen = samen * 1.5
+        end
+
+    elseif type == "手" then
+        samen = TrainManager:EXABL(female : 获取经验等级("手淫经验"), samen)
+        samen = samen * ((female:获取能力("侍奉技术") / 2) + 10) / 10
+    elseif type == "足" then
+        samen = TrainManager:EXABL(female : 获取经验等级("足交经验"), samen)
+        samen = samen * ((female:获取能力("侍奉技术") / 2) + 10) / 10
+    end
+    return samen
+end
+
 ---@param active ActiveMsg
 ---@return ActionPack
 function TrainManager:ServicePlay(active)
@@ -1814,9 +1891,11 @@ function TrainManager:ServicePlay(active)
     if sf == 0 then
         base.性行动 = 100
         base.成就感 = 50
+        base.逃脱 = 400
     elseif sf == 1 then
         base.性行动 = 500
         base.成就感 = 200
+        base.逃脱 = 200
     elseif sf <= 5 then
         base.性行动 = 500 + (sf - 1) * 100
         base.成就感 = 200 + (sf - 1) * 50
@@ -1895,6 +1974,11 @@ function TrainManager:AddLust(active)
     end
 end
 
+
+---@param value number
+---@param text string
+---@param need number
+---@return boolean
 function TrainManager:ShowOrder(value, text, need)
     local output = SB:New()
 

@@ -196,7 +196,7 @@ end
 
 
 
-function t:Check(Trainee, Female, Select)
+function t:Check(Trainer, Female, Select)
     Message:AddMessage("舔舐")
     local text = SB:New()
     text:Append("要舔舐哪里\n")
