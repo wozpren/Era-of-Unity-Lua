@@ -24,13 +24,13 @@ function UIManager:Navigation(name, ...)
     return false
 end
 
-function UIManager:Back()
-    if self.CurrnetUI.Close ~= nil then
-        self.CurrnetUI:Close()
+function UIManager.Back()
+    if UIManager.CurrnetUI.Close ~= nil then
+        UIManager.CurrnetUI:Close()
     end
-    if self.uistack.length > 0 then
-        self.CurrnetUI = self.uistack:pop()
-        self.CurrnetUI:Open()
+    if UIManager.uistack.length > 0 then
+        UIManager.CurrnetUI = UIManager.uistack:pop()
+        UIManager.CurrnetUI:Open()
     end
 end
 

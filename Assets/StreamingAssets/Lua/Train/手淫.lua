@@ -49,7 +49,7 @@ function t:Check(Trainer, Female, Select)
     value = TrainManager:OrderRequire(Female, value, text, "talent", "献身", 6)
     value = TrainManager:OrderRequire(Female, value, text, "talent", "否定快感", -3)
     
-    return TrainManager:ShowOrder(value, text, 0), Select
+    return TrainManager:ShowOrder(value, text, 24), Select
 end
 
 ---@return ActiveMsg

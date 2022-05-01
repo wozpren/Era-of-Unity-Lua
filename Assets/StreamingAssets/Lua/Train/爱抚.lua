@@ -8,7 +8,7 @@ function t:SexActive(active, Active, Select)
     local base = require("Data/ActionPack"):New()
     local yuwan = Female:获取能力("欲望")
     local abl = Female:获取能力("顺从")
-    local tec = 调教者.手.技巧
+    local tec = 调教者.手部.技巧
 
     local CFeel = 0
     if Female.阴部 ~= nil then

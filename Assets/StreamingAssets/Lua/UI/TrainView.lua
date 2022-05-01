@@ -63,19 +63,34 @@ function ui:Update()
             prop:Append("   ")
         end
     end
-
+    prop:Append("精液：")
+    for int, chara in ipairs(tm.参与人员) do
+        if chara.阴部.Name == "阴茎" then
+            prop:Append(string.format("%s[%s/10000] ", chara.名字, chara:精液()))
+        end
+    end
 
     UIManager.page[self.Page].Property.text = prop:ToStr()
 
 
     local o = TrainManager:GetOptions()
-    local p = TrainManager:GetMenu()
+    local p = SB:New()
+
+    p:Append(AddButton("人物状态 ", "UI,TrainView,Message"))
+    p:Append(AddButton("结束", "UI,TrainView,EndTrain"))
 
     UIManager.page[self.Page].Options.text = o:ToStr().."\n"..p:ToStr()
 end
 
 
+function ui:Message()
+    UIManager:Navigation("CharaMessage", tm.参与人员)
+end
 
+function ui:EndTrain()
+    TrainManager.EndTrain()
+    self.正在调教 = false
+end
 
 function ui:Append(text, active)
     text = string.gsub(text, "@player@", active.调教者.名字)

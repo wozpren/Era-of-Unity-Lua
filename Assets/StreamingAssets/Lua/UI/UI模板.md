@@ -3,7 +3,7 @@ local ui = { Type = "UI", Name = "UI名称", Page = "FullPage"}
 
 --必须的 打开ui时所调用的
 function ui:Open()
-    UIManager:PageSort(self.Page)
+    UIManager:UIOnOpen(self)
     self:Update()
 end
 

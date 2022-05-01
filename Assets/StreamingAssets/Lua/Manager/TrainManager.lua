@@ -111,7 +111,7 @@ function TrainManager.EndTrain(reason)
             end
 
     
-            require("Manager/ABLManager"):强化能力(chara)
+            --require("Manager/ABLManager"):强化能力(chara)
         end
     end
 
@@ -287,15 +287,6 @@ end
 
 
 
-function TrainManager:GetMenu()
-    local opt = SB:New()
-
-    opt:Append(AddButton("人物状态", "TrainManager.CharaMessage"))
-    opt:Append(AddButton("结束", "TrainManager.EndTrain"))
-
-    return opt
-end
-
 
 function TrainManager.Back()
     TrainManager.参与人员 = nil
@@ -306,9 +297,6 @@ function TrainManager.Back()
     UIManager:Back()
 end
 
-function TrainManager.CharaMessage()
-    
-end
 
 function TrainManager.AIOption(arg1, arg2)
     TrainManager.行为 = arg1
@@ -1582,27 +1570,27 @@ function TrainManager:转化宝珠(chara, feel)
         if n < 100 then
             var = 0
         elseif n < 500 then
-            var = (n - 100) / 400
+            var = 1 + (n - 100) * 9 / 399
         elseif n < 3000 then
-            var = 10 + (n - 500) / 2500
+            var = 10 + (n - 500) * 90 / 2499
         elseif n < 10000 then
-            var = 100 + (n - 3000) / 2500
+            var = 100 + (n - 3000) * 900 / 6999
         elseif n < 30000 then
-            var = 1000 + (n - 10000) / 20000
+            var = 1000 + (n - 10000) * 1000 / 29999
         elseif n < 60000 then
-            var = 2000 + (n - 30000) / 30000
+            var = 2000 + (n - 30000) * 1000 / 29999
         elseif n < 100000 then
-            var = 3000 + (n - 60000) / 40000
+            var = 3000 + (n - 60000) * 2000 / 39999
         elseif n < 150000 then
-            var = 5000 + (n - 100000) / 50000
+            var = 5000 + (n - 100000) * 3000 / 49999
         elseif n < 250000 then
-            var = 8000 + (n - 150000) / 100000
+            var = 8000 + (n - 150000) * 4000 / 99999
         elseif n < 500000 then
-            var = 12000 + (n - 250000) / 250000
+            var = 12000 + (n - 250000) * 4000 / 249999
         elseif n < 1000000 then
-            var = 16000 + (n - 500000) / 500000
+            var = 16000 + (n - 500000) * 4000 / 499999
         else
-            var = 20000 + (n - 1000000) / 4000000
+            var = 20000 + (n - 1000000) * 5000 / 3999999
         end
 
         if TrainManager.总记录 ~= nil then
@@ -1643,10 +1631,12 @@ function TrainManager:转化宝珠(chara, feel)
                 end
             end
         end
+        var = math.floor(var)
+
         orb[key] = var
     end
 
-    return orb 
+    return orb
 end
 
 function TrainManager:AllowAction(Trainer ,Female)

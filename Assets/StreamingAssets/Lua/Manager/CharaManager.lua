@@ -233,6 +233,62 @@ function meta:获取淫纹等级()
     return 0
 end
 
+
+function meta:角色信息()
+    local text = SB:New()
+    text:Append("角色信息\n")
+    text:Append(("名字：%s 性别：%s 年龄：%s\n"):format(self.名字, self.性别, self.年龄))
+    text:Append(("体力：%s/%s 精力：%s/%s\n"):format(self.当前体力, self.体力, self.当前精力, self.精力))
+    text:Append("状态：")
+    for index, value in ipairs(self.状态) do
+        text:Append(value.." ")
+    end
+    text:Append("\n特性：")
+    for index, value in ipairs(self.特性) do
+        text:Append(value.." ")
+    end
+    text:Append("\n能力：")
+    for index, value in pairs(self.能力) do
+        text:Append(("%s:%s "):format(index, value))
+    end
+    text:Append("\n刻印：")
+    for index, value in pairs(self.刻印) do
+        text:Append(("%s:%s "):format(index, value))
+    end
+    text:Append("\n宝珠：")
+    for index, value in pairs(self.宝珠) do
+        text:Append(("%s:%s "):format(index, value))
+    end
+    text:Append("\n经验：")
+    for index, value in pairs(self.经验) do
+        text:Append(("%s:%s "):format(index, value))
+    end
+    text:Append("\n身体状态")
+    text:Append(("\n嘴部 感觉：%s 技巧：%s 扩张度：%s 特性：%s"):format(self.嘴部.感觉, self.嘴部.技巧, self.嘴部.扩张度, table.concat(self.嘴部.特性, " ")))
+    text:Append(("\n胸部 感觉：%s 大小：%s  特性：%s"):format(self.胸部.感觉, self.胸部.大小,table.concat(self.胸部.特性, " ")))
+    text:Append(("\n手部 技巧：%s 特性：%s"):format(self.手部.技巧, table.concat(self.手部.特性, " ")))
+    text:Append(("\n小穴 感觉：%s 技巧：%s 扩张度：%s 特性：%s"):format(self.小穴.感觉, self.小穴.技巧, self.小穴.扩张度, table.concat(self.小穴.特性, " ")))
+    text:Append(("\n子宫 感觉：%s 扩张度：%s 特性：%s"):format(self.子宫.感觉, self.子宫.扩张度, table.concat(self.子宫.特性, " ")))
+    if self.阴部.Name == "阴茎" then
+        text:Append(("\n阴茎 感觉：%s 技巧：%s 硬度：%s 大小：%s 特性：%s"):format(self.阴部.感觉, self.阴部.技巧, self.阴部.硬度, self.阴部.大小, table.concat(self.阴部.特性, " ")))
+    else
+        text:Append(("\n阴蒂 感觉：%s 特性：%s"):format(self.阴部.感觉, table.concat(self.阴部.特性, " ")))
+    end
+    text:Append(("\n菊穴 感觉：%s 技巧：%s 扩张度：%s 特性：%s"):format(self.菊穴.感觉, self.菊穴.技巧, self.菊穴.扩张度, table.concat(self.菊穴.特性, " ")))
+    text:Append(("\n尿道 感觉：%s 技巧：%s 扩张度：%s 特性：%s"):format(self.尿道.感觉, self.尿道.技巧, self.尿道.扩张度, table.concat(self.尿道.特性, " ")))
+    text:Append(("\n脚部 技巧：%s 特性：%s"):format(self.脚部.技巧, table.concat(self.脚部.特性, " ")))
+    text:Append("\n装备")
+    text:Append(("\n头部：%s"):format(table.concat(self.头部.装备, " ")))
+    text:Append(("\n身体：%s"):format(table.concat(self.身体.装备, " ")))
+    text:Append(("\n胯部：%s"):format(table.concat(self.胯部.装备, " ")))
+    text:Append(("\n腿部：%s"):format(table.concat(self.腿部.装备, " ")))
+    text:Append(("\n脚部：%s"):format(table.concat(self.脚部.装备, " ")))
+
+    return text:ToStr()
+end
+
+
+
 function CharaManager:LoadChara(id)
     local chara = dofile("Chara/"..id.."/"..id..".lua")
     chara.当前体力 = chara.体力

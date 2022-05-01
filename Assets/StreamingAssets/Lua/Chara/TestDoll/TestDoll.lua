@@ -3,6 +3,7 @@ local b = require("Data/身体")
 ---@class Character
 ---@field 精液 function
 ---@field 检查性玩具 function
+---@field 角色信息 function
 ---@field 恢复精力 function
 ---@field 恢复体力 function
 ---@field 检查占用 function

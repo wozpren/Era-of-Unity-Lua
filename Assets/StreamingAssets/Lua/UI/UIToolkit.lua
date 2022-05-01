@@ -27,7 +27,7 @@ function AddButton(String, method)
 end
 
 function AddButtonSpe(String, method)
-	return string.format("<link=\"%s\"><color=yellow>%s</color></link>	", method, String)
+	return string.format("<link=\"%s\"><color=yellow>%s</color></link>    ", method, String)
 end
 
 function AddButtonL(String, method)
@@ -84,7 +84,6 @@ function AddNumberFloat(value, func, min, max)
 	end
 	return text:ToStr()
 end
-
 
 function AddNumber(value, func, min, max)
 	local text = SB:New()

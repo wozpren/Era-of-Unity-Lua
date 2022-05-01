@@ -48,7 +48,7 @@ function t:Check(Trainer, Female, Select)
     value = TrainManager:OrderRequire(Female, value, text, "talent", "害羞", -5)
     value = TrainManager:OrderRequire(Female, value, text, "talent", "否定快感", -1)
 
-    return TrainManager:ShowOrder(value, text, 0), Select
+    return TrainManager:ShowOrder(value, text, 30), Select
 end
 
 ---@return ActiveMsg
@@ -59,11 +59,11 @@ function t:GetActive(trainer, trainee, select)
         调教者 = trainer,
         ---@type Character
         被调教者 = trainee,
-        执行 = trainee.足部,
+        执行 = trainee.脚部,
         目标 = trainer.阴部,
         sex = self,
         体力减少 = 5,
-        行为 = "张开",
+        行为 = "足交",
         选择 = select,
         次数 = 1,
     }
